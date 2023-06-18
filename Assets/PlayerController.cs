@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +25,24 @@ public class PlayerController : MonoBehaviour
 
     Animator animator;
 
+    [SerializeField] private PlayableDirector[] timeline;
+
+    //攻撃用アクションフラグ
+    public bool attack=false;
+
+    // コンボ判定用フラグ
+    private int comboFlgl;
+
+    // コンボ回数
+    private int coumboCount=0;
+
+    [SerializeField] private PlayableDirector[] attackTimeline;
+
+   
+
+    // スティック角度
+    private float degree;
+
     /// <summary>
     /// 開始処理
     /// </summary>
@@ -40,23 +59,24 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        
+        SticeAngle();
+
+        Debug.Log("コンボフラグは" + comboFlgl);
+
+        Debug.Log(degree);
         if (animator==null)
         {
             return;
         }
         if (mov)
         {
-            
-            
+
             Move();
         }
-        else
+     
+        if (avoid&&move.magnitude==0)
         {
-            if(avoid)
-            {
-                rigidbody.AddForce(-transform.forward * 50f, ForceMode.Impulse);
-            }
+            rigidbody.AddForce(-transform.forward * 4.5f, ForceMode.Impulse);
         }
     }
 
@@ -154,11 +174,26 @@ public class PlayerController : MonoBehaviour
                 // 移動回避
                 if(move.magnitude>0)
                 {
-
+                    timeline[0].Play();
+                    MoveOff();
+                    RotaionOff();
+                }
+                else if (move.magnitude > 0)
+                {
+                    timeline[0].Play();
+                    MoveOff();
+                    RotaionOff();
+                }
+                else if (move.magnitude > 0)
+                {
+                    timeline[0].Play();
+                    MoveOff();
+                    RotaionOff();
                 }
                 //通常回避
                 else
                 {
+                    timeline[1].Play();
                     MoveOff();
                     RotaionOff();
                 }
@@ -167,7 +202,91 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   
+    void SticeAngle()
+    {
+        var h = Input.GetAxis("Horizontal");
+        var v = Input.GetAxis("Vertical");
+
+        degree = Mathf.Atan2(v, h) * Mathf.Rad2Deg;
+
+        if (degree < 0)
+        {
+            degree += 360;
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        
+        if (context.started)
+        {
+            if (!attack && !avoid)
+            {
+                attack = true;
+
+                switch(coumboCount)
+                {
+                    case 0:
+                        attackTimeline[0].Play();
+                        Debug.Log("攻撃ボタンが押された");
+                        break;
+                }
+            }
+        }
+    }
+    public void OnCombo(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if(attack&&comboFlgl==1)
+            {
+                comboFlgl = 2;
+            }
+        }
+    }
+    public void ComboEnable()
+    {
+        if(comboFlgl==0)
+        {
+            comboFlgl = 1;
+        }
+    }
+    public void ComboCheak()
+    {
+        if(comboFlgl==2)
+        {
+            switch(coumboCount)
+            {
+                case 0:
+                    attackTimeline[0].Stop();
+                    attackTimeline[1].Play();
+                    coumboCount = 1;
+                    break;
+                case 1:
+                    attackTimeline[1].Stop();
+                    attackTimeline[2].Play();
+                    coumboCount = 2;
+                    break;
+                case 2:
+                    attackTimeline[2].Stop();
+                    attackTimeline[3].Play();
+                    coumboCount = 3;
+                    break;
+            }
+            comboFlgl = 0;
+        }
+    }
+    public void AttackStop()
+    {
+        if(comboFlgl!=4)
+        {
+            comboFlgl=0;
+        }
+        attack = false;
+        coumboCount = 0;
+    }
+
+
 
     // タイムライン呼び出し用
     public void MoveOn()
@@ -191,4 +310,5 @@ public class PlayerController : MonoBehaviour
     {
         avoid = false;
     }
+
 }
