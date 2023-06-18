@@ -38,10 +38,13 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private PlayableDirector[] attackTimeline;
 
-   
+    [SerializeField] GameObject wepon;
 
     // スティック角度
     private float degree;
+
+    private bool isGrounded;
+
 
     /// <summary>
     /// 開始処理
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
+        wepon.SetActive(false);
     }
 
     /// <summary>
@@ -59,11 +63,18 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        SticeAngle();
+        if(isGrounded&&mov==false)
+        {
+            MoveOn();
+        }
 
+        SticeAngle();
+        isGrounded = CheckGrounded();
         Debug.Log("コンボフラグは" + comboFlgl);
 
-        Debug.Log(degree);
+        
+
+            Debug.Log(degree);
         if (animator==null)
         {
             return;
@@ -130,6 +141,7 @@ public class PlayerController : MonoBehaviour
                 rigidbody.AddForce(moveForward * 50f, ForceMode.Impulse);
             }
         }
+        
     }
     /// <summary>
     /// 回転処理
@@ -223,11 +235,12 @@ public class PlayerController : MonoBehaviour
             if (!attack && !avoid)
             {
                 attack = true;
-
+               
                 switch(coumboCount)
                 {
                     case 0:
                         attackTimeline[0].Play();
+                        wepon.SetActive(true);
                         Debug.Log("攻撃ボタンが押された");
                         break;
                 }
@@ -272,6 +285,7 @@ public class PlayerController : MonoBehaviour
                     attackTimeline[3].Play();
                     coumboCount = 3;
                     break;
+                
             }
             comboFlgl = 0;
         }
@@ -283,10 +297,36 @@ public class PlayerController : MonoBehaviour
             comboFlgl=0;
         }
         attack = false;
+        wepon.SetActive(false);
         coumboCount = 0;
     }
 
+    void Jump()
+    {
+        MoveOff();
+        rigidbody.AddForce(transform.up * 8, ForceMode.VelocityChange);
 
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (isGrounded)
+            {
+                animator.SetTrigger("isJump");
+            }
+        }
+    }
+    bool CheckGrounded()
+    {
+        //放つ光線の初期位置と姿勢
+        var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
+        //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
+        var distance = 0.5f;
+        //Raycastがhitするかどうかで判定レイヤーを指定することも可能
+        return Physics.Raycast(ray, distance);
+    }
 
     // タイムライン呼び出し用
     public void MoveOn()
