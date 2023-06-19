@@ -8,6 +8,7 @@ using UnityEngine.Playables;
 
 public class WarpConntroller : MonoBehaviour
 {
+    [SerializeField] PlayerController playerController;
     Animator animator;
     public Transform target;
 
@@ -49,7 +50,7 @@ public class WarpConntroller : MonoBehaviour
     {
        // thirdPerson = GetComponent<ThirdPersonMovement>();
         animator = GetComponent<Animator>();
-
+        playerController = GetComponent<PlayerController>();
         // 剣の位置を記憶させる
         swordOrigRot = sword.localEulerAngles;
         swordOrigPos = sword.localPosition;
@@ -78,6 +79,10 @@ public class WarpConntroller : MonoBehaviour
     {
         if (context.started)
         {
+            playerController.MoveOff();
+            playerController.RotaionOff();
+            playerController.AttackOn();
+
             sword.gameObject.SetActive(true);
             this.transform.LookAt(target.position);
             //animator.applyRootMotion = false;
@@ -118,8 +123,10 @@ public void Warp()
         // アニメーションを止める
         animator.speed = 0f;
 
+        Vector3 targetPos = new Vector3(target.position.x, target.position.y , target.position.z);
+
         // ワープ処理：イーじんぐ処理後で理解
-        transform.DOMove(target.position, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
+        transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
 
         // 親をnullにする
         sword.parent = null;
@@ -178,13 +185,19 @@ public void Warp()
         }
         animator.speed = 1f;
         ShowBody(true);
-        isWarp = false;
+        
         gameObjectcam.SetActive(true);
         StartCoroutine(StopParticles());
 
-
-        //animator.applyRootMotion = true;
         sword.gameObject.SetActive(false);
+    }
+
+   public void WrapAnimationEnd()
+    {
+        isWarp = false;
+        playerController.AttackOff();
+        playerController.MoveOn();
+        playerController.RotaionOn();
     }
 
     void GlowAmount(float x)

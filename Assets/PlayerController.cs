@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayableDirector[] timeline;
 
     //攻撃用アクションフラグ
-    public bool attack=false;
+    public bool attack;
 
     // コンボ判定用フラグ
     private int comboFlgl;
@@ -45,12 +45,14 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
 
+    [SerializeField] WarpConntroller warpConntroller;
 
     /// <summary>
     /// 開始処理
     /// </summary>
     private void Awake()
     {
+        AttackOff();
         cameraController = Camera.main.GetComponent<CameraController>();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
@@ -63,9 +65,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if(isGrounded&&mov==false)
+        //if(isGrounded&&mov==false)
         {
-            MoveOn();
+            //MoveOn();
         }
 
         SticeAngle();
@@ -232,7 +234,7 @@ public class PlayerController : MonoBehaviour
         
         if (context.started)
         {
-            if (!attack && !avoid)
+            if (!attack && !avoid&&warpConntroller.isWarp==false)
             {
                 attack = true;
                
@@ -301,6 +303,9 @@ public class PlayerController : MonoBehaviour
         coumboCount = 0;
     }
 
+    /// <summary>
+    ///  jumpの処理（アニメーションクリップにて実行）
+    /// </summary>
     void Jump()
     {
         MoveOff();
@@ -308,6 +313,10 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// InputSystem用　ジャンプボタン処理
+    /// </summary>
+    /// <param name="context"></param>
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -318,6 +327,11 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// 接地判定
+    /// </summary>
+    /// <returns>接地 true それ以外falseを返す</returns>
     bool CheckGrounded()
     {
         //放つ光線の初期位置と姿勢
@@ -345,10 +359,18 @@ public class PlayerController : MonoBehaviour
     {
         rot = false;
     }
-
     public void ActionFlugReset()
     {
         avoid = false;
     }
 
+    public void AttackOn()
+    {
+        attack = true;
+    }
+
+    public void AttackOff()
+    {
+        attack = false;
+    }
 }
