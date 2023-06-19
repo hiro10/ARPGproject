@@ -160,7 +160,7 @@ public void Warp()
     private void ShowBody(bool state)
     {
         SkinnedMeshRenderer[] skinnedList = GetComponentsInChildren<SkinnedMeshRenderer>();
-
+        
         foreach (SkinnedMeshRenderer smr in skinnedList)
         {
             smr.enabled = state;
