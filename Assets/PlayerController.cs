@@ -91,6 +91,7 @@ public class PlayerController : MonoBehaviour
         {
             rigidbody.AddForce(-transform.forward * 4.5f, ForceMode.Impulse);
         }
+
     }
 
     private void FixedUpdate()
@@ -110,6 +111,12 @@ public class PlayerController : MonoBehaviour
                 Rotation();
             }
         }
+        SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
+    }
+
+    private void SetLocalGravity()
+    {
+        rigidbody.AddForce(new Vector3(0f,-15f,0f), ForceMode.Acceleration);
     }
 
     /// <summary>
@@ -309,7 +316,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         MoveOff();
-        rigidbody.AddForce(transform.up * 8, ForceMode.VelocityChange);
+        rigidbody.AddForce(Vector3.up * 15f, ForceMode.VelocityChange);
 
     }
 

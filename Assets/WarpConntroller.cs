@@ -40,6 +40,7 @@ public class WarpConntroller : MonoBehaviour
     public ParticleSystem whiteTrail;
     public ParticleSystem swordParticle;
 
+
    // private PostProcessVolume postVolume;
    // private PostProcessProfile postProfile;
 
@@ -77,19 +78,22 @@ public class WarpConntroller : MonoBehaviour
     }
     public void OnWarp(InputAction.CallbackContext context)
     {
-        if (context.started)
+        //if (playerController.attack == false)
         {
-            playerController.MoveOff();
-            playerController.RotaionOff();
-            playerController.AttackOn();
+            if (context.started)
+            {
+                playerController.MoveOff();
+                playerController.RotaionOff();
+                playerController.AttackOn();
 
-            sword.gameObject.SetActive(true);
-            this.transform.LookAt(target.position);
-            //animator.applyRootMotion = false;
-            // gameObjectcam.SetActive(false);
-            isWarp = true;
-            //swordParticle.Play();
-            animator.SetTrigger("slash");
+                sword.gameObject.SetActive(true);
+                this.transform.LookAt(target.position);
+                //animator.applyRootMotion = false;
+                // gameObjectcam.SetActive(false);
+                isWarp = true;
+                //swordParticle.Play();
+                animator.SetTrigger("slash");
+            }
         }
         
         
@@ -107,8 +111,10 @@ public void Warp()
         GameObject clone = Instantiate(this.gameObject, transform.position, transform.rotation);
         Destroy(clone.GetComponent<WarpConntroller>().sword.gameObject);
         Destroy(clone.GetComponent<Animator>());
+        Destroy(clone.GetComponent<PlayerController>());
         Destroy(clone.GetComponent<WarpConntroller>());
         Destroy(clone.GetComponent<Rigidbody>());
+        Destroy(clone.GetComponent<CapsuleCollider>());
 
         SkinnedMeshRenderer[] skinMeshList = clone.GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer smr in skinMeshList)
