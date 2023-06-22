@@ -72,9 +72,6 @@ public class PlayerController : MonoBehaviour
 
         SticeAngle();
         isGrounded = CheckGrounded();
-        Debug.Log("コンボフラグは" + comboFlgl);
-
-        
 
             Debug.Log(degree);
         if (animator==null)
@@ -91,7 +88,14 @@ public class PlayerController : MonoBehaviour
         {
             rigidbody.AddForce(-transform.forward * 4.5f, ForceMode.Impulse);
         }
-
+        if(isGrounded==false)
+        {
+            animator.SetFloat("jumpPower", 1);
+        }
+        else
+        {
+            animator.SetFloat("jumpPower", 0);
+        }
     }
 
     private void FixedUpdate()
@@ -112,6 +116,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
+        
     }
 
     private void SetLocalGravity()
@@ -176,6 +181,8 @@ public class PlayerController : MonoBehaviour
 
 
     }
+
+   
 
     /// <summary>
     /// InputSystem反映用
@@ -316,8 +323,9 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         MoveOff();
-        rigidbody.AddForce(Vector3.up * 15f, ForceMode.VelocityChange);
-
+        rigidbody.velocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y+10f, rigidbody.velocity.z);
+        //　ジャンプ力をアニメーションパラメータに設定
+        animator.SetFloat("jumpPower", rigidbody.velocity.y);
     }
 
     /// <summary>
@@ -330,6 +338,7 @@ public class PlayerController : MonoBehaviour
         {
             if (isGrounded)
             {
+                Jump();
                 animator.SetTrigger("isJump");
             }
         }
@@ -341,12 +350,14 @@ public class PlayerController : MonoBehaviour
     /// <returns>接地 true それ以外falseを返す</returns>
     bool CheckGrounded()
     {
+        //animator.SetFloat("jumpPower",0);
         //放つ光線の初期位置と姿勢
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
         var distance = 0.5f;
         //Raycastがhitするかどうかで判定レイヤーを指定することも可能
         return Physics.Raycast(ray, distance);
+        
     }
 
     // タイムライン呼び出し用

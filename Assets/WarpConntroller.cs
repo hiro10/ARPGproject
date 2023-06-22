@@ -141,12 +141,12 @@ public void Warp()
         //sword.DORotate(new Vector3(0, 90, 0), 0.3f);
 
         //Particles
-        //blueTrail.Play();
-        //whiteTrail.Play();
+        blueTrail.Play();
+        whiteTrail.Play();
 
         //Lens Distortion
         //DOVirtual.Float(0, -80, .2f, DistortionAmount);
-       // DOVirtual.Float(1, 2f, .2f, ScaleAmount);
+        // DOVirtual.Float(1, 2f, .2f, ScaleAmount);
     }
 
     //void DistortionAmount(float x)
@@ -178,6 +178,7 @@ public void Warp()
     /// </summary>
     void FinshWarp()
     {
+        ShowBody(true);
         // åïÇÃêeÇ∆à íuÇÃçƒê›íË
         sword.parent = swordHand;
         sword.localPosition = swordOrigPos;
@@ -189,10 +190,14 @@ public void Warp()
             GlowAmount(30);
             DOVirtual.Float(30, 0, .5f, GlowAmount);
         }
+        target.DOMove(target.position + transform.forward, 100.5f);
+
         animator.speed = 1f;
-        ShowBody(true);
         
         gameObjectcam.SetActive(true);
+
+       
+
         StartCoroutine(StopParticles());
 
         sword.gameObject.SetActive(false);
@@ -223,8 +228,8 @@ public void Warp()
     IEnumerator StopParticles()
     {
         yield return new WaitForSeconds(.2f);
-       // blueTrail.Stop();
-        //whiteTrail.Stop();
+        blueTrail.Stop();
+        whiteTrail.Stop();
     }
 
 }
