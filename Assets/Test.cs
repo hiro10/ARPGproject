@@ -1,10 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-/// <summary>
-/// CinemachineVirtualCamera‚ğ§Œä‚·‚éƒNƒ‰ƒX
-/// </summary>
-public class PlayerCamera : MonoBehaviour
+public class Test : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera freeLookCamera;
     [SerializeField] CinemachineVirtualCamera lockonCameral;

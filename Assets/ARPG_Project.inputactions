@@ -280,10 +280,10 @@
                 {
                     "name": "",
                     "id": "4a3b8014-60d8-44bb-a0fd-b8ea690c146c",
-                    "path": "<Gamepad>/select",
+                    "path": "<Gamepad>/rightStickPress",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "RockOn",
                     "isComposite": false,
                     "isPartOfComposite": false

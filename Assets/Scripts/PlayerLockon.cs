@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerLockOn : MonoBehaviour
+/// <summary>
+/// プレイヤーのロックオン機能の制御するクラス
+/// </summary>
+public class PlayerLockon : MonoBehaviour
 {
-    [SerializeField] PlayerCamera playerCamera;
+    [SerializeField] Test playerCamera;
     [SerializeField] Transform originTrn;
     [SerializeField] float lockonRange = 20;
     [SerializeField] string targetLayerName;
@@ -152,4 +155,5 @@ public class PlayerLockOn : MonoBehaviour
 
         return null;
     }
+
 }

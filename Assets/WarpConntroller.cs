@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
+using Cinemachine;
 using UnityEngine.Playables;
 //using UnityEngine.Rendering.PostProcessing;
 
@@ -13,9 +14,12 @@ public class WarpConntroller : MonoBehaviour
     public Transform target;
 
     public float warpDuration = .5f;
-
+    private CinemachineImpulseSource impulse;
+    public CinemachineVirtualCamera camera;
     // ワープの発動判定
     public bool isWarp;
+
+    [SerializeField] GameObject warpSlash;
 
     // 剣
     [SerializeField] Transform sword;
@@ -40,6 +44,7 @@ public class WarpConntroller : MonoBehaviour
     public ParticleSystem whiteTrail;
     public ParticleSystem swordParticle;
 
+    [SerializeField]CameraController controller;
 
    // private PostProcessVolume postVolume;
    // private PostProcessProfile postProfile;
@@ -49,13 +54,15 @@ public class WarpConntroller : MonoBehaviour
     /// </summary>
     void Start()
     {
-       // thirdPerson = GetComponent<ThirdPersonMovement>();
+        impulse = camera.GetComponent<CinemachineImpulseSource>();
+        warpSlash.SetActive(false);
+        // thirdPerson = GetComponent<ThirdPersonMovement>();
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         // 剣の位置を記憶させる
         swordOrigRot = sword.localEulerAngles;
         swordOrigPos = sword.localPosition;
-
+        //controller = GetComponent<CameraController>();
         // ワープの仕様判定を設定
         isWarp = false;
 
@@ -78,10 +85,16 @@ public class WarpConntroller : MonoBehaviour
     }
     public void OnWarp(InputAction.CallbackContext context)
     {
+        target = controller.rockonTarget.transform;
         //if (playerController.attack == false)
         {
             if (context.started)
             {
+                if (target == null)
+                {
+                    return;
+                }
+                
                 playerController.MoveOff();
                 playerController.RotaionOff();
                 playerController.AttackOn();
@@ -91,7 +104,7 @@ public class WarpConntroller : MonoBehaviour
                 //animator.applyRootMotion = false;
                 // gameObjectcam.SetActive(false);
                 isWarp = true;
-                //swordParticle.Play();
+                swordParticle.Play();
                 animator.SetTrigger("slash");
             }
         }
@@ -114,7 +127,7 @@ public void Warp()
         Destroy(clone.GetComponent<PlayerController>());
         Destroy(clone.GetComponent<WarpConntroller>());
         Destroy(clone.GetComponent<Rigidbody>());
-        Destroy(clone.GetComponent<CapsuleCollider>());
+        Destroy(clone.GetComponent<BoxCollider>());
 
         SkinnedMeshRenderer[] skinMeshList = clone.GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer smr in skinMeshList)
@@ -193,14 +206,16 @@ public void Warp()
         target.DOMove(target.position + transform.forward, 100.5f);
 
         animator.speed = 1f;
-        
+        warpSlash.SetActive(true);
         gameObjectcam.SetActive(true);
 
-       
+        
 
         StartCoroutine(StopParticles());
 
         sword.gameObject.SetActive(false);
+       
+         impulse.GenerateImpulse(Vector3.right);
     }
 
    public void WrapAnimationEnd()
@@ -228,8 +243,10 @@ public void Warp()
     IEnumerator StopParticles()
     {
         yield return new WaitForSeconds(.2f);
+        warpSlash.SetActive(false);
         blueTrail.Stop();
         whiteTrail.Stop();
+       
     }
 
 }

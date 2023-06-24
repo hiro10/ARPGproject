@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     [Header("回転割合")]
     [SerializeField] private float turnTimeRate;
 
-    private CameraController cameraController;
+    //private CameraController cameraController;
 
     // アクションフラグ（回避中か）
     [SerializeField]private bool avoid = false;
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         AttackOff();
-        cameraController = Camera.main.GetComponent<CameraController>();
+       // cameraController = Camera.main.GetComponent<CameraController>();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
         SticeAngle();
         isGrounded = CheckGrounded();
 
-            Debug.Log(degree);
+            //Debug.Log(degree);
         if (animator==null)
         {
             return;
@@ -102,14 +102,14 @@ public class PlayerController : MonoBehaviour
     {
         if (rot)
         {
-            if (cameraController.rock)
-            {
-                // ロックオン中はテーゲットの正面に
-                var dir = cameraController.rockonTarget.transform.position - this.gameObject.transform.position;
-                Quaternion targetRotation = Quaternion.LookRotation(dir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnTimeRate);
-            }
-            else
+            //if (cameraController.rock)
+            //{
+            //    // ロックオン中はテーゲットの正面に
+            //    var dir = cameraController.rockonTarget.transform.position - this.gameObject.transform.position;
+            //    Quaternion targetRotation = Quaternion.LookRotation(dir);
+            //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnTimeRate);
+            //}
+            //else
             {
                 // 回転
                 Rotation();
@@ -189,6 +189,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnMove(InputAction.CallbackContext context)
     {
+       
         move = new Vector3(context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
     }
 
