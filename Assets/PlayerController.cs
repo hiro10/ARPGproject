@@ -7,7 +7,7 @@ using UnityEngine.Playables;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rigidbody;
-    private Vector3 move;
+    public Vector3 move;
     private Vector3 moveForward;
     [Header("ˆÚ“®‘¬“x")]
     [SerializeField] private float moveSpeed;
