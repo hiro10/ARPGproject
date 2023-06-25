@@ -143,7 +143,7 @@ public void Warp()
         animator.speed = 0f;
 
         Vector3 targetPos = new Vector3(target.position.x, target.position.y , target.position.z);
-
+        // シフトする際にレイを飛ばして当たった位置を取得して、その位置の手前にシフトする
         // ワープ処理：イーじんぐ処理後で理解
         transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
 
@@ -203,7 +203,7 @@ public void Warp()
             GlowAmount(30);
             DOVirtual.Float(30, 0, .5f, GlowAmount);
         }
-        target.DOMove(target.position + transform.forward, 100.5f);
+        target.DOMove(target.position + transform.forward,1f);
 
         animator.speed = 1f;
         warpSlash.SetActive(true);
