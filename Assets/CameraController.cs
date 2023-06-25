@@ -50,11 +50,18 @@ public class CameraController : MonoBehaviour
     public GameObject rockonTarget;
     // ロックオン用センサー
     public GameObject searchCircle;
+    // 障害物とするレイヤー
+    [SerializeField]
+    private LayerMask obstacleLayer;
 
     // Start is called before the first frame update
     void Start()
     {
         nowPos = TargetObject.transform.position;
+    }
+    private void Update()
+    {
+       
     }
 
     // Update is called once per frame
@@ -171,6 +178,17 @@ public class CameraController : MonoBehaviour
         {
             transform.rotation = rot;
         }
+
+        RaycastHit hit;
+        //　キャラクターとカメラの間に障害物があったら障害物の位置にカメラを移動させる
+        if (Physics.Linecast(TargetObject.transform.position, transform.position, out hit, obstacleLayer))
+        {
+            transform.position = Vector3.Lerp(transform.position, hit.point, 1f); //hit.point;
+        }
+        Debug.Log("hit.point" + hit.point);
+        //　レイを視覚的に確認
+        Debug.DrawLine(TargetObject.transform.position, transform.position, Color.red, 0f, false);
+
     }
 
     public void OnCamera(InputAction.CallbackContext context)

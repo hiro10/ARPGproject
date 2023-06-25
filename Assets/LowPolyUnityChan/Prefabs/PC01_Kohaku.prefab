@@ -929,7 +929,11 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'RightEye'\n\tTransform 'Head'\n\tTransform 'LeftHand'\n\tTransform
+    'Spine1'\n\tTransform 'RightLeg'\n\tTransform 'LeftFoot'\n\tTransform 'LeftEye'\n\tTransform
+    'RightUpLeg'\n\tTransform 'Reference'\n\tTransform 'RightFoot'\n\tand more ..."
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -975,6 +979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff69952cc753ce24c946577aa80125b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  move: {x: 0, y: 0, z: 0}
   moveSpeed: 5
   turnTimeRate: 13.86
   avoid: 0
@@ -987,8 +992,10 @@ MonoBehaviour:
   attackTimeline:
   - {fileID: 238547147}
   - {fileID: 107490958}
-  - {fileID: 1507334179}
+  - {fileID: 0}
   - {fileID: 1268240972}
+  wepon: {fileID: 0}
+  warpConntroller: {fileID: 0}
 --- !u!114 &1451760637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2420,7 +2427,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1629042342}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!320 &1268240972
 PlayableDirector:
@@ -2438,57 +2445,6 @@ PlayableDirector:
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: -5261299158441787159, guid: 7cb88b3c7c9bc484f8a508fa387b49c6, type: 2}
-    value: {fileID: 9558716}
-  m_ExposedReferences:
-    m_References: []
---- !u!1 &1507334177
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1507334178}
-  - component: {fileID: 1507334179}
-  m_Layer: 0
-  m_Name: Attack (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1507334178
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1507334177}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1629042342}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!320 &1507334179
-PlayableDirector:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1507334177}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: a182d693b1b4dff4ba5d85dee5afa28a, type: 2}
-  m_InitialState: 0
-  m_WrapMode: 2
-  m_DirectorUpdateMode: 1
-  m_InitialTime: 0
-  m_SceneBindings:
-  - key: {fileID: -5261299158441787159, guid: a182d693b1b4dff4ba5d85dee5afa28a, type: 2}
     value: {fileID: 9558716}
   m_ExposedReferences:
     m_References: []
@@ -2524,7 +2480,6 @@ Transform:
   - {fileID: 1178542742}
   - {fileID: 238547146}
   - {fileID: 107490957}
-  - {fileID: 1507334178}
   - {fileID: 1268240971}
   m_Father: {fileID: 431518}
   m_RootOrder: 3
