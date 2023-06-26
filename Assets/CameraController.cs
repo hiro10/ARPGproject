@@ -68,9 +68,9 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         // キー入力による水平方向の加算
-        rotAngle -= speed.x * Time.deltaTime * 50f;
+        rotAngle -= speed.x * Time.deltaTime * 150f;
         // キー入力による垂直方向の加算
-        heightAngle += speed.z * Time.deltaTime * 50f;
+        heightAngle += speed.z * Time.deltaTime * 80f;
         // 垂直方向の角度制限
         heightAngle = Mathf.Clamp(heightAngle, -40f, 60f);
         // カメラ距離制限
