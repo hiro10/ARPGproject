@@ -142,7 +142,7 @@ public void Warp()
         // アニメーションを止める
         animator.speed = 0f;
 
-        Vector3 targetPos = new Vector3(target.position.x, target.position.y , target.position.z);
+        Vector3 targetPos = new Vector3(target.position.x, target.position.y-1f , target.position.z);
         // シフトする際にレイを飛ばして当たった位置を取得して、その位置の手前にシフトする
         // ワープ処理：イーじんぐ処理後で理解
         transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());

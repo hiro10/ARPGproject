@@ -202,11 +202,11 @@
                 },
                 {
                     "name": "",
-                    "id": "225332b1-154a-4072-999c-e4104fdad771",
+                    "id": "b5a76d6a-f1bf-433a-b172-a9edb7568a7c",
                     "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "",
                     "action": "Camera",
                     "isComposite": false,
                     "isPartOfComposite": false

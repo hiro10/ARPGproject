@@ -115,8 +115,10 @@ public class PlayerController : MonoBehaviour
                 Rotation();
             }
         }
-        SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
-        
+        if (warpConntroller.isWarp == false)
+        {
+            SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
+        }
     }
 
     private void SetLocalGravity()
