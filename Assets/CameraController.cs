@@ -185,7 +185,7 @@ public class CameraController : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, hit.point, 1f); //hit.point;
         }
-        Debug.Log("hit.point" + hit.point);
+       // Debug.Log("hit.point" + hit.point);
         //　レイを視覚的に確認
         Debug.DrawLine(TargetObject.transform.position, transform.position, Color.red, 0f, false);
 
