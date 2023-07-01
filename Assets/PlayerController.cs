@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rigidbody;
-    private Vector3 move;
+    public Vector3 move;
     private Vector3 moveForward;
     [Header("移動速度")]
     [SerializeField] private float moveSpeed;
     [Header("回転割合")]
     [SerializeField] private float turnTimeRate;
 
-    private CameraController cameraController;
+    //private CameraController cameraController;
 
     // アクションフラグ（回避中か）
     [SerializeField]private bool avoid = false;
@@ -24,15 +25,39 @@ public class PlayerController : MonoBehaviour
 
     Animator animator;
 
+    [SerializeField] private PlayableDirector[] timeline;
+
+    //攻撃用アクションフラグ
+    public bool attack;
+
+    // コンボ判定用フラグ
+    private int comboFlgl;
+
+    // コンボ回数
+    private int coumboCount=0;
+
+    [SerializeField] private PlayableDirector[] attackTimeline;
+
+    [SerializeField] GameObject wepon;
+
+    // スティック角度
+    private float degree;
+
+    private bool isGrounded;
+
+    [SerializeField] WarpConntroller warpConntroller;
+
     /// <summary>
     /// 開始処理
     /// </summary>
     private void Awake()
     {
-        cameraController = Camera.main.GetComponent<CameraController>();
+        AttackOff();
+       // cameraController = Camera.main.GetComponent<CameraController>();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
+        wepon.SetActive(false);
     }
 
     /// <summary>
@@ -40,23 +65,36 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        
+        //if(isGrounded&&mov==false)
+        {
+            //MoveOn();
+        }
+
+        SticeAngle();
+        isGrounded = CheckGrounded();
+
+            //Debug.Log(degree);
         if (animator==null)
         {
             return;
         }
         if (mov)
         {
-            
-            
+
             Move();
+        }
+     
+        if (avoid&&move.magnitude==0)
+        {
+            rigidbody.AddForce(-transform.forward * 4.5f, ForceMode.Impulse);
+        }
+        if(isGrounded==false)
+        {
+            animator.SetFloat("jumpPower", 1);
         }
         else
         {
-            if(avoid)
-            {
-                rigidbody.AddForce(-transform.forward * 50f, ForceMode.Impulse);
-            }
+            animator.SetFloat("jumpPower", 0);
         }
     }
 
@@ -64,19 +102,28 @@ public class PlayerController : MonoBehaviour
     {
         if (rot)
         {
-            if (cameraController.rock)
-            {
-                // ロックオン中はテーゲットの正面に
-                var dir = cameraController.rockonTarget.transform.position - this.gameObject.transform.position;
-                Quaternion targetRotation = Quaternion.LookRotation(dir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnTimeRate);
-            }
-            else
+            //if (cameraController.rock)
+            //{
+            //    // ロックオン中はテーゲットの正面に
+            //    var dir = cameraController.rockonTarget.transform.position - this.gameObject.transform.position;
+            //    Quaternion targetRotation = Quaternion.LookRotation(dir);
+            //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnTimeRate);
+            //}
+            //else
             {
                 // 回転
                 Rotation();
             }
         }
+        if (warpConntroller.isWarp == false)
+        {
+            SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
+        }
+    }
+
+    private void SetLocalGravity()
+    {
+        rigidbody.AddForce(new Vector3(0f,-15f,0f), ForceMode.Acceleration);
     }
 
     /// <summary>
@@ -110,6 +157,7 @@ public class PlayerController : MonoBehaviour
                 rigidbody.AddForce(moveForward * 50f, ForceMode.Impulse);
             }
         }
+        
     }
     /// <summary>
     /// 回転処理
@@ -136,11 +184,14 @@ public class PlayerController : MonoBehaviour
 
     }
 
+   
+
     /// <summary>
     /// InputSystem反映用
     /// </summary>
     public void OnMove(InputAction.CallbackContext context)
     {
+       
         move = new Vector3(context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
     }
 
@@ -154,11 +205,26 @@ public class PlayerController : MonoBehaviour
                 // 移動回避
                 if(move.magnitude>0)
                 {
-
+                    timeline[0].Play();
+                    MoveOff();
+                    RotaionOff();
+                }
+                else if (move.magnitude > 0)
+                {
+                    timeline[0].Play();
+                    MoveOff();
+                    RotaionOff();
+                }
+                else if (move.magnitude > 0)
+                {
+                    timeline[0].Play();
+                    MoveOff();
+                    RotaionOff();
                 }
                 //通常回避
                 else
                 {
+                    timeline[1].Play();
                     MoveOff();
                     RotaionOff();
                 }
@@ -167,7 +233,135 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   
+    void SticeAngle()
+    {
+        var h = Input.GetAxis("Horizontal");
+        var v = Input.GetAxis("Vertical");
+
+        degree = Mathf.Atan2(v, h) * Mathf.Rad2Deg;
+
+        if (degree < 0)
+        {
+            degree += 360;
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        
+        if (context.started)
+        {
+            if (!attack && !avoid&&warpConntroller.isWarp==false)
+            {
+                attack = true;
+               
+                switch(coumboCount)
+                {
+                    case 0:
+                        attackTimeline[0].Play();
+                        wepon.SetActive(true);
+                        Debug.Log("攻撃ボタンが押された");
+                        break;
+                }
+            }
+        }
+    }
+    public void OnCombo(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if(attack&&comboFlgl==1)
+            {
+                comboFlgl = 2;
+            }
+        }
+    }
+    public void ComboEnable()
+    {
+        if(comboFlgl==0)
+        {
+            comboFlgl = 1;
+        }
+    }
+    public void ComboCheak()
+    {
+        if(comboFlgl==2)
+        {
+            switch(coumboCount)
+            {
+                case 0:
+                    attackTimeline[0].Stop();
+                    attackTimeline[1].Play();
+                    coumboCount = 1;
+                    break;
+                case 1:
+                    attackTimeline[1].Stop();
+                    attackTimeline[2].Play();
+                    coumboCount = 2;
+                    break;
+                case 2:
+                    attackTimeline[2].Stop();
+                    attackTimeline[3].Play();
+                    coumboCount = 3;
+                    break;
+                
+            }
+            comboFlgl = 0;
+        }
+    }
+    public void AttackStop()
+    {
+        if(comboFlgl!=4)
+        {
+            comboFlgl=0;
+        }
+        attack = false;
+        wepon.SetActive(false);
+        coumboCount = 0;
+    }
+
+    /// <summary>
+    ///  jumpの処理（アニメーションクリップにて実行）
+    /// </summary>
+    void Jump()
+    {
+        MoveOff();
+        rigidbody.velocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y+10f, rigidbody.velocity.z);
+        //　ジャンプ力をアニメーションパラメータに設定
+        animator.SetFloat("jumpPower", rigidbody.velocity.y);
+    }
+
+    /// <summary>
+    /// InputSystem用　ジャンプボタン処理
+    /// </summary>
+    /// <param name="context"></param>
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (isGrounded)
+            {
+                Jump();
+                animator.SetTrigger("isJump");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 接地判定
+    /// </summary>
+    /// <returns>接地 true それ以外falseを返す</returns>
+    bool CheckGrounded()
+    {
+        //animator.SetFloat("jumpPower",0);
+        //放つ光線の初期位置と姿勢
+        var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
+        //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
+        var distance = 0.5f;
+        //Raycastがhitするかどうかで判定レイヤーを指定することも可能
+        return Physics.Raycast(ray, distance);
+        
+    }
 
     // タイムライン呼び出し用
     public void MoveOn()
@@ -186,9 +380,18 @@ public class PlayerController : MonoBehaviour
     {
         rot = false;
     }
-
     public void ActionFlugReset()
     {
         avoid = false;
+    }
+
+    public void AttackOn()
+    {
+        attack = true;
+    }
+
+    public void AttackOff()
+    {
+        attack = false;
     }
 }
