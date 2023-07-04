@@ -9,6 +9,11 @@ public class LoadingScene : MonoBehaviour
     [SerializeField] private GameObject _loadingUI;
     [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _text;
+    private AsyncOperation async;
+    private void Awake()
+    {
+        GameManager.Instance.nowSceneName= SceneManager.GetActiveScene().name;
+    }
     private void Start()
     {
         _loadingUI.SetActive(true);
@@ -18,7 +23,15 @@ public class LoadingScene : MonoBehaviour
     IEnumerator LoadScene()
     {
         yield return null;
-        AsyncOperation async = SceneManager.LoadSceneAsync("DemoScene");
+        if (GameManager.Instance.sceneName == "Title")
+        {
+            async = SceneManager.LoadSceneAsync("DemoScene");
+        }
+        else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName==null)
+        {
+            async = SceneManager.LoadSceneAsync("Title");
+        }
+        
         async.allowSceneActivation = false;
         while (!async.isDone)
         {
@@ -31,5 +44,12 @@ public class LoadingScene : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    private void OnDestroy()
+    {
+
+        GameManager.Instance.sceneName = SceneManager.GetActiveScene().name;
+
     }
 }

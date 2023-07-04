@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 // ゲームの制御用　役割変わるかも()
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager Instance;
 
     bool isPause;
+
+    public string sceneName;
+    public string nowSceneName;
 
     /// <summary>
     ///  シングルトン化
@@ -16,9 +18,9 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
 
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -33,20 +35,20 @@ public class GameManager : MonoBehaviour
         isPause = false;
     }
 
-    public void OnButtonPressed()
-    {
-        //if (context.started)
-        {
-            if (isPause == false)
-            {
-                isPause = true;
-                Time.timeScale = 0f;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-                isPause = false;
-            }
-        }
-    }
+    //public void OnButtonPressed()
+    //{
+    //    //if (context.started)
+    //    {
+    //        if (isPause == false)
+    //        {
+    //            isPause = true;
+    //            Time.timeScale = 0f;
+    //        }
+    //        else
+    //        {
+    //            Time.timeScale = 1f;
+    //            isPause = false;
+    //        }
+    //    }
+    //}
 }

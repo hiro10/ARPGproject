@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody rigidbody;
+    private new Rigidbody rigidbody;
     public Vector3 move;
     private Vector3 moveForward;
     [Header("ˆÚ“®‘¬“x")]
@@ -52,8 +53,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+
+        //GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
+
         AttackOff();
-       // cameraController = Camera.main.GetComponent<CameraController>();
+        // cameraController = Camera.main.GetComponent<CameraController>();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();

@@ -7,6 +7,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.InputSystem;
 
+// タイトル処理
 public class TitleManager : MonoBehaviour
 {
     // 点滅スピード
@@ -30,13 +31,25 @@ public class TitleManager : MonoBehaviour
     // オプション画面用(DoTween)
     [SerializeField] private GameObject creditPanel;
 
+    // 終了画面用(DoTween)
+    [SerializeField] private GameObject exitPanel;
+
     // 背景パネル用
     [SerializeField] private GameObject backPanel;
+
+    private void Awake()
+    {
+       // 
+    }
 
 
     // Start is called before the first frame update
     void Start()
     {
+        if (GameManager.Instance.nowSceneName != SceneManager.GetActiveScene().name)
+        {
+            GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
+        }
         backPanel.SetActive(false);
         if (StartMenu != null)
         {
@@ -57,6 +70,17 @@ public class TitleManager : MonoBehaviour
         {
             creditPanel.SetActive(false);
             creditPanel.transform.localScale = Vector3.zero;
+        }
+        else
+        {
+            return;
+        }
+
+        // 終了パネルのnullチェックと初期スケール設定
+        if (exitPanel != null)
+        {
+            exitPanel.SetActive(false);
+            exitPanel.transform.localScale = Vector3.zero;
         }
         else
         {
@@ -145,5 +169,11 @@ public class TitleManager : MonoBehaviour
         backPanel.SetActive(false);
         creditPanel.SetActive(false);
         optionPanel.SetActive(false);
+        exitPanel.SetActive(false); 
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.Instance.sceneName = SceneManager.GetActiveScene().name;
     }
 }
