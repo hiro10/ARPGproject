@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RockOn",
+                    "name": "Lockon",
                     "type": "Button",
                     "id": "09b40083-5978-4292-8318-307d7b8b14f9",
                     "expectedControlType": "Button",
@@ -72,6 +72,15 @@
                     "name": "Warp",
                     "type": "Button",
                     "id": "c5a8758c-ed6f-453e-97b6-1f594679501e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeepAtack",
+                    "type": "Button",
+                    "id": "e4be4f7a-ba4b-4c6b-b3ae-c5bd52ee2015",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -273,7 +282,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RockOn",
+                    "action": "Lockon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -284,7 +293,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "RockOn",
+                    "action": "Lockon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -373,6 +382,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Warp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c526199a-8bc2-4ed8-b618-5223cbb249c5",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "DeepAtack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

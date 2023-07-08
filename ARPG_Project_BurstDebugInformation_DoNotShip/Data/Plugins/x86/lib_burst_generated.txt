@@ -1,7 +1,7 @@
 Library: lib_burst_generated
 --platform=Windows
 --backend=burst-llvm-11
---target=X64_SSE2
+--target=X86_SSE2
 --global-safety-checks-setting=Off
 --dump=Function
 --float-precision=Standard
@@ -32,8 +32,6 @@ Library: lib_burst_generated
 --compilation-defines=UNITY_2021_1_OR_NEWER
 --compilation-defines=UNITY_2021_2_OR_NEWER
 --compilation-defines=UNITY_2021_3_OR_NEWER
---compilation-defines=PLATFORM_ARCH_64
---compilation-defines=UNITY_64
 --compilation-defines=USE_SEARCH_ENGINE_API
 --compilation-defines=USE_SEARCH_TABLE
 --compilation-defines=USE_SEARCH_MODULE
@@ -155,9 +153,9 @@ Library: lib_burst_generated
 --compilation-defines=VFX_HAS_PHYSICS
 --compilation-defines=VFX_HAS_AUDIO
 --compilation-defines=VFX_HAS_INPUT_SYSTEM_PACKAGE
---linker-options=PdbAltPath="ARPG_Project_Data/Plugins/x86_64"
+--linker-options=PdbAltPath="ARPG_Project_Data/Plugins/x86"
 --generate-link-xml=Temp\burst.link.xml
---output=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Plugins\x86_64\lib_burst_generated
+--output=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Plugins\x86\lib_burst_generated
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\UnityEngine.UI.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Core.Runtime.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Telemetry.dll
@@ -174,13 +172,14 @@ Library: lib_burst_generated
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipeline.Universal.ShaderLibrary.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Cinemachine.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Environments.dll
+--root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Assembly-CSharp.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Internal.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Timeline.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Mathematics.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.VisualEffectGraph.Runtime.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Scheduler.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Device.dll
---root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Assembly-CSharp.dll
+--root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\UnityFx.Outline.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Analytics.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Threading.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Configuration.dll
@@ -188,6 +187,7 @@ Library: lib_burst_generated
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Networking.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Registration.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+--root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\UnityFx.Outline.URP.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Core.ShaderLibrary.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Universal.Shaders.dll
 --assembly-folder=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\
@@ -207,7 +207,7 @@ Library: lib_burst_generated
 --method=Unity.Jobs.IJobForExtensions+ForJobStruct`1[[UnityEngine.Rendering.Universal.LightExtractionJob, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]], UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null::Execute(UnityEngine.Rendering.Universal.LightExtractionJob&, Unity.RenderPipelines.Universal.Runtime, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|System.IntPtr, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089|Unity.Jobs.LowLevel.Unsafe.JobRanges&, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null|System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089)--34e8fec66b799db60cf2f2f751c3bdd9
 --platform=Windows
 --backend=burst-llvm-11
---target=AVX2
+--target=X86_SSE4
 --global-safety-checks-setting=Off
 --dump=Function
 --float-precision=Standard
@@ -238,8 +238,6 @@ Library: lib_burst_generated
 --compilation-defines=UNITY_2021_1_OR_NEWER
 --compilation-defines=UNITY_2021_2_OR_NEWER
 --compilation-defines=UNITY_2021_3_OR_NEWER
---compilation-defines=PLATFORM_ARCH_64
---compilation-defines=UNITY_64
 --compilation-defines=USE_SEARCH_ENGINE_API
 --compilation-defines=USE_SEARCH_TABLE
 --compilation-defines=USE_SEARCH_MODULE
@@ -361,9 +359,9 @@ Library: lib_burst_generated
 --compilation-defines=VFX_HAS_PHYSICS
 --compilation-defines=VFX_HAS_AUDIO
 --compilation-defines=VFX_HAS_INPUT_SYSTEM_PACKAGE
---linker-options=PdbAltPath="ARPG_Project_Data/Plugins/x86_64"
+--linker-options=PdbAltPath="ARPG_Project_Data/Plugins/x86"
 --generate-link-xml=Temp\burst.link.xml
---output=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Plugins\x86_64\lib_burst_generated
+--output=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Plugins\x86\lib_burst_generated
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\UnityEngine.UI.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Core.Runtime.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Telemetry.dll
@@ -380,13 +378,14 @@ Library: lib_burst_generated
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipeline.Universal.ShaderLibrary.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Cinemachine.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Environments.dll
+--root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Assembly-CSharp.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Internal.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Timeline.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Mathematics.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.VisualEffectGraph.Runtime.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Scheduler.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Device.dll
---root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Assembly-CSharp.dll
+--root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\UnityFx.Outline.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Analytics.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Threading.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Configuration.dll
@@ -394,6 +393,7 @@ Library: lib_burst_generated
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Networking.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.Services.Core.Registration.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll
+--root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\UnityFx.Outline.URP.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Core.ShaderLibrary.dll
 --root-assembly=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Universal.Shaders.dll
 --assembly-folder=C:\Users\nthir\Games\ARPG_Project\Temp\StagingArea\Data\Managed\

@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     //private CameraController cameraController;
 
     // アクションフラグ（回避中か）
-    [SerializeField]private bool avoid = false;
+    [SerializeField]private bool avoid ;
     // 移動処理フラグ
     [SerializeField] private bool mov = true;
     // 回転処理フラグ
@@ -77,20 +77,16 @@ public class PlayerController : MonoBehaviour
         SticeAngle();
         isGrounded = CheckGrounded();
 
-            //Debug.Log(degree);
-        if (animator==null)
-        {
-            return;
-        }
         if (mov)
         {
-
             Move();
         }
-     
-        if (avoid&&move.magnitude==0)
+        else
         {
-            rigidbody.AddForce(-transform.forward * 4.5f, ForceMode.Impulse);
+            if (avoid == true )
+            {
+                rigidbody.AddForce(-transform.forward * 100f, ForceMode.Impulse);
+            }
         }
         if(isGrounded==false)
         {
@@ -105,19 +101,9 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         if (rot)
-        {
-            //if (cameraController.rock)
-            //{
-            //    // ロックオン中はテーゲットの正面に
-            //    var dir = cameraController.rockonTarget.transform.position - this.gameObject.transform.position;
-            //    Quaternion targetRotation = Quaternion.LookRotation(dir);
-            //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnTimeRate);
-            //}
-            //else
-            {
-                // 回転
-                Rotation();
-            }
+        { 
+            // 回転
+            Rotation();
         }
         if (warpConntroller.isWarp == false)
         {
@@ -144,6 +130,15 @@ public class PlayerController : MonoBehaviour
         // 移動速度をアニメーターに反映
         animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
 
+        if (avoid==true)
+        {
+            if (move.magnitude > 0)
+            {
+                rigidbody.AddForce(moveForward * 500f, ForceMode.Impulse);
+            }
+        }
+
+
         if (move.magnitude>0)
         {
             rigidbody.velocity = moveForward * moveSpeed * move.magnitude + new Vector3(0, rigidbody.velocity.y, 0);
@@ -152,14 +147,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
-        }
-
-        if(avoid)
-        {
-            if(move.magnitude>0)
-            {
-                rigidbody.AddForce(moveForward * 50f, ForceMode.Impulse);
-            }
         }
         
     }
@@ -212,18 +199,21 @@ public class PlayerController : MonoBehaviour
                     timeline[0].Play();
                     MoveOff();
                     RotaionOff();
+                   
                 }
                 else if (move.magnitude > 0)
                 {
                     timeline[0].Play();
                     MoveOff();
                     RotaionOff();
+                    
                 }
                 else if (move.magnitude > 0)
                 {
                     timeline[0].Play();
                     MoveOff();
                     RotaionOff();
+                   
                 }
                 //通常回避
                 else

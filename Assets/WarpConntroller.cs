@@ -4,8 +4,8 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
 using Cinemachine;
-using UnityEngine.Playables;
-//using UnityEngine.Rendering.PostProcessing;
+
+// ワープ攻撃処理
 
 public class WarpConntroller : MonoBehaviour
 {
@@ -35,7 +35,7 @@ public class WarpConntroller : MonoBehaviour
     [Space]
     public Material glowMaterial;
     public Material endMaterial;
-    //ThirdPersonMovement thirdPerson;
+
 
     [SerializeField] GameObject gameObjectcam;
 
@@ -44,7 +44,7 @@ public class WarpConntroller : MonoBehaviour
     public ParticleSystem whiteTrail;
     public ParticleSystem swordParticle;
 
-    [SerializeField]CameraController controller;
+    [SerializeField]PlayerLockOn controller;
 
    // private PostProcessVolume postVolume;
    // private PostProcessProfile postProfile;
@@ -62,7 +62,6 @@ public class WarpConntroller : MonoBehaviour
         // 剣の位置を記憶させる
         swordOrigRot = sword.localEulerAngles;
         swordOrigPos = sword.localPosition;
-        //controller = GetComponent<CameraController>();
         // ワープの仕様判定を設定
         isWarp = false;
 
@@ -85,7 +84,7 @@ public class WarpConntroller : MonoBehaviour
     }
     public void OnWarp(InputAction.CallbackContext context)
     {
-        target = controller.rockonTarget.transform;
+        target = controller.target.transform;
         //if (playerController.attack == false)
         {
             if (context.started)
@@ -101,8 +100,6 @@ public class WarpConntroller : MonoBehaviour
 
                 sword.gameObject.SetActive(true);
                 this.transform.LookAt(target.position);
-                //animator.applyRootMotion = false;
-                // gameObjectcam.SetActive(false);
                 isWarp = true;
                 swordParticle.Play();
                 animator.SetTrigger("slash");
@@ -203,7 +200,7 @@ public void Warp()
             GlowAmount(30);
             DOVirtual.Float(30, 0, .5f, GlowAmount);
         }
-        target.DOMove(target.position + transform.forward,1f);
+        target.DOMove(target.position + transform.forward,.5f);
 
         animator.speed = 1f;
         warpSlash.SetActive(true);
@@ -237,7 +234,7 @@ public void Warp()
     }
 
     /// <summary>
-    /// パーティ黒を止める
+    /// パーティクルを止める
     /// </summary>
     /// <returns></returns>
     IEnumerator StopParticles()
@@ -246,7 +243,6 @@ public void Warp()
         warpSlash.SetActive(false);
         blueTrail.Stop();
         whiteTrail.Stop();
-       
     }
 
 }
