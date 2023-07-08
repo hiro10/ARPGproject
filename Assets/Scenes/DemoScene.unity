@@ -1928,7 +1928,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1467545325}
   angle: 300
-  rotateSpeed: 270
   distanceFromTarget: {x: 0, y: 1, z: 1}
 --- !u!1 &634194826 stripped
 GameObject:
@@ -1993,7 +1992,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 36.022297
+  field of view: 50.53402
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -3040,7 +3039,7 @@ MonoBehaviour:
   m_HorizontalDamping: 1
   m_VerticalDamping: 1
   m_ScreenX: 0.5
-  m_ScreenY: 0.3
+  m_ScreenY: 0.5
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_SoftZoneWidth: 0.6
@@ -3922,37 +3921,37 @@ PrefabInstance:
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 201.48964
+      value: 201.50977
       objectReference: {fileID: 0}
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.9463015
+      value: 4.3731794
       objectReference: {fileID: 0}
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 196.3462
+      value: 196.2968
       objectReference: {fileID: 0}
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9779953
+      value: 0.98127264
       objectReference: {fileID: 0}
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.080779605
+      value: 0.01020383
       objectReference: {fileID: 0}
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.19170101
+      value: -0.19234324
       objectReference: {fileID: 0}
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.015833957
+      value: 0.002000094
       objectReference: {fileID: 0}
     - target: {fileID: 6568487474261530984, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
@@ -4012,7 +4011,7 @@ PrefabInstance:
     - target: {fileID: 6568487474261530991, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_Lens.FieldOfView
-      value: 36.022297
+      value: 50.53402
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6568487473177242416, guid: e02e5b3218b4b294295a4e1dca04b62f, type: 3}
@@ -4769,7 +4768,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2002986532}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5079,7 +5078,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1467545325}
   angle: 240
-  rotateSpeed: 270
   distanceFromTarget: {x: 0, y: 1, z: 1}
 --- !u!1 &2129662009
 GameObject:
@@ -6491,6 +6489,61 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Environments
+      objectReference: {fileID: 0}
+    - target: {fileID: 860750136387780297, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439928451176026, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439928659581501, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439928769096852, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439928832746970, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439928873651352, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439929008036908, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439929202738751, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439929337518053, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439929394223571, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 861439930429285011, guid: 855513e692bfbbf42b5c3b188547ec76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 855513e692bfbbf42b5c3b188547ec76, type: 3}
@@ -18399,7 +18452,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1467545325}
   angle: 120
-  rotateSpeed: 270
   distanceFromTarget: {x: 0, y: 1, z: 1}
 --- !u!1 &6228706015988597315
 GameObject:
@@ -18432,7 +18484,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1467545325}
   angle: 180
-  rotateSpeed: 270
   distanceFromTarget: {x: 0, y: 1, z: 1}
 --- !u!4 &6228706015988597325
 Transform:
@@ -18498,7 +18549,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1467545325}
   angle: 60
-  rotateSpeed: 270
   distanceFromTarget: {x: 0, y: 1, z: 1}
 --- !u!4 &6250442958297267944
 Transform:
@@ -19097,7 +19147,7 @@ PrefabInstance:
     - target: {fileID: 6568487474261530991, guid: e02e5b3218b4b294295a4e1dca04b62f,
         type: 3}
       propertyPath: m_Lens.FieldOfView
-      value: 36.022297
+      value: 50.53402
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6568487473177242416, guid: e02e5b3218b4b294295a4e1dca04b62f, type: 3}

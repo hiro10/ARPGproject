@@ -69,33 +69,36 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        //if(isGrounded&&mov==false)
-        {
-            //MoveOn();
-        }
-
+        //　ジャンプ力をアニメーションパラメータに設定（要修正）
+        animator.SetFloat("FoolSpeed", rigidbody.velocity.y);
+        animator.SetBool("isGround", isGrounded);
+        Debug.Log("isGrounded" + isGrounded);
         SticeAngle();
-        isGrounded = CheckGrounded();
 
+        //接地判定
+        isGrounded = CheckGrounded();
+        if(isGrounded)
+        {
+            mov=true;
+        }
+      //  Debug.Log("isGrounded" + isGrounded);
         if (mov)
         {
             Move();
+            if (avoid == true)
+            {
+                rigidbody.AddForce(transform.forward * 10000f, ForceMode.Impulse);
+            }
         }
+
         else
         {
             if (avoid == true )
             {
-                rigidbody.AddForce(-transform.forward * 100f, ForceMode.Impulse);
+                rigidbody.AddForce(-transform.forward * 10000f, ForceMode.Impulse);
             }
         }
-        if(isGrounded==false)
-        {
-            animator.SetFloat("jumpPower", 1);
-        }
-        else
-        {
-            animator.SetFloat("jumpPower", 0);
-        }
+       
     }
 
     private void FixedUpdate()
@@ -126,10 +129,10 @@ public class PlayerController : MonoBehaviour
         // 方向キーの入力値とカメラの向きから移動方向を決定
         moveForward = cameraForward * move.z + Camera.main.transform.right * move.x;
         moveForward = moveForward.normalized;
-
+        var speedw = Mathf.Abs(rigidbody.velocity.z);
         // 移動速度をアニメーターに反映
         animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
-
+      
         if (avoid==true)
         {
             if (move.magnitude > 0)
@@ -320,9 +323,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         MoveOff();
-        rigidbody.velocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y+10f, rigidbody.velocity.z);
-        //　ジャンプ力をアニメーションパラメータに設定
-        animator.SetFloat("jumpPower", rigidbody.velocity.y);
+        rigidbody.velocity = Vector3.up * 10f;
     }
 
     /// <summary>
@@ -336,7 +337,7 @@ public class PlayerController : MonoBehaviour
             if (isGrounded)
             {
                 Jump();
-                animator.SetTrigger("isJump");
+                //animator.SetTrigger("isJump");
             }
         }
     }
@@ -347,13 +348,15 @@ public class PlayerController : MonoBehaviour
     /// <returns>接地 true それ以外falseを返す</returns>
     bool CheckGrounded()
     {
+
         //animator.SetFloat("jumpPower",0);
         //放つ光線の初期位置と姿勢
-        var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
+        var ray = new Ray(transform.position + Vector3.up * 0.2f, Vector3.down);
         //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
         var distance = 0.5f;
         //Raycastがhitするかどうかで判定レイヤーを指定することも可能
         return Physics.Raycast(ray, distance);
+
         
     }
 
