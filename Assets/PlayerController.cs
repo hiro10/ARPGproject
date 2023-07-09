@@ -9,13 +9,11 @@ public class PlayerController : MonoBehaviour
 {
     private new Rigidbody rigidbody;
     public Vector3 move;
-    private Vector3 moveForward;
+    public Vector3 moveForward;
     [Header("移動速度")]
     [SerializeField] private float moveSpeed;
     [Header("回転割合")]
     [SerializeField] private float turnTimeRate;
-
-    //private CameraController cameraController;
 
     // アクションフラグ（回避中か）
     [SerializeField]private bool avoid ;
@@ -55,7 +53,7 @@ public class PlayerController : MonoBehaviour
     {
 
         //GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
-
+        isGrounded = true;
         AttackOff();
         // cameraController = Camera.main.GetComponent<CameraController>();
         rigidbody = GetComponent<Rigidbody>();
@@ -85,17 +83,12 @@ public class PlayerController : MonoBehaviour
         if (mov)
         {
             Move();
-            if (avoid == true)
-            {
-                rigidbody.AddForce(transform.forward * 10000f, ForceMode.Impulse);
-            }
         }
-
         else
         {
             if (avoid == true )
             {
-                rigidbody.AddForce(-transform.forward * 10000f, ForceMode.Impulse);
+                rigidbody.AddForce(-transform.forward * 1000f, ForceMode.Acceleration);
             }
         }
        
@@ -133,11 +126,11 @@ public class PlayerController : MonoBehaviour
         // 移動速度をアニメーターに反映
         animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
       
-        if (avoid==true)
+        if (avoid)
         {
             if (move.magnitude > 0)
             {
-                rigidbody.AddForce(moveForward * 500f, ForceMode.Impulse);
+                rigidbody.AddForce(moveForward * 5f, ForceMode.VelocityChange);
             }
         }
 
@@ -200,24 +193,11 @@ public class PlayerController : MonoBehaviour
                 if(move.magnitude>0)
                 {
                     timeline[0].Play();
-                    MoveOff();
+                   // MoveOff();
                     RotaionOff();
                    
                 }
-                else if (move.magnitude > 0)
-                {
-                    timeline[0].Play();
-                    MoveOff();
-                    RotaionOff();
-                    
-                }
-                else if (move.magnitude > 0)
-                {
-                    timeline[0].Play();
-                    MoveOff();
-                    RotaionOff();
-                   
-                }
+
                 //通常回避
                 else
                 {
@@ -351,7 +331,7 @@ public class PlayerController : MonoBehaviour
 
         //animator.SetFloat("jumpPower",0);
         //放つ光線の初期位置と姿勢
-        var ray = new Ray(transform.position + Vector3.up * 0.2f, Vector3.down);
+        var ray = new Ray(transform.position + Vector3.up * 0.01f, Vector3.down);
         //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
         var distance = 0.5f;
         //Raycastがhitするかどうかで判定レイヤーを指定することも可能

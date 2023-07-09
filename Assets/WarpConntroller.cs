@@ -45,10 +45,12 @@ public class WarpConntroller : MonoBehaviour
     public ParticleSystem swordParticle;
 
     [SerializeField]PlayerLockOn controller;
+    [Header("Prefabs")]
+    public GameObject hitParticle;
 
-   // private PostProcessVolume postVolume;
-   // private PostProcessProfile postProfile;
-
+    // private PostProcessVolume postVolume;
+    // private PostProcessProfile postProfile;
+    GameObject player;
     /// <summary>
     /// äJénèàóù
     /// </summary>
@@ -70,6 +72,7 @@ public class WarpConntroller : MonoBehaviour
         sword.gameObject.SetActive(false);
         //postVolume = Camera.main.GetComponent<PostProcessVolume>();
         //postProfile = postVolume.profile;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -91,9 +94,12 @@ public class WarpConntroller : MonoBehaviour
             {
                 if (target == null)
                 {
-                    return;
+                    Transform playerTransform = player.transform;
+                    Vector3 targetPosition = playerTransform.position + playerTransform.forward * 100f;
+                    target = playerTransform;
+  
+
                 }
-                
                 playerController.MoveOff();
                 playerController.RotaionOff();
                 playerController.AttackOn();
@@ -122,6 +128,7 @@ public void Warp()
         Destroy(clone.GetComponent<WarpConntroller>().sword.gameObject);
         Destroy(clone.GetComponent<Animator>());
         Destroy(clone.GetComponent<PlayerController>());
+        Destroy(clone.GetComponent<PlayerInput>());
         Destroy(clone.GetComponent<WarpConntroller>());
         Destroy(clone.GetComponent<Rigidbody>());
         Destroy(clone.GetComponent<BoxCollider>());
@@ -200,6 +207,7 @@ public void Warp()
             GlowAmount(30);
             DOVirtual.Float(30, 0, .5f, GlowAmount);
         }
+        Instantiate(hitParticle, sword.position, Quaternion.identity);
         target.DOMove(target.position + transform.forward,.5f);
 
         animator.speed = 1f;

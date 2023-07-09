@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.InputSystem;
+
+// 覚醒時の回転オブジェクト用
 public class RotateUnit : MonoBehaviour
 {
     //　旋回するターゲット
@@ -16,20 +19,13 @@ public class RotateUnit : MonoBehaviour
     private Vector3 distanceFromTarget = new Vector3(0f, 1f, 1f);
     private void Start()
     {
-        Debug.Log("ファントムソードオン");
-        this.transform.localScale = Vector3.zero;
-      
+        gameObject.SetActive(false);
+        this.transform.localScale = Vector3.zero; 
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            DOTween.To(() => rotateSpeed, (n) => rotateSpeed = n, 270f, 1.5f).SetEase(Ease.Linear);
-            //rotateSpeed = Mathf.Lerp(700f, 270f, 10f);
-            this.gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f).SetLink(gameObject);
-        }
         //　ユニットの位置 = ターゲットの位置 ＋ ターゲットから見たユニットの角度 ×　ターゲットからの距離
         transform.position = target.position + Quaternion.Euler(0f, angle, 0f) * distanceFromTarget;
         //　ユニット自身の角度 = ターゲットから見たユニットの方向の角度を計算しそれをユニットの角度に設定する
@@ -38,5 +34,20 @@ public class RotateUnit : MonoBehaviour
         angle += rotateSpeed * Time.deltaTime;
         //　角度を0～360度の間で繰り返す
         angle = Mathf.Repeat(angle, 360f);
+    }
+
+    public void OnRoitationWepons()
+    {
+        gameObject.SetActive(true);
+        DOTween.To(() => 0.01f, (n) => Time.timeScale = n, 1f, 0.2f).SetEase(Ease.Linear);
+        DOTween.To(() => 1000f, (n) => rotateSpeed = n, 270f, 1.5f).SetEase(Ease.Linear);
+        
+        this.gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f).SetLink(gameObject);
+    }
+
+    public void OffRoitationWepons()
+    {
+        this.transform.localScale = Vector3.zero;
+        gameObject.SetActive(false);
     }
 }

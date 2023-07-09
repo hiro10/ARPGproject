@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         isPause = false;
     }
 
+
     //public void OnButtonPressed()
     //{
     //    //if (context.started)
