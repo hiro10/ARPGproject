@@ -17,7 +17,7 @@ public class RotateUnit : MonoBehaviour
     //　ターゲットからの距離
     [SerializeField]
     private Vector3 distanceFromTarget = new Vector3(0f, 1f, 1f);
-    private void Start()
+    private void Awake()
     {
         gameObject.SetActive(false);
         this.transform.localScale = Vector3.zero; 

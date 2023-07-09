@@ -85,6 +85,7 @@ public class PlayerLockOn : MonoBehaviour
     {
         if (context.started)
         {
+            Debug.Log("ƒƒbƒNƒIƒ“");
             if (lockonInput == false)
                 lockonInput = true;
             else

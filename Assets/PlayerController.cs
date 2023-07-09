@@ -46,13 +46,19 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] WarpConntroller warpConntroller;
 
+    public PLAYER_STATE state;
+    public enum PLAYER_STATE
+    {
+        TOWN,    // 村にいるとき
+        BATTLE,  // 戦闘時
+    }
+
     /// <summary>
     /// 開始処理
     /// </summary>
     private void Awake()
     {
 
-        //GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
         isGrounded = true;
         AttackOff();
         // cameraController = Camera.main.GetComponent<CameraController>();
@@ -60,6 +66,19 @@ public class PlayerController : MonoBehaviour
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
         wepon.SetActive(false);
+    }
+
+    private void Start()
+    {
+
+        //if (GameManager.Instance.nowSceneName == "DemoScene")
+        //{
+        //    state = PLAYER_STATE.BATTLE;
+        //}
+        //else
+        //{
+        //    state = PLAYER_STATE.TOWN;
+        //}
     }
 
     /// <summary>
@@ -225,20 +244,22 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        
-        if (context.started)
+       // if (state == PLAYER_STATE.BATTLE)
         {
-            if (!attack && !avoid&&warpConntroller.isWarp==false)
+            if (context.started)
             {
-                attack = true;
-               
-                switch(coumboCount)
+                if (!attack && !avoid && warpConntroller.isWarp == false)
                 {
-                    case 0:
-                        attackTimeline[0].Play();
-                        wepon.SetActive(true);
-                        Debug.Log("攻撃ボタンが押された");
-                        break;
+                    attack = true;
+
+                    switch (coumboCount)
+                    {
+                        case 0:
+                            attackTimeline[0].Play();
+                            wepon.SetActive(true);
+                            Debug.Log("攻撃ボタンが押された");
+                            break;
+                    }
                 }
             }
         }
