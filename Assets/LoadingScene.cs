@@ -27,7 +27,7 @@ public class LoadingScene : MonoBehaviour
         {
             async = SceneManager.LoadSceneAsync("DemoScene");
         }
-        else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName==null)
+        else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName == "Test" || GameManager.Instance.sceneName==null)
         {
             async = SceneManager.LoadSceneAsync("Title");
         }

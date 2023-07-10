@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GetSceneName : MonoBehaviour
 {
-    void Awake()
+    void Start()
     {
         GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
     }

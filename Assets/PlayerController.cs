@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
 
     [SerializeField] WarpConntroller warpConntroller;
+    [SerializeField] PlayerLockOn playerLockOn;
 
     public PLAYER_STATE state;
     public enum PLAYER_STATE
@@ -110,7 +111,7 @@ public class PlayerController : MonoBehaviour
                 rigidbody.AddForce(-transform.forward * 1000f, ForceMode.Acceleration);
             }
         }
-       
+
     }
 
     private void FixedUpdate()
@@ -124,6 +125,8 @@ public class PlayerController : MonoBehaviour
         {
             SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
         }
+
+  
     }
 
     private void SetLocalGravity()
@@ -163,6 +166,7 @@ public class PlayerController : MonoBehaviour
         {
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
         }
+      
         
     }
     /// <summary>
@@ -170,6 +174,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Rotation()
     {
+      
         // メインカメラの前方方向のベクトル
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1f, 0f, 1f)).normalized;
         // 方向キーの入力値とカメラの向きから移動方向を決定
