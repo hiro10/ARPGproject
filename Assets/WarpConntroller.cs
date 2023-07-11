@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using UnityEngine.Rendering.PostProcessing;
 
 // ワープ攻撃処理
 
@@ -48,8 +49,8 @@ public class WarpConntroller : MonoBehaviour
     [Header("Prefabs")]
     public GameObject hitParticle;
 
-    // private PostProcessVolume postVolume;
-    // private PostProcessProfile postProfile;
+    private PostProcessVolume postVolume;
+    private PostProcessProfile postProfile;
     GameObject player;
     /// <summary>
     /// 開始処理
@@ -70,8 +71,8 @@ public class WarpConntroller : MonoBehaviour
         gameObjectcam.SetActive(true);
 
         sword.gameObject.SetActive(false);
-        //postVolume = Camera.main.GetComponent<PostProcessVolume>();
-        //postProfile = postVolume.profile;
+        postVolume = Camera.main.GetComponent<PostProcessVolume>();
+        postProfile = postVolume.profile;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -90,7 +91,7 @@ public class WarpConntroller : MonoBehaviour
         target = controller.target.transform;
         //if (playerController.attack == false)
         {
-            if (context.started)
+            if (context.started&&!isWarp)
             {
                 if (target == null)
                 {
@@ -146,7 +147,7 @@ public void Warp()
         // アニメーションを止める
         animator.speed = 0f;
 
-        Vector3 targetPos = new Vector3(target.position.x, target.position.y-1f , target.position.z);
+        Vector3 targetPos = new Vector3(target.position.x, target.position.y , target.position.z);
         // シフトする際にレイを飛ばして当たった位置を取得して、その位置の手前にシフトする
         // ワープ処理：イーじんぐ処理後で理解
         transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
@@ -160,20 +161,20 @@ public void Warp()
         //Particles
         blueTrail.Play();
         whiteTrail.Play();
-
+        Time.timeScale = 0.8f;
         //Lens Distortion
-        //DOVirtual.Float(0, -80, .2f, DistortionAmount);
-        // DOVirtual.Float(1, 2f, .2f, ScaleAmount);
+        DOVirtual.Float(0, -80, .2f, DistortionAmount);
+        DOVirtual.Float(1, 2f, .2f, ScaleAmount);
     }
 
-    //void DistortionAmount(float x)
-    //{
-    //    postProfile.GetSetting<LensDistortion>().intensity.value = x;
-    //}
-    //void ScaleAmount(float x)
-    //{
-    //    postProfile.GetSetting<LensDistortion>().scale.value = x;
-    //}
+    void DistortionAmount(float x)
+    {
+        postProfile.GetSetting<LensDistortion>().intensity.value = x;
+    }
+    void ScaleAmount(float x)
+    {
+        postProfile.GetSetting<LensDistortion>().scale.value = x;
+    }
 
 
     /// <summary>
@@ -207,8 +208,9 @@ public void Warp()
             GlowAmount(30);
             DOVirtual.Float(30, 0, .5f, GlowAmount);
         }
+        Time.timeScale = 1f;
         Instantiate(hitParticle, sword.position, Quaternion.identity);
-        target.DOMove(target.position + transform.forward,.5f);
+        //target.DOMove(target.position + transform.forward,.1f);
 
         animator.speed = 1f;
         warpSlash.SetActive(true);

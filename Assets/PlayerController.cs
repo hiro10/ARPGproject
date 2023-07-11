@@ -97,7 +97,8 @@ public class PlayerController : MonoBehaviour
         isGrounded = CheckGrounded();
         if(isGrounded)
         {
-            mov=true;
+            animator.SetFloat("FoolSpeed", 0f);
+            mov =true;
         }
       //  Debug.Log("isGrounded" + isGrounded);
         if (mov)
