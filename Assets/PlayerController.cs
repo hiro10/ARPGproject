@@ -136,27 +136,25 @@ public class PlayerController : MonoBehaviour
         {
             SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
         }
-        //if(playerLockOn.target!=null)
-        //{
-        //    // プレイヤーの回転を保存
-        //    Quaternion savedRotation = transform.rotation;
+            //    // プレイヤーの回転を保存
+            //    Quaternion savedRotation = transform.rotation;
 
-        //    // プレイヤーとエネミーの距離を計算
-        //    float distance = Vector3.Distance(transform.position, playerLockOn.target.transform.position);
+            //    // プレイヤーとエネミーの距離を計算
+            //    float distance = Vector3.Distance(transform.position, playerLockOn.target.transform.position);
 
-        //    if (distance <= 10f)
-        //    { 
-        //        // プレイヤーの方向をエネミーの方向に向ける
-        //        transform.LookAt(playerLockOn.target.transform);
-        //        // x軸回転を元に戻す
-        //        Vector3 eulerRotation = transform.rotation.eulerAngles;
-        //        eulerRotation.x = savedRotation.eulerAngles.x;
-        //        transform.rotation = Quaternion.Euler(eulerRotation);
-        //    }
-        //}
-       
-  
-    }
+            //    if (distance <= 10f)
+            //    { 
+            //        // プレイヤーの方向をエネミーの方向に向ける
+            //        transform.LookAt(playerLockOn.target.transform);
+            //        // x軸回転を元に戻す
+            //        Vector3 eulerRotation = transform.rotation.eulerAngles;
+            //        eulerRotation.x = savedRotation.eulerAngles.x;
+            //        transform.rotation = Quaternion.Euler(eulerRotation);
+            //    }
+            //}
+
+
+        }
 
     private void SetLocalGravity()
     {
@@ -193,7 +191,12 @@ public class PlayerController : MonoBehaviour
         // 何も入力していない
         else
         {
+
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
+            //if (playerLockOn.target != null)
+            //{
+            //    transform.LookAt(playerLockOn.target.transform);
+            //}
         }
       
         

@@ -66,7 +66,6 @@ public class WarpConntroller : MonoBehaviour
     {
         impulse = camera.GetComponent<CinemachineImpulseSource>();
         warpSlash.SetActive(false);
-        // thirdPerson = GetComponent<ThirdPersonMovement>();
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         // 剣の位置を記憶させる
@@ -96,12 +95,12 @@ public class WarpConntroller : MonoBehaviour
     }
     public void OnWarp(InputAction.CallbackContext context)
     {
-        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+1f, transform.position.z), transform.forward);
+        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+1.5f, transform.position.z), transform.forward);
         RaycastHit hit;
         // エネミーをロックしている場合
         if(controller.target!=null)
         {
-            target = controller.target.transform;
+            //target = controller.target.transform;
             targetPos = controller.target.transform.position;
         }
         // レイキャストで特定のタグのオブジェクトとの当たり判定を行う
@@ -198,10 +197,6 @@ public void Warp()
         sword.parent = null;
         sword.DOMove(targetPos, warpDuration / 2);
         sword.DOLookAt(target.position, .2f, AxisConstraint.None);
-            
-            
-        
-        //sword.DORotate(new Vector3(0, 90, 0), 0.3f);
 
         //Particles
         blueTrail.Play();
@@ -255,11 +250,7 @@ public void Warp()
         }
         Time.timeScale = 1f;
         Instantiate(hitParticle, sword.position, Quaternion.identity);
-        target.DOMove(targetPos + transform.forward,.1f);
-        if (target.gameObject.tag == "Enemy")
-        {
-            warpSlash.SetActive(true);
-        }
+
         gameObjectcam.SetActive(true);
 
         
@@ -267,8 +258,15 @@ public void Warp()
         StartCoroutine(StopParticles());
         animator.speed = 1f;
         sword.gameObject.SetActive(false);
-       
-         impulse.GenerateImpulse(Vector3.right);
+
+        if (controller.target != null)
+        {
+            SoundManager.instance.PlaySE(SoundManager.SE.Close);
+           target.DOMove(targetPos + transform.forward, .1f);
+
+            warpSlash.SetActive(true);
+            impulse.GenerateImpulse(Vector3.right);
+        }
     }
 
    public void WrapAnimationEnd()

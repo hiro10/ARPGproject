@@ -18,25 +18,27 @@ public class ScreenBreak : MonoBehaviour
         uiCanvas.SetActive(false);
         playerCam.SetActive(false);
         rigidBodies = GetComponentsInChildren<Rigidbody>();                     // 子(破片)のRigidbodyを取得しておく
-        StartCoroutine("BreakStart");                                           // 動作にディレイを掛けるためコルーチンを使用
+        StartCoroutine(BreakStart());                                           // 動作にディレイを掛けるためコルーチンを使用
     }
 
     IEnumerator BreakStart()
     {
+        SoundManager.instance.StopBgm();
         foreach (Rigidbody rb in rigidBodies)
         {
             rb.isKinematic = false;
             rb.useGravity = useGravity;
             rb.AddExplosionForce(explodeForce / 5, transform.position + explodeVel, explodeRange);
         }
+        SoundManager.instance.PlaySE(SoundManager.SE.ScreenCrash);
         yield return new WaitForSeconds(0.02f);                                 // 一瞬動かすことでひび割れを演出
-
+        
         foreach (Rigidbody rb in rigidBodies)
         {
             rb.isKinematic = true;
         }
         yield return new WaitForSeconds(0.8f);
-
+        SoundManager.instance.PlaySE(SoundManager.SE.ScreenExpoltion);
         foreach (Rigidbody rb in rigidBodies)
         {
             rb.isKinematic = false;
@@ -46,6 +48,7 @@ public class ScreenBreak : MonoBehaviour
         playerCam.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         uiCanvas.SetActive(true);
+        SoundManager.instance.PlayBGM(SoundManager.BGM.Boss1);
         yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
     }

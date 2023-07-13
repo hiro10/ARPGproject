@@ -30,6 +30,7 @@ public class RotationObjects : MonoBehaviour
             Instantiate(particle, player.transform.position, Quaternion.identity);
             if (rotationObj == false)
             {
+                SoundManager.instance.PlaySE(SoundManager.SE.RotOn);
                 rotationObj = true;
                 for (int i = 0; i < rotObjects.Count; i++)
                 {
@@ -40,7 +41,7 @@ public class RotationObjects : MonoBehaviour
             }
             else if (rotationObj == true)
             {
-
+                SoundManager.instance.PlaySE(SoundManager.SE.RotOff);
                 rotationObj = false;
                 for (int i = 0; i < rotObjects.Count; i++)
                 {
