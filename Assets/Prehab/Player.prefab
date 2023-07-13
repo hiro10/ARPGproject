@@ -165,7 +165,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269860831}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 4c506b7a52a52b741a83f866d38f8445, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 57ea6df03a4881d4fb44564bac390cf1, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -275,7 +275,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1764751842}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 4c506b7a52a52b741a83f866d38f8445, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 57ea6df03a4881d4fb44564bac390cf1, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -8863,6 +8863,8 @@ GameObject:
   - component: {fileID: 227429262646676590}
   - component: {fileID: 227429262646676607}
   - component: {fileID: 227429262646676584}
+  - component: {fileID: 400426740}
+  - component: {fileID: 400426741}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -8937,7 +8939,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227429263477832704}
-  m_Material: {fileID: 13400000, guid: c34343f41bbffbd48b99fc454ee9c9ab, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.19
@@ -8975,6 +8977,7 @@ MonoBehaviour:
   wepon: {fileID: 1145766313476329073}
   warpConntroller: {fileID: 227429262646676607}
   playerLockOn: {fileID: 0}
+  playerAttack: {fileID: 400426741}
   state: 0
 --- !u!114 &227429262646676363
 MonoBehaviour:
@@ -9190,6 +9193,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: dea8b482d9ed45841b921ee7fcfc96f4, type: 2}
     - {fileID: 11400000, guid: 2ad6b6be28869164d84bb885b794fa1b, type: 2}
     - {fileID: 11400000, guid: 98ac38f2a3351f245a8791918a4fa73d, type: 2}
+    - {fileID: 11400000, guid: c5e2b306b7e4b0749b92dc184b25ecfe, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -9276,6 +9280,20 @@ MonoBehaviour:
         - m_Target: {fileID: 227429262646676364}
           m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
           m_MethodName: ComboEnable
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 400426741}
+          m_TargetAssemblyTypeName: PlayerAttackController, Assembly-CSharp
+          m_MethodName: StartAttack
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -9410,6 +9428,8 @@ MonoBehaviour:
   controller: {fileID: 0}
   hitParticle: {fileID: 1320159948884684472, guid: 0f9cb895ab48d264cb9d5fdbc0cd8674,
     type: 3}
+  skinMeshList:
+  - {fileID: 227429263489310140}
 --- !u!114 &227429262646676584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9432,6 +9452,41 @@ MonoBehaviour:
   minFootstepInterval: 0.3
   maxFootstepInterval: 0.8
   player: {fileID: 227429262646676364}
+--- !u!114 &400426740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227429263477832704}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c1b75ca447c3546b2dd2eb00e198c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+  neckBone: {fileID: 227429263477500716}
+  detectionRadius: 10
+  maxAngle: 360
+  playerLock: {fileID: 0}
+--- !u!114 &400426741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227429263477832704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9892b2c977810a444a4d644063a79c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 0}
+  attackDistance: 6
+  moveDistance: 2
+  attackDuration: 0.1
+  playerLock: {fileID: 0}
+  playerController: {fileID: 227429262646676364}
 --- !u!1 &227429263581520640
 GameObject:
   m_ObjectHideFlags: 0
@@ -14457,7 +14512,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  hitParticle: {fileID: 475730699818844869, guid: 22ae1b8ef15489d41afaff28df5eeab9,
+  hitParticle: {fileID: 1320159948884684472, guid: f5c23c442f57bc04487a386dc9738820,
     type: 3}
   battleSceneManager: {fileID: 0}
 --- !u!1 &227429263942392828
@@ -31147,7 +31202,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2935893117266605931}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 4c506b7a52a52b741a83f866d38f8445, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 57ea6df03a4881d4fb44564bac390cf1, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0

@@ -52,6 +52,13 @@ public class WarpConntroller : MonoBehaviour
     private PostProcessVolume postVolume;
     private PostProcessProfile postProfile;
     GameObject player;
+
+    public SkinnedMeshRenderer[] skinMeshList;
+
+    public string targetTag = "Ground";
+    public float rayLength = 10f;
+    public Vector3 defaultPosition = Vector3.zero;
+    Vector3 targetPos;
     /// <summary>
     /// 開始処理
     /// </summary>
@@ -71,14 +78,15 @@ public class WarpConntroller : MonoBehaviour
         gameObjectcam.SetActive(true);
 
         sword.gameObject.SetActive(false);
-        postVolume = Camera.main.GetComponent<PostProcessVolume>();
-        postProfile = postVolume.profile;
+        //postVolume = Camera.main.GetComponent<PostProcessVolume>();
+        //postProfile = postVolume.profile;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
+       
         // ワープ後の剣のローテションがおかしくなる処理の応急処置
         if (sword.localEulerAngles != swordOrigRot)
         {
@@ -88,25 +96,58 @@ public class WarpConntroller : MonoBehaviour
     }
     public void OnWarp(InputAction.CallbackContext context)
     {
-        target = controller.target.transform;
-        //if (playerController.attack == false)
+        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+1f, transform.position.z), transform.forward);
+        RaycastHit hit;
+        // エネミーをロックしている場合
+        if(controller.target!=null)
         {
-            if (context.started&&!isWarp)
+            target = controller.target.transform;
+            targetPos = controller.target.transform.position;
+        }
+        // レイキャストで特定のタグのオブジェクトとの当たり判定を行う
+        else if (Physics.Raycast(ray, out hit, rayLength) && hit.collider.tag == targetTag)
+        {
+            // レイが当たった位置を取得する
+            Vector3 hitPoint = hit.point;
+
+            // 取得した位置を利用する（例えば、何か処理を行う）
+            targetPos = hitPoint;
+        }
+        else
+        {
+            // レイが当たらなかった場合、デフォルトの位置を取得する
+            Vector3 defaultPoint = ray.GetPoint(rayLength);
+
+
+            targetPos = defaultPoint;
+        }
+    
+      
+        if (playerController.attack == false)
+        {
+            if (context.started && !isWarp)
             {
                 if (target == null)
                 {
                     Transform playerTransform = player.transform;
                     Vector3 targetPosition = playerTransform.position + playerTransform.forward * 100f;
                     target = playerTransform;
-  
-
                 }
                 playerController.MoveOff();
                 playerController.RotaionOff();
                 playerController.AttackOn();
 
                 sword.gameObject.SetActive(true);
-                this.transform.LookAt(target.position);
+                // プレイヤーの回転を保存
+                Quaternion savedRotation = transform.rotation;
+               
+                this.transform.LookAt(targetPos);
+                
+
+                // x軸回転を元に戻す
+                Vector3 eulerRotation = transform.rotation.eulerAngles;
+                eulerRotation.x = savedRotation.eulerAngles.x;
+                transform.rotation = Quaternion.Euler(eulerRotation);
                 isWarp = true;
                 swordParticle.Play();
                 animator.SetTrigger("slash");
@@ -147,15 +188,19 @@ public void Warp()
         // アニメーションを止める
         animator.speed = 0f;
 
-        Vector3 targetPos = new Vector3(target.position.x, target.position.y , target.position.z);
+        // Vector3 targetPos = new Vector3(target.position.x, target.position.y-0.5f , target.position.z);
+        
         // シフトする際にレイを飛ばして当たった位置を取得して、その位置の手前にシフトする
         // ワープ処理：イーじんぐ処理後で理解
         transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
 
         // 親をnullにする
         sword.parent = null;
-        sword.DOMove(target.position, warpDuration / 2);
+        sword.DOMove(targetPos, warpDuration / 2);
         sword.DOLookAt(target.position, .2f, AxisConstraint.None);
+            
+            
+        
         //sword.DORotate(new Vector3(0, 90, 0), 0.3f);
 
         //Particles
@@ -210,16 +255,17 @@ public void Warp()
         }
         Time.timeScale = 1f;
         Instantiate(hitParticle, sword.position, Quaternion.identity);
-        //target.DOMove(target.position + transform.forward,.1f);
-
-        animator.speed = 1f;
-        warpSlash.SetActive(true);
+        target.DOMove(targetPos + transform.forward,.1f);
+        if (target.gameObject.tag == "Enemy")
+        {
+            warpSlash.SetActive(true);
+        }
         gameObjectcam.SetActive(true);
 
         
 
         StartCoroutine(StopParticles());
-
+        animator.speed = 1f;
         sword.gameObject.SetActive(false);
        
          impulse.GenerateImpulse(Vector3.right);
@@ -235,7 +281,7 @@ public void Warp()
 
     void GlowAmount(float x)
     {
-        SkinnedMeshRenderer[] skinMeshList = GetComponentsInChildren<SkinnedMeshRenderer>();
+        
         foreach (SkinnedMeshRenderer smr in skinMeshList)
         {
             smr.material = endMaterial;

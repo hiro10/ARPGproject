@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] WarpConntroller warpConntroller;
     [SerializeField] PlayerLockOn playerLockOn;
 
+    [SerializeField] PlayerAttackController playerAttack;
     public PLAYER_STATE state;
     public enum PLAYER_STATE
     {
@@ -90,7 +91,7 @@ public class PlayerController : MonoBehaviour
         //　ジャンプ力をアニメーションパラメータに設定（要修正）
         animator.SetFloat("FoolSpeed", rigidbody.velocity.y);
         animator.SetBool("isGround", isGrounded);
-        Debug.Log("isGrounded" + isGrounded);
+        //Debug.Log("isGrounded" + isGrounded);
         SticeAngle();
 
         //接地判定
@@ -98,7 +99,16 @@ public class PlayerController : MonoBehaviour
         if(isGrounded)
         {
             animator.SetFloat("FoolSpeed", 0f);
-            mov =true;
+            if (attack == false)
+            {
+                MoveOn();
+                RotaionOn();
+            }
+            else
+            {
+                RotaionOff();
+                MoveOff();
+            }
         }
       //  Debug.Log("isGrounded" + isGrounded);
         if (mov)
@@ -126,7 +136,25 @@ public class PlayerController : MonoBehaviour
         {
             SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
         }
+        //if(playerLockOn.target!=null)
+        //{
+        //    // プレイヤーの回転を保存
+        //    Quaternion savedRotation = transform.rotation;
 
+        //    // プレイヤーとエネミーの距離を計算
+        //    float distance = Vector3.Distance(transform.position, playerLockOn.target.transform.position);
+
+        //    if (distance <= 10f)
+        //    { 
+        //        // プレイヤーの方向をエネミーの方向に向ける
+        //        transform.LookAt(playerLockOn.target.transform);
+        //        // x軸回転を元に戻す
+        //        Vector3 eulerRotation = transform.rotation.eulerAngles;
+        //        eulerRotation.x = savedRotation.eulerAngles.x;
+        //        transform.rotation = Quaternion.Euler(eulerRotation);
+        //    }
+        //}
+       
   
     }
 
@@ -254,21 +282,44 @@ public class PlayerController : MonoBehaviour
         {
             if (context.started)
             {
+               
+                
                 if (!attack && !avoid && warpConntroller.isWarp == false)
                 {
                     attack = true;
-
-                    switch (coumboCount)
-                    {
-                        case 0:
-                            attackTimeline[0].Play();
-                            wepon.SetActive(true);
-                            Debug.Log("攻撃ボタンが押された");
-                            break;
-                    }
+                    playerAttack.StartAttack();
+                    StartCoroutine(ComboStart());
                 }
             }
         }
+    }
+    IEnumerator ComboStart()
+    {
+        if (playerLockOn.target)
+        {
+            
+            yield return new WaitForSeconds(0.3f);
+            switch (coumboCount)
+            {
+                case 0:
+                    attackTimeline[0].Play();
+                    wepon.SetActive(true);
+                    Debug.Log("攻撃ボタンが押された");
+                    break;
+            }
+        }
+        else
+        {
+            switch (coumboCount)
+            {
+                case 0:
+                    attackTimeline[0].Play();
+                    wepon.SetActive(true);
+                    Debug.Log("攻撃ボタンが押された");
+                    break;
+            }
+        }
+     
     }
     public void OnCombo(InputAction.CallbackContext context)
     {
