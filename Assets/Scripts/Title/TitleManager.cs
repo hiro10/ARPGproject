@@ -136,7 +136,7 @@ public class TitleManager : MonoBehaviour
     public void OnPress(InputAction.CallbackContext context)
     {
         // âüÇ≥ÇÍÇΩèuä‘Ç≈PerformedÇ∆Ç»ÇÈ
-        if (!context.performed)
+        //if (context.performed)
         {
             StartCoroutine(TapText());
         }

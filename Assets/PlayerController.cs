@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     // スティック角度
     private float degree;
 
-    private bool isGrounded;
+    public bool isGrounded;
 
     [SerializeField] WarpConntroller warpConntroller;
     [SerializeField] PlayerLockOn playerLockOn;
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             if (avoid == true )
             {
-                rigidbody.AddForce(-transform.forward * 1000f, ForceMode.Acceleration);
+               // rigidbody.AddForce(-transform.forward * 1000f, ForceMode.Acceleration);
             }
         }
 
@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
         {
             if (move.magnitude > 0)
             {
-                rigidbody.AddForce(moveForward * 5f, ForceMode.VelocityChange);
+                //rigidbody.AddForce(moveForward * 5f, ForceMode.VelocityChange);
             }
         }
 

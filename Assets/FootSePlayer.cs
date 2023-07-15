@@ -27,11 +27,14 @@ public class FootSePlayer : MonoBehaviour
         footstepWait = new WaitForSeconds(minFootstepInterval);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (player.move.magnitude > 0)
+        if (player.isGrounded)
         {
-            CheckGroundStatus();
+            if (player.move.magnitude > 0)
+            {
+                CheckGroundStatus();
+            }
         }
     }
 

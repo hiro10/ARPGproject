@@ -9,6 +9,7 @@ public class BossRotationObjects : MonoBehaviour
     [SerializeField] GameObject boss;
     [Header("Prefabs")]
     public GameObject particle;
+    [SerializeField] BossSoundManager bossSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class BossRotationObjects : MonoBehaviour
     IEnumerator  OnBossRotationObj()
     {
         yield return new WaitForSeconds(2f);
+       bossSound.PlaySE(BossSoundManager.SE.RotOn);
         Instantiate(particle, boss.transform.position, Quaternion.identity);
 
         for (int i = 0; i < rotObjects.Count; i++)

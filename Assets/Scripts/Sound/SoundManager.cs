@@ -7,7 +7,7 @@ public class SoundManager : MonoBehaviour
     // AudioClip:: CD（素材）
 
     //BGM
-    [SerializeField] AudioSource audioSourceBGM;
+    public AudioSource audioSourceBGM;
     [SerializeField] AudioClip[] audioClipsBGM;
 
     //SE
@@ -39,7 +39,7 @@ public class SoundManager : MonoBehaviour
         ScreenCrash, // 爆弾が爆発するとき
         ScreenExpoltion, // ボタンの決定音
         Close, // ボタンの閉じる音
-        CountDownSe,// カウントダウンの音
+        ShiftThrow,// カウントダウンの音
         CountZero,// カウント0の音
     }
 

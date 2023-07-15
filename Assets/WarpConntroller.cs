@@ -59,11 +59,13 @@ public class WarpConntroller : MonoBehaviour
     public float rayLength = 10f;
     public Vector3 defaultPosition = Vector3.zero;
     Vector3 targetPos;
+    Rigidbody rigidbody;
     /// <summary>
     /// 開始処理
     /// </summary>
     void Start()
     {
+        rigidbody=GetComponent<Rigidbody>();
         impulse = camera.GetComponent<CinemachineImpulseSource>();
         warpSlash.SetActive(false);
         animator = GetComponent<Animator>();
@@ -126,6 +128,7 @@ public class WarpConntroller : MonoBehaviour
         {
             if (context.started && !isWarp)
             {
+                
                 if (target == null)
                 {
                     Transform playerTransform = player.transform;
@@ -150,6 +153,7 @@ public class WarpConntroller : MonoBehaviour
                 isWarp = true;
                 swordParticle.Play();
                 animator.SetTrigger("slash");
+                
             }
         }
         
@@ -162,7 +166,7 @@ public class WarpConntroller : MonoBehaviour
 /// </summary>
 public void Warp()
     {
-        
+       
         // 残像用
         // コンポーネントを外したクローンを表示
         GameObject clone = Instantiate(this.gameObject, transform.position, transform.rotation);
@@ -173,6 +177,7 @@ public void Warp()
         Destroy(clone.GetComponent<WarpConntroller>());
         Destroy(clone.GetComponent<Rigidbody>());
         Destroy(clone.GetComponent<BoxCollider>());
+        Destroy(clone.GetComponent<AudioFadeController>());
 
         SkinnedMeshRenderer[] skinMeshList = clone.GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer smr in skinMeshList)
@@ -194,6 +199,7 @@ public void Warp()
         transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
 
         // 親をnullにする
+        SoundManager.instance.PlaySE(SoundManager.SE.ShiftThrow);
         sword.parent = null;
         sword.DOMove(targetPos, warpDuration / 2);
         sword.DOLookAt(target.position, .2f, AxisConstraint.None);
@@ -266,6 +272,10 @@ public void Warp()
 
             warpSlash.SetActive(true);
             impulse.GenerateImpulse(Vector3.right);
+        }
+        else
+        {
+            SoundManager.instance.PlaySE(SoundManager.SE.RotOff);
         }
     }
 
