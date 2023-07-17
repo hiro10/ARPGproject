@@ -6,94 +6,81 @@ using DG.Tweening;
 //TODO:Find関数部分はエネミーの生成処理後にイベント通知に変更
 public class AudioFadeController : MonoBehaviour
 {
-    public Transform player;             // プレイヤーのTransform
-    public string enemyTag = "Enemy";     // エネミーのタグ
-    public AudioSource[] bgmSources;      // BGMのオーディオソース（複数）
-    public AudioClip newBgmClip;         // 新しいBGMのオーディオクリップ
-    public float fadeInTime = 1f;         // クロスフェードのフェードイン時間
-    public AudioClip beforeBgm;
-    private bool isCrossFading;           // クロスフェード中かどうか
-    private bool isInRange;               // 一定範囲内にいるかどうか
-    private AudioSource activeBgmSource;  // アクティブなBGMオーディオソース
+    public AudioSource bgmSource1;              // BGMオーディオソース1
+    public AudioSource bgmSource2;              // BGMオーディオソース2
+    public AudioClip normalBgm;                 // 通常のBGMオーディオクリップ
+    public AudioClip battleBgm;                 // バトル用のBGMオーディオクリップ
+    public Collider playerDetectionCollider;    // プレイヤーの索敵用コライダー
     private float baseVolume;
+    [SerializeField] string tagName;
+    bool hasEnemyInCollider;
+
+    private bool isBattleBgmPlaying = false;     // バトル用BGMが再生中かどうかのフラグ
     private void Start()
     {
         SoundManager.instance.PlayBGM(SoundManager.BGM.Field);
         baseVolume = SoundManager.instance.audioSourceBGM.volume;
-
-        isCrossFading = false; // クロスフェード中のフラグを初期化
-        isInRange = false;     // 一定範囲内にいるかどうかのフラグを初期化
-        bgmSources[0] = SoundManager.instance.audioSourceBGM;
-        // 最初のアクティブなBGMオーディオソースを設定
-        activeBgmSource = bgmSources[0];
-        //baseVolume = bgmSources[0].volume;
+       
+        bgmSource1 = SoundManager.instance.audioSourceBGM;
+        
+       
     }
-
-    private void Update()
+    private void LateUpdate()
     {
-        if (GameManager.Instance.nowSceneName == "DemoScene")
+        if (playerDetectionCollider != null)
         {
-            
-            // エネミーの一定範囲内に入ったかどうかを判定
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
-            bool isInEnemyRange = false;
-            foreach (GameObject enemy in enemies)
+            hasEnemyInCollider = false;
+            // コライダー内に"Enemy"タグのゲームオブジェクトがあるかチェック
+            Collider[] colliders = Physics.OverlapBox(playerDetectionCollider.bounds.center, playerDetectionCollider.bounds.extents, Quaternion.identity);
+            foreach (Collider collider in colliders)
             {
-                float distance = Vector3.Distance(enemy.transform.position, player.position);
-                if (distance <= 20f)
+                if (collider.CompareTag(tagName))
                 {
-                    isInEnemyRange = true;
+                    hasEnemyInCollider = true;
                     break;
                 }
             }
 
-            // 一定範囲内に入った時の処理
-            if (isInEnemyRange && !isInRange)
-            {
-                // クロスフェードを開始
-                CrossFadeBgm(newBgmClip, fadeInTime);
-                isInRange = true;
-            }
-            // 一定範囲外に出た時の処理
-            else if (!isInEnemyRange && isInRange)
-            {
-                // クロスフェードを開始して元のBGMに戻す
-                CrossFadeBgm(beforeBgm, fadeInTime);
-                isInRange = false;
-            }
+            StartCoroutine(ChageBgm());
+            
+        }
+    }
+    IEnumerator ChageBgm()
+    {
+        if (hasEnemyInCollider && !isBattleBgmPlaying)
+        {
+            // バトル用BGMが再生されていない場合、曲をクロスフェードしてバトル用のBGMに変更
+            CrossFadeBgm(battleBgm);
+            yield return new WaitForSeconds(1f);
+            isBattleBgmPlaying = true;
+        }
+        else if (!hasEnemyInCollider && isBattleBgmPlaying)
+        {
+            // バトル用BGMが再生中でなく、コライダー内に"Enemy"タグのゲームオブジェクトがない場合、通常のBGMに戻す
+            CrossFadeBgm(normalBgm);
+            yield return new WaitForSeconds(1f);
+            isBattleBgmPlaying = false;
         }
     }
 
-    private void CrossFadeBgm(AudioClip nextBgmClip, float fadeTime)
+
+    private void CrossFadeBgm(AudioClip nextBgm)
     {
-        if (isCrossFading) return;
-
-        isCrossFading = true; // クロスフェード中のフラグを設定
-
-        // アクティブなBGMオーディオソースの切り替え
-        activeBgmSource = (activeBgmSource == bgmSources[0]) ? bgmSources[1] : bgmSources[0];
-
-        // 新しいBGMをセットして再生
-        activeBgmSource.clip = nextBgmClip;
-        activeBgmSource.Play();
-
-        // クロスフェード
-       
-        activeBgmSource.volume = 0f;
-        
-        activeBgmSource.DOFade(baseVolume, fadeTime)
-            .OnComplete(() =>
-            {
-                isCrossFading = false; // クロスフェード中のフラグを解除
-            });
-
-        // 他のBGMオーディオソースの音量を徐々に下げる
-        foreach (var bgmSource in bgmSources)
+        AudioSource fadeOutSource = isBattleBgmPlaying ? bgmSource1 : bgmSource2;
+        AudioSource fadeInSource = isBattleBgmPlaying ? bgmSource2 : bgmSource1;
+        // フェードアウト
+        fadeOutSource.DOFade(0f, 1f).OnComplete(() =>
         {
-            if (bgmSource != activeBgmSource)
-            {
-                bgmSource.DOFade(0f, fadeTime);
-            }
-        }
+            fadeOutSource.Stop();
+            fadeOutSource.volume =0f;
+        });
+
+        // フェードイン
+        fadeInSource.clip = nextBgm;
+        fadeInSource.Play();
+        fadeInSource.volume = 0f;
+        fadeInSource.DOFade(baseVolume, 1f).SetEase(Ease.InSine);
+        
     }
 }
+

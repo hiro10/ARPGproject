@@ -124,6 +124,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.15941694, y: -0.15775643, z: 0.00000074505806}
     m_Extent: {x: 0.7921901, y: 0.35066223, z: 0.5049523}
   m_DirtyAABB: 0
+--- !u!1 &792889198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 792889199}
+  m_Layer: 9
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &792889199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792889198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 227429263477479666}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1764751842
 GameObject:
   m_ObjectHideFlags: 0
@@ -2107,7 +2138,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227429263376241654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03741455, y: 1.5124428, z: 0}
+  m_LocalPosition: {x: -0.03741455, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2128,7 +2159,7 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  emitterVelocityMode: 1
+  emitterVelocityMode: 0
   looping: 1
   prewarm: 0
   playOnAwake: 0
@@ -8069,6 +8100,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 227429263477441968}
+  - {fileID: 792889199}
   m_Father: {fileID: 227429263477507560}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8852,6 +8884,9 @@ MonoBehaviour:
   moveForward: {x: 0, y: 0, z: 0}
   moveSpeed: 5
   turnTimeRate: 13.86
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
   avoid: 0
   mov: 1
   rot: 1
@@ -8865,6 +8900,7 @@ MonoBehaviour:
   - {fileID: 227429263581520654}
   - {fileID: 227429262293615162}
   wepon: {fileID: 1145766313476329073}
+  isGrounded: 0
   warpConntroller: {fileID: 227429262646676607}
   playerLockOn: {fileID: 0}
   playerAttack: {fileID: 400426741}
@@ -9203,9 +9239,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: fa0b87d16c8d9554cabf482c80e61a3b, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.02
+  m_Volume: 0.337
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -9304,7 +9340,6 @@ MonoBehaviour:
   playerController: {fileID: 227429262646676364}
   target: {fileID: 0}
   warpDuration: 0.5
-  camera: {fileID: 0}
   isWarp: 0
   warpSlash: {fileID: 2935893117928860444}
   sword: {fileID: 337001176767435840}
@@ -9330,14 +9365,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227429263477832704}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0d4713db7c00f849bdd43427df7d755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 227429262646676590}
   footstepSound: {fileID: 8300000, guid: 2c3c39f106255f64ebbdd91b844f45e1, type: 3}
-  footTransform: {fileID: 227429263477535904}
+  footTransform: {fileID: 792889199}
   raycastDistance: 0.5
   groundLayers:
     serializedVersion: 2
@@ -9464,7 +9499,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227429263651445799}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5124428, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9485,7 +9520,7 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  emitterVelocityMode: 1
+  emitterVelocityMode: 0
   looping: 1
   prewarm: 0
   playOnAwake: 0
@@ -14337,7 +14372,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227429263849257307}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 046b21a681fdbd4498e6de048d609bdc, type: 3}
   m_Name: 

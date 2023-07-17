@@ -10,12 +10,10 @@ public class LoadingScene : MonoBehaviour
     [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _text;
     private AsyncOperation async;
-    private void Awake()
-    {
-        GameManager.Instance.nowSceneName= SceneManager.GetActiveScene().name;
-    }
+    
     private void Start()
     {
+        GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
         _loadingUI.SetActive(true);
         StartCoroutine(LoadScene());
         _text.text = "ì«Ç›çûÇ›íÜ";
@@ -28,6 +26,10 @@ public class LoadingScene : MonoBehaviour
             async = SceneManager.LoadSceneAsync("DemoScene");
         }
         else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName == "Test" || GameManager.Instance.sceneName==null)
+        {
+            async = SceneManager.LoadSceneAsync("Title");
+        }
+        else
         {
             async = SceneManager.LoadSceneAsync("Title");
         }
