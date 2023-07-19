@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float turnTimeRate;
     public LayerMask layerMask;
     // アクションフラグ（回避中か）
-    [SerializeField]private bool avoid ;
+    public bool avoid ;
     // 移動処理フラグ
     [SerializeField] private bool mov = true;
     // 回転処理フラグ
@@ -52,6 +52,9 @@ public class PlayerController : MonoBehaviour
     public PLAYER_STATE state;
 
     private float lockOnSpeed = 10f;
+    Vector3 beforeGroundVec3;
+    // 回避時のスピード
+    private float avoidSpeed = 5f;
     public enum PLAYER_STATE
     {
         TOWN,    // 村にいるとき
@@ -63,7 +66,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-
+       
         isGrounded = true;
         AttackOff();
         // cameraController = Camera.main.GetComponent<CameraController>();
@@ -76,14 +79,14 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
 
-        //if (GameManager.Instance.nowSceneName == "DemoScene")
-        //{
-        //    state = PLAYER_STATE.BATTLE;
-        //}
-        //else
-        //{
-        //    state = PLAYER_STATE.TOWN;
-        //}
+        if (GameManager.Instance.nowSceneName == "DemoScene"|| GameManager.Instance.nowSceneName == "Test")
+        {
+            state = PLAYER_STATE.BATTLE;
+        }
+        else
+        {
+            state = PLAYER_STATE.TOWN;
+        }
     }
 
     /// <summary>
@@ -100,16 +103,11 @@ public class PlayerController : MonoBehaviour
 
         //接地判定
         isGrounded = CheckGrounded();
-        if(isGrounded)
+        if (isGrounded)
         {
             animator.SetFloat("FoolSpeed", 0f);
         }
-        if (attack == false)
-        {
-            MoveOn();
-            RotaionOn();
-        }
-        else
+        if (attack == true || avoid == true)
         {
 
             // 攻撃中はy軸の力を発生させない
@@ -117,24 +115,26 @@ public class PlayerController : MonoBehaviour
             RotaionOff();
             MoveOff();
         }
+        else 
+        {
+            MoveOn();
+            RotaionOn();
+        }
+        
 
-        //  Debug.Log("isGrounded" + isGrounded);
+        //  移動処理
         if (mov)
         {
             Move();
         }
-        else
-        {
-            if (avoid == true )
-            {
-               // rigidbody.AddForce(-transform.forward * 1000f, ForceMode.Acceleration);
-            }
-        }
+
+       
 
     }
 
     private void FixedUpdate()
     {
+       
         if (rot)
         { 
             // 回転
@@ -145,25 +145,30 @@ public class PlayerController : MonoBehaviour
         {
             SetLocalGravity(); //重力をAddForceでかけるメソッドを呼ぶ。FixedUpdateが好ましい。
         }
+       
+    }
+    private void LateUpdate()
+    {
         // プレイヤーの回転を保存
         Quaternion savedRotation = transform.rotation;
 
 
-        if (playerLockOn.target && move.magnitude <= 0&&isGrounded)
+        if (playerLockOn.target && move.magnitude <= 0 && isGrounded && !avoid)
         {
             // ターゲットの方向を向くための回転を計算
             Quaternion targetRotation = Quaternion.LookRotation(playerLockOn.target.transform.position - transform.position);
 
             // 補間処理を行って滑らかに回転させる
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation,lockOnSpeed * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lockOnSpeed * Time.fixedDeltaTime);
 
             // x軸回転を元に戻す
             Vector3 eulerRotation = transform.rotation.eulerAngles;
             eulerRotation.x = savedRotation.eulerAngles.x;
             transform.rotation = Quaternion.Euler(eulerRotation);
         }
+        // 回避処理
+        Avoid();
     }
-
 
 
 
@@ -185,16 +190,6 @@ public class PlayerController : MonoBehaviour
         var speedw = Mathf.Abs(rigidbody.velocity.z);
         // 移動速度をアニメーターに反映
         animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
-      
-        if (avoid)
-        {
-            if (move.magnitude > 0)
-            {
-                
-                rigidbody.AddForce(moveForward * 65f, ForceMode.VelocityChange);
-            }
-        }
-
 
         if (move.magnitude>0)
         {
@@ -246,7 +241,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnMove(InputAction.CallbackContext context)
     {
-       
         move = new Vector3(context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
     }
 
@@ -255,31 +249,89 @@ public class PlayerController : MonoBehaviour
         Debug.Log("押された");
         if(context.started)
         {
-            if(!avoid)
+            if(!avoid&&isGrounded&&!warpConntroller.isWarp )
             {
+                avoid = true;
                 // 移動回避
-                if(move.magnitude>0)
-                {
-                   
-                    timeline[0].Play();
+                if (move.magnitude > 0)
+                {  
                     MoveOff();
                     RotaionOff();
-                   
+                    animator.SetBool("Avoid",true);
                 }
 
                 //通常回避
                 else
                 {
-
-                    timeline[1].Play();
                     MoveOff();
                     RotaionOff();
+                    animator.SetBool("Avoid", true);                   
                 }
-                avoid = true;
+                
             }
         }
     }
+    
+    /// <summary>
+    /// 回避アニメーション終了時（アニメーションクリップ用）
+    /// </summary>
+    public void AvoidEnd()
+    {
+        avoid = false;
+        rigidbody.velocity = Vector3.zero;
+        animator.SetBool("Avoid", false);   
+    }
+
+    /// <summary>
+    /// 回避処理
+    /// TODP:要修正
+    /// 都度斜辺を求めて正規化する
+    /// </summary>
+    private void Avoid()
+    {
+        if (avoid == true)
+        {
+            
+            Vector3 playerForwardUp= (transform.forward + transform.up).normalized;
+            Vector3 playerForwardDown = Vector3.zero;//= (transform.forward - transform.up).normalized;
+            // プレイヤーから前方にレイを飛ばす
+            Ray rayFront = new Ray(transform.position, transform.forward);
+            float rayFrontDistance = 1f; // レイの長さ
+            // レイキャストの結果を格納する変数
+            RaycastHit hitFront;
+
+            // レイをプレイヤーの足元から下向きに飛ばす
+            Ray ray = new Ray(transform.position, Vector3.down);
+            RaycastHit hit;
+            float distanceToGround=0f;
+            if (Physics.Raycast(ray, out hit) && hit.collider.tag == "Ground")
+            {
+                 distanceToGround = hit.distance;
+            }
+           
    
+            // レイキャストの実行
+            if (Physics.Raycast(rayFront, out hitFront, rayFrontDistance))
+            {
+                // レイが"ground"タグに当たった場合の処理
+                if (hitFront.collider.CompareTag("Ground"))
+                {
+                    rigidbody.velocity = playerForwardUp * avoidSpeed + new Vector3(0, rigidbody.velocity.y, 0);
+                }
+            }
+            else if (!isGrounded)
+            {
+                playerForwardDown = (transform.forward - new Vector3(0, distanceToGround, 0)).normalized;
+                rigidbody.velocity = playerForwardDown * avoidSpeed + new Vector3(0, rigidbody.velocity.y, 0);
+            }
+            else
+            {
+                rigidbody.velocity = transform.forward * avoidSpeed + new Vector3(0, rigidbody.velocity.y, 0);
+                
+            }
+        }
+    }
+
     /// <summary>
     /// 向きを角度で出せる関数（今のところ未使用）
     /// </summary>
@@ -298,7 +350,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-       // if (state == PLAYER_STATE.BATTLE)
+        if (state == PLAYER_STATE.BATTLE)
         {
             if (context.started)
             {
@@ -440,7 +492,7 @@ public class PlayerController : MonoBehaviour
         //放つ光線の初期位置と姿勢
         var ray = new Ray(transform.position + Vector3.up * 0.01f, Vector3.down);
         //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
-        var distance = 0.2f;
+        var distance = 0.8f;
         //Raycastがhitするかどうかで判定レイヤーを指定することも可能
         return Physics.Raycast(ray, distance,layerMask);
 

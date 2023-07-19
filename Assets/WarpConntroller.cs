@@ -110,11 +110,10 @@ public class WarpConntroller : MonoBehaviour
     public void OnWarp(InputAction.CallbackContext context)
     {
         WarpPointChack();
-        if (playerController.attack == false)
+        if (playerController.attack == false&&playerController.avoid==false)
         {
             if (context.started && !isWarp)
             {
-                
                 WarpStart();
             }
         }

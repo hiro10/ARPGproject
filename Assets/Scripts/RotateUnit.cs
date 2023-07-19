@@ -17,6 +17,7 @@ public class RotateUnit : MonoBehaviour
     //@ƒ^[ƒQƒbƒg‚©‚ç‚Ì‹——£
     [SerializeField]
     private Vector3 distanceFromTarget = new Vector3(0f, 1f, 1f);
+    private bool isIncreasing = false;
     private void Awake()
     {
         gameObject.SetActive(false);
@@ -34,6 +35,26 @@ public class RotateUnit : MonoBehaviour
         angle += rotateSpeed * Time.deltaTime;
         //@Šp“x‚ð0`360“x‚ÌŠÔ‚ÅŒJ‚è•Ô‚·
         angle = Mathf.Repeat(angle, 360f);
+        rotateSpeed -= 1f;
+        if (isIncreasing)
+        {
+            rotateSpeed += 2f;
+            if (rotateSpeed >= 1000)
+            {
+                rotateSpeed = 1000;
+                isIncreasing = false;
+            }
+
+        }
+        else
+        {
+            rotateSpeed -= 1f;
+            if (rotateSpeed <= 0f)
+            {
+                rotateSpeed = 0f;
+                isIncreasing = true;
+            }
+        }
     }
 
     public void OnRoitationWepons()
