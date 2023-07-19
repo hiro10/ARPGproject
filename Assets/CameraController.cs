@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
@@ -53,6 +54,9 @@ public class CameraController : MonoBehaviour
     // 障害物とするレイヤー
     [SerializeField]
     private LayerMask obstacleLayer;
+
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -185,7 +189,7 @@ public class CameraController : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, hit.point, 1f); //hit.point;
         }
-        Debug.Log("hit.point" + hit.point);
+       // Debug.Log("hit.point" + hit.point);
         //　レイを視覚的に確認
         Debug.DrawLine(TargetObject.transform.position, transform.position, Color.red, 0f, false);
 

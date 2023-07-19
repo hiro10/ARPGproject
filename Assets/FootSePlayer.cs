@@ -27,11 +27,19 @@ public class FootSePlayer : MonoBehaviour
         footstepWait = new WaitForSeconds(minFootstepInterval);
     }
 
-    void Update()
+    private void LateUpdate()
     {
-        if (player.move.magnitude > 0)
+        if (player.isGrounded)
         {
-            CheckGroundStatus();
+            if (player.move.magnitude > 0)
+            {
+                
+                CheckGroundStatus();
+            }
+        }
+        else
+        {
+            timerIsActive = true;
         }
     }
 
@@ -50,14 +58,15 @@ public class FootSePlayer : MonoBehaviour
             return;
         }
 
-        bool isGrounded = Physics.Raycast(footTransform.position, Vector3.down, raycastDistance, groundLayers, QueryTriggerInteraction.Ignore);
+        bool isGrounded = Physics.Raycast(footTransform.position, new Vector3(0,-0.1f,0), raycastDistance, groundLayers, QueryTriggerInteraction.Ignore);
 
-        if (isGrounded)
+        if (player.isGrounded)
         {
             PlayFootstepSound();
         }
 
         StartCoroutine(nameof(FootstepTimer));
+        
     }
 
     void PlayFootstepSound()
@@ -72,5 +81,6 @@ public class FootSePlayer : MonoBehaviour
         yield return footstepWait;
 
         timerIsActive = false;
+        yield return null;
     }
 }
