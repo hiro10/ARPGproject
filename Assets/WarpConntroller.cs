@@ -64,7 +64,8 @@ public class WarpConntroller : MonoBehaviour
     public float rayLength = 10f;
     public Vector3 defaultPosition = Vector3.zero;
     Vector3 targetPos;
-
+    [SerializeField] GameObject laderIcon;
+    [SerializeField] GameObject laderCam;
 
     Rigidbody rigidbody;
     /// <summary>
@@ -193,10 +194,13 @@ public class WarpConntroller : MonoBehaviour
         Destroy(clone.GetComponent<Animator>());
         Destroy(clone.GetComponent<PlayerController>());
         Destroy(clone.GetComponent<PlayerInput>());
+        Destroy(clone.GetComponent<WarpConntroller>().laderIcon);
+        Destroy(clone.GetComponent<WarpConntroller>().laderCam);
         Destroy(clone.GetComponent<WarpConntroller>());
         Destroy(clone.GetComponent<Rigidbody>());
         Destroy(clone.GetComponent<BoxCollider>());
         Destroy(clone.GetComponent<AudioFadeController>());
+        
 
         SkinnedMeshRenderer[] skinMeshList = clone.GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer smr in skinMeshList)

@@ -13,6 +13,11 @@ public class LoadingScene : MonoBehaviour
     
     private void Start()
     {
+        if(Time.timeScale!=1)
+        {
+            Time.timeScale = 1;
+        }
+
         GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
         _loadingUI.SetActive(true);
         StartCoroutine(LoadScene());
@@ -23,15 +28,15 @@ public class LoadingScene : MonoBehaviour
         yield return null;
         if (GameManager.Instance.sceneName == "Title")
         {
+            async = SceneManager.LoadSceneAsync("Village");
+        }
+        else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName == "Test" || GameManager.Instance.sceneName=="")
+        {
+            async = SceneManager.LoadSceneAsync("Title");
+        }
+        else if(GameManager.Instance.sceneName == "Village")
+        {
             async = SceneManager.LoadSceneAsync("DemoScene");
-        }
-        else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName == "Test" || GameManager.Instance.sceneName==null)
-        {
-            async = SceneManager.LoadSceneAsync("Title");
-        }
-        else
-        {
-            async = SceneManager.LoadSceneAsync("Title");
         }
         
         async.allowSceneActivation = false;

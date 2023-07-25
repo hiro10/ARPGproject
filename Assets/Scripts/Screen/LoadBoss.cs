@@ -7,7 +7,7 @@ public class LoadBoss : MonoBehaviour
 {
     [SerializeField] private RenderTexture renderTexture;
     private Camera renderCamera;
-
+    [SerializeField] GameObject playerLader;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +25,7 @@ public class LoadBoss : MonoBehaviour
     }
     IEnumerator TraceOn()
     {
+        playerLader.SetActive(false);
         renderCamera.enabled = true;
         renderCamera.targetTexture = renderTexture;                                 // 投影、開始
         yield return null;                                                          // 1f待ってもらって映像をレンダーテクスチャに投影する

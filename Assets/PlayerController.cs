@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using Cinemachine;
+using ARPG.Dialogue;
 
 public class PlayerController : MonoBehaviour
 {
@@ -55,12 +56,14 @@ public class PlayerController : MonoBehaviour
     Vector3 beforeGroundVec3;
     // 回避時のスピード
     private float avoidSpeed = 5f;
+
+    private Vector3 nowPosition;
     public enum PLAYER_STATE
     {
         TOWN,    // 村にいるとき
         BATTLE,  // 戦闘時
     }
-
+    [SerializeField] PlayerConversant playerConversant;
     /// <summary>
     /// 開始処理
     /// </summary>
@@ -78,15 +81,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-
-        if (GameManager.Instance.nowSceneName == "DemoScene"|| GameManager.Instance.nowSceneName == "Test")
-        {
-            state = PLAYER_STATE.BATTLE;
-        }
-        else
-        {
-            state = PLAYER_STATE.TOWN;
-        }
     }
 
     /// <summary>
@@ -94,7 +88,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        
+        ChangeState();
         //　ジャンプ力をアニメーションパラメータに設定（要修正）
         animator.SetFloat("FoolSpeed", rigidbody.velocity.y);
         animator.SetBool("isGround", isGrounded);
@@ -107,9 +101,9 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetFloat("FoolSpeed", 0f);
         }
-        if (attack == true || avoid == true)
+        if (attack == true || avoid == true||playerConversant.isTaking)
         {
-
+            animator.SetFloat("Speed",0f);
             // 攻撃中はy軸の力を発生させない
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
             RotaionOff();
@@ -127,13 +121,22 @@ public class PlayerController : MonoBehaviour
         {
             Move();
         }
-
        
+
 
     }
 
     private void FixedUpdate()
     {
+
+        if(playerLockOn.target!=null)
+        {
+            animator.SetBool("LockOn", true);
+        }
+        else
+        {
+            animator.SetBool("LockOn", false);
+        }
        
         if (rot)
         { 
@@ -165,12 +168,25 @@ public class PlayerController : MonoBehaviour
             Vector3 eulerRotation = transform.rotation.eulerAngles;
             eulerRotation.x = savedRotation.eulerAngles.x;
             transform.rotation = Quaternion.Euler(eulerRotation);
+
+            
         }
+        
         // 回避処理
         Avoid();
     }
 
-
+    void ChangeState()
+    {
+        if (GameManager.Instance.nowSceneName == "DemoScene" || GameManager.Instance.nowSceneName == "Test")
+        {
+            state = PLAYER_STATE.BATTLE;
+        }
+        else
+        {
+            state = PLAYER_STATE.TOWN;
+        }
+    }
 
     private void SetLocalGravity()
     {
@@ -490,13 +506,27 @@ public class PlayerController : MonoBehaviour
 
         //animator.SetFloat("jumpPower",0);
         //放つ光線の初期位置と姿勢
-        var ray = new Ray(transform.position + Vector3.up * 0.01f, Vector3.down);
+        var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
-        var distance = 0.8f;
+        var distance = 0.5f;
         //Raycastがhitするかどうかで判定レイヤーを指定することも可能
         return Physics.Raycast(ray, distance,layerMask);
 
         
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Stage")
+        {
+            transform.position = nowPosition;
+        }
+    }
+    void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Stage")
+        {
+            nowPosition= transform.position;
+        }
     }
 
     // タイムライン呼び出し用
