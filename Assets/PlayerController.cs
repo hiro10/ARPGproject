@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
         }
         if (attack == true || avoid == true||playerConversant.isTaking)
         {
-            animator.SetFloat("Speed",0f);
+            //animator.SetFloat("Speed",0f);
             // çUåÇíÜÇÕyé≤ÇÃóÕÇî≠ê∂Ç≥ÇπÇ»Ç¢
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
             RotaionOff();
@@ -128,16 +128,18 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (state != PLAYER_STATE.TOWN)
+        {
 
-        if(playerLockOn.target!=null)
-        {
-            animator.SetBool("LockOn", true);
+            if (playerLockOn.target != null)
+            {
+                animator.SetBool("LockOn", true);
+            }
+            else
+            {
+                animator.SetBool("LockOn", false);
+            }
         }
-        else
-        {
-            animator.SetBool("LockOn", false);
-        }
-       
         if (rot)
         { 
             // âÒì]
@@ -155,25 +157,27 @@ public class PlayerController : MonoBehaviour
         // ÉvÉåÉCÉÑÅ[ÇÃâÒì]Çï€ë∂
         Quaternion savedRotation = transform.rotation;
 
-
-        if (playerLockOn.target && move.magnitude <= 0 && isGrounded && !avoid)
+        if (state == PLAYER_STATE.BATTLE)
         {
-            // É^Å[ÉQÉbÉgÇÃï˚å¸Çå¸Ç≠ÇΩÇﬂÇÃâÒì]ÇåvéZ
-            Quaternion targetRotation = Quaternion.LookRotation(playerLockOn.target.transform.position - transform.position);
+            if (playerLockOn.target && move.magnitude <= 0 && isGrounded && !avoid)
+            {
+                // É^Å[ÉQÉbÉgÇÃï˚å¸Çå¸Ç≠ÇΩÇﬂÇÃâÒì]ÇåvéZ
+                Quaternion targetRotation = Quaternion.LookRotation(playerLockOn.target.transform.position - transform.position);
 
-            // ï‚ä‘èàóùÇçsÇ¡ÇƒääÇÁÇ©Ç…âÒì]Ç≥ÇπÇÈ
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lockOnSpeed * Time.fixedDeltaTime);
+                // ï‚ä‘èàóùÇçsÇ¡ÇƒääÇÁÇ©Ç…âÒì]Ç≥ÇπÇÈ
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, lockOnSpeed * Time.fixedDeltaTime);
 
-            // xé≤âÒì]Çå≥Ç…ñﬂÇ∑
-            Vector3 eulerRotation = transform.rotation.eulerAngles;
-            eulerRotation.x = savedRotation.eulerAngles.x;
-            transform.rotation = Quaternion.Euler(eulerRotation);
+                // xé≤âÒì]Çå≥Ç…ñﬂÇ∑
+                Vector3 eulerRotation = transform.rotation.eulerAngles;
+                eulerRotation.x = savedRotation.eulerAngles.x;
+                transform.rotation = Quaternion.Euler(eulerRotation);
 
-            
+
+            }
+
+            // âÒîèàóù
+            Avoid();
         }
-        
-        // âÒîèàóù
-        Avoid();
     }
 
     void ChangeState()

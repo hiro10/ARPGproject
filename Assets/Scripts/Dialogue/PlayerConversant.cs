@@ -98,7 +98,7 @@ namespace ARPG.Dialogue
         /// </summary>
         public void Next()
         {
-            if(HasNext()==false||HasNow()==true)
+            if(HasNext()==false&&HasNow()==true)
             {
                 Quit();
                 return;

@@ -11,7 +11,7 @@ public class AudioFadeController : MonoBehaviour
     public AudioClip normalBgm;                 // 通常のBGMオーディオクリップ
     public AudioClip battleBgm;                 // バトル用のBGMオーディオクリップ
     public Collider playerDetectionCollider;    // プレイヤーの索敵用コライダー
-    private float baseVolume;
+    public float baseVolume;
     [SerializeField] string tagName;
     bool hasEnemyInCollider;
 
@@ -81,6 +81,14 @@ public class AudioFadeController : MonoBehaviour
         fadeInSource.volume = 0f;
         fadeInSource.DOFade(baseVolume, 1f).SetEase(Ease.InSine);
         
+    }
+
+    private void OnDestroy()
+    {
+        if (SoundManager.instance.audioSourceBGM.volume == 0)
+        {
+            SoundManager.instance.audioSourceBGM.volume = baseVolume;
+        }
     }
 }
 

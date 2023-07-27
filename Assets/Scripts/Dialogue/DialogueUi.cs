@@ -82,6 +82,7 @@ namespace ARPG.UI
             choiceRoot.DetachChildren();
             foreach (DialogueNode choice in playerConversant.GetChoice())
             {
+
                 GameObject choiceInstance = Instantiate(choicePrefab, choiceRoot);
                 var textComp = choiceInstance.GetComponentInChildren<TextMeshProUGUI>();
                 textComp.text = choice.GetText();
