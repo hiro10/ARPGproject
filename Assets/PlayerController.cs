@@ -121,7 +121,11 @@ public class PlayerController : MonoBehaviour
         {
             Move();
         }
-       
+        
+        if(playerConversant.isTaking)
+        {
+            animator.SetFloat("Speed",0f);
+        }
 
 
     }

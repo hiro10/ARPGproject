@@ -32,20 +32,6 @@ public class SkyBoxRot : MonoBehaviour
         rotationRepeatValue = Mathf.Repeat(skyBox.GetFloat("_Rotation") + rotateSpeed, 360f);
 
         skyBox.SetFloat("_Rotation", rotationRepeatValue);
-
-        //キー押してない間はreturn
-        if (Input.anyKey == false)
-        {
-            return;
-        }
-
-
-        //テスト用 Change
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    //切り替えたいタイミングでこれを書く
-        //    RenderSettings.skybox = sky;
-        //}
     }
 
     /// <summary>
