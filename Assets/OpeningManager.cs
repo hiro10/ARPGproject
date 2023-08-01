@@ -11,6 +11,7 @@ public class OpeningManager : MonoBehaviour
     [SerializeField] GameObject skipButton;
     [SerializeField] GameObject tentativePlayer;
     [SerializeField] TextMeshProUGUI fieldOpText;
+    [SerializeField] SlideUiControl slideUi;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +25,7 @@ public class OpeningManager : MonoBehaviour
         if(IsDone()==false)
         {
             playerCam.SetActive(true);
+          
         }
     }
 
@@ -38,6 +40,7 @@ public class OpeningManager : MonoBehaviour
         Destroy(tentativePlayer);
         gameObject.SetActive(false);
         Destroy(gameObject, 0.1f);
+        
     }
    public void FieldInOpName()
    {
@@ -50,5 +53,9 @@ public class OpeningManager : MonoBehaviour
         //テキストコンポーネントを取得
         fieldOpText.DOFade(0f, 1f);
 
+    }
+    private void OnDestroy()
+    {
+        slideUi.UiMove();
     }
 }

@@ -20,7 +20,7 @@ public class DistanceCalculator : MonoBehaviour
             float distance = Vector3.Distance(playerTransform.position, targetObject.position);
 
             // 距離をメートルに変換して整数に変換
-            int distanceInMeters = Mathf.RoundToInt(distance * 10); 
+            int distanceInMeters = Mathf.RoundToInt(distance ); 
 
             // TextMeshProUGUIに距離を表示
             distanceText.text = distanceInMeters.ToString() + " m"; // 小数点以下2桁で表示

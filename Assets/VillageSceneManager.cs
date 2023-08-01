@@ -10,8 +10,10 @@ public class VillageSceneManager : MonoBehaviour
     [SerializeField] UiMaker mainIcon;
     [SerializeField] GameObject gateObj;
     [SerializeField] DistanceCalculator distanceCalculator;
+    [SerializeField] SlideUiControl slideUi;
     void Start()
     {
+        slideUi.UiMove();
         goBattle = false;
     }
     public void GotoBattleScene()
