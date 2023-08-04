@@ -9978,6 +9978,21 @@ MonoBehaviour:
   dialogue: {fileID: 11400000, guid: cce0835dc0c9a0d4c8fbc5767d038f4c, type: 2}
   conversantName: "\u6751\u4EBAA"
   player: {fileID: 2109991236}
+--- !u!114 &1447882798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562893118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aacf9c85a518b974998813ca95dbd2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2109991238}
+  rotationSpeed: 2
+  detectionRange: 3
 --- !u!4 &1450567593 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 458024, guid: d2522dcf0fb8d6b4aa4ddd10c405746a,
@@ -10481,6 +10496,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 2.93
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1520148122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1520148117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aacf9c85a518b974998813ca95dbd2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2109991238}
+  rotationSpeed: 2
+  detectionRange: 3
 --- !u!4 &1557064249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 458024, guid: d2522dcf0fb8d6b4aa4ddd10c405746a,
@@ -11858,6 +11888,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1829793067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059763253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aacf9c85a518b974998813ca95dbd2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2109991238}
+  rotationSpeed: 2
+  detectionRange: 3
 --- !u!4 &1834184326 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 458024, guid: d2522dcf0fb8d6b4aa4ddd10c405746a,
