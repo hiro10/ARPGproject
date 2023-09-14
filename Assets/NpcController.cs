@@ -38,7 +38,12 @@ public class NpcController : MonoBehaviour
         {
             // ƒvƒŒƒCƒ„[‚Ì•û‚ğŒü‚­
             Vector3 directionToPlayer = player.position - transform.position;
+            
+            // Y²¬•ª‚ğƒ[ƒ‚Éİ’è‚·‚é‚±‚Æ‚ÅX²‰ñ“]‚ğ‚³‚¹‚È‚¢
+            directionToPlayer.y = 0f;
+
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            
             // •âŠ®‚µ‚È‚ª‚çplayer‚Ì•û‚ğŒü‚­
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
