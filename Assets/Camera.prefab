@@ -58,6 +58,9 @@ GameObject:
   - component: {fileID: 169669796801132077}
   - component: {fileID: 169669796801132078}
   - component: {fileID: 169669796801132079}
+  - component: {fileID: 646344188}
+  - component: {fileID: 646344193}
+  - component: {fileID: 646344194}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -94,7 +97,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
   m_FocalLength: 50
@@ -106,7 +109,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 36.022297
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -155,7 +158,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -172,7 +175,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169669796801132065}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ccec9a8271c03941b72f8d086f3a5e0, type: 3}
   m_Name: 
@@ -187,11 +190,14 @@ MonoBehaviour:
   enableAtten: 1
   attenRate: 3
   forawardDistance: 2
-  rotAngleAttenRate: 5
+  rotAngleAttenRate: 10.69
   angleAttenRate: 1
   rock: 0
   rockonTarget: {fileID: 0}
   searchCircle: {fileID: 0}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 265
 --- !u!114 &169669796801132079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +218,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 0.5
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -226,3 +232,51 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &646344188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169669796801132065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: a5b8c79f6af466e4eae15f2c221936e6, type: 2}
+--- !u!114 &646344193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169669796801132065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e544006e7de24446a23c82f794112da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 646344194}
+  originTrn: {fileID: 0}
+  lockonRange: 20
+  targetLayerName: Enemy
+  lockonCursor: {fileID: 0}
+--- !u!114 &646344194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169669796801132065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b3da59a03d4ae844891a8ffe151f38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freeLookCamera: {fileID: 0}
+  lockonCameral: {fileID: 0}

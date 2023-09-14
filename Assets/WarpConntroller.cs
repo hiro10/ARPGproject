@@ -4,24 +4,29 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.InputSystem;
 using Cinemachine;
-using UnityEngine.Playables;
-//using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.PostProcessing;
+
+// ワープ攻撃処理
 
 public class WarpConntroller : MonoBehaviour
 {
+    // プレイヤーコントローラ
     [SerializeField] PlayerController playerController;
+    // アニメーター
     Animator animator;
+    // ワープする場所
     public Transform target;
-
+    // ワープ時間
     public float warpDuration = .5f;
     private CinemachineImpulseSource impulse;
-    public CinemachineVirtualCamera camera;
+
     // ワープの発動判定
     public bool isWarp;
 
+    // ワープ攻撃の時のエフェクト
     [SerializeField] GameObject warpSlash;
 
-    // 剣
+    // 剣オブジェクト
     [SerializeField] Transform sword;
 
     // 剣の初期位置格納用
@@ -35,47 +40,66 @@ public class WarpConntroller : MonoBehaviour
     [Space]
     public Material glowMaterial;
     public Material endMaterial;
-    //ThirdPersonMovement thirdPerson;
+
 
     [SerializeField] GameObject gameObjectcam;
 
+    // 各エフェクト用パーティクル
     [Header("Particles")]
     public ParticleSystem blueTrail;
     public ParticleSystem whiteTrail;
     public ParticleSystem swordParticle;
 
-    [SerializeField]CameraController controller;
+    [SerializeField] PlayerLockOn controller;
+    [Header("Prefabs")]
+    public GameObject hitParticle;
 
-   // private PostProcessVolume postVolume;
-   // private PostProcessProfile postProfile;
+    private PostProcessVolume postVolume;
+    private PostProcessProfile postProfile;
+    GameObject player;
 
+    public SkinnedMeshRenderer[] skinMeshList;
+
+    public string targetTag = "Ground";
+    public float rayLength = 10f;
+    public Vector3 defaultPosition = Vector3.zero;
+    Vector3 targetPos;
+    [SerializeField] GameObject laderIcon;
+    [SerializeField] GameObject laderCam;
+
+    Rigidbody rigidbody;
     /// <summary>
     /// 開始処理
     /// </summary>
     void Start()
     {
-        impulse = camera.GetComponent<CinemachineImpulseSource>();
+        // 各データの初期化
         warpSlash.SetActive(false);
-        // thirdPerson = GetComponent<ThirdPersonMovement>();
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         // 剣の位置を記憶させる
         swordOrigRot = sword.localEulerAngles;
         swordOrigPos = sword.localPosition;
-        //controller = GetComponent<CameraController>();
         // ワープの仕様判定を設定
         isWarp = false;
 
         gameObjectcam.SetActive(true);
-
+        rigidbody = GetComponent<Rigidbody>();
         sword.gameObject.SetActive(false);
         //postVolume = Camera.main.GetComponent<PostProcessVolume>();
         //postProfile = postVolume.profile;
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// 更新処理
+    /// </summary>
     void Update()
     {
+
         // ワープ後の剣のローテションがおかしくなる処理の応急処置
         if (sword.localEulerAngles != swordOrigRot)
         {
@@ -83,51 +107,100 @@ public class WarpConntroller : MonoBehaviour
         }
 
     }
+
     public void OnWarp(InputAction.CallbackContext context)
     {
-        target = controller.rockonTarget.transform;
-        //if (playerController.attack == false)
+        WarpPointChack();
+        if (playerController.attack == false&&playerController.avoid==false)
         {
-            if (context.started)
+            if (context.started && !isWarp)
             {
-                if (target == null)
-                {
-                    return;
-                }
-                
-                playerController.MoveOff();
-                playerController.RotaionOff();
-                playerController.AttackOn();
-
-                sword.gameObject.SetActive(true);
-                this.transform.LookAt(target.position);
-                //animator.applyRootMotion = false;
-                // gameObjectcam.SetActive(false);
-                isWarp = true;
-                swordParticle.Play();
-                animator.SetTrigger("slash");
+                WarpStart();
             }
         }
-        
-        
-        
     }
 
-/// <summary>
-/// ワープ処理(Domove)
-/// </summary>
-public void Warp()
+    /// <summary>
+    /// ワープ開始時の処理
+    /// </summary>
+    private void WarpStart()
     {
-        
+        isWarp = true;
+      
+        // ワープ中はかかる力を０に
+        rigidbody.velocity = Vector3.zero;
+
+        // plyercontrollerの各動作を更新
+        playerController.MoveOff();
+        playerController.RotaionOff();
+        playerController.AttackOn();
+
+        sword.gameObject.SetActive(true);
+        // プレイヤーの回転を保存
+        Quaternion savedRotation = transform.rotation;
+
+        // ターゲットの方向を向く
+        transform.LookAt(targetPos);
+
+        Vector3 eulerRotation = transform.rotation.eulerAngles;
+        eulerRotation.x = savedRotation.eulerAngles.x;
+        transform.rotation = Quaternion.Euler(eulerRotation);
+
+        swordParticle.Play();
+        animator.SetTrigger("slash");
+    }
+
+    /// <summary>
+    /// ワープ位置のチェック
+    /// </summary>
+    private void WarpPointChack()
+    {
+        Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), transform.forward);
+        RaycastHit hit;
+        // エネミーをロックしている場合
+        if (controller.target != null)
+        {
+            // ターゲット位置をエネミーに
+            targetPos = controller.target.transform.position;
+        }
+        // レイキャストで特定のタグのオブジェクトとの当たり判定を行う
+        else if (Physics.Raycast(ray, out hit, rayLength) && hit.collider.tag == targetTag)
+        {
+            // レイが当たった位置を取得
+            Vector3 hitPoint = hit.point;
+
+            // 取得した位置をターゲット位置とする
+            targetPos = hitPoint;
+        }
+        else
+        {
+            // レイが当たらなかった場合、レイの最大値を取得
+            Vector3 defaultPoint = ray.GetPoint(rayLength);
+
+            targetPos = defaultPoint;
+        }
+
+    }
+
+    /// <summary>
+    /// ワープ処理(Domove)
+    /// </summary>
+    public void Warp()
+    {
         // 残像用
         // コンポーネントを外したクローンを表示
         GameObject clone = Instantiate(this.gameObject, transform.position, transform.rotation);
         Destroy(clone.GetComponent<WarpConntroller>().sword.gameObject);
         Destroy(clone.GetComponent<Animator>());
         Destroy(clone.GetComponent<PlayerController>());
+        Destroy(clone.GetComponent<PlayerInput>());
+        Destroy(clone.GetComponent<WarpConntroller>().laderIcon);
+        Destroy(clone.GetComponent<WarpConntroller>().laderCam);
         Destroy(clone.GetComponent<WarpConntroller>());
         Destroy(clone.GetComponent<Rigidbody>());
         Destroy(clone.GetComponent<BoxCollider>());
+        Destroy(clone.GetComponent<AudioFadeController>());
+        
 
         SkinnedMeshRenderer[] skinMeshList = clone.GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer smr in skinMeshList)
@@ -138,38 +211,38 @@ public void Warp()
 
         // 体を消す
         ShowBody(false);
-        //thirdPerson.SetGravityOnTrigger(false);
+      
         // アニメーションを止める
         animator.speed = 0f;
 
-        Vector3 targetPos = new Vector3(target.position.x, target.position.y-1f , target.position.z);
         // シフトする際にレイを飛ばして当たった位置を取得して、その位置の手前にシフトする
         // ワープ処理：イーじんぐ処理後で理解
         transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
 
         // 親をnullにする
+        SoundManager.instance.PlaySE(SoundManager.SE.ShiftThrow);
         sword.parent = null;
-        sword.DOMove(target.position, warpDuration / 2);
-        sword.DOLookAt(target.position, .2f, AxisConstraint.None);
-        //sword.DORotate(new Vector3(0, 90, 0), 0.3f);
+        sword.DOMove(targetPos, warpDuration / 2);
+        sword.DOLookAt(targetPos, .2f, AxisConstraint.None);
 
-        //Particles
+        // 各パーティクル
         blueTrail.Play();
         whiteTrail.Play();
-
-        //Lens Distortion
-        //DOVirtual.Float(0, -80, .2f, DistortionAmount);
-        // DOVirtual.Float(1, 2f, .2f, ScaleAmount);
+        
+        Time.timeScale = 0.8f;
+       
+        DOVirtual.Float(0, -80, .2f, DistortionAmount);
+        DOVirtual.Float(1, 2f, .2f, ScaleAmount);
     }
 
-    //void DistortionAmount(float x)
-    //{
-    //    postProfile.GetSetting<LensDistortion>().intensity.value = x;
-    //}
-    //void ScaleAmount(float x)
-    //{
-    //    postProfile.GetSetting<LensDistortion>().scale.value = x;
-    //}
+    void DistortionAmount(float x)
+    {
+        postProfile.GetSetting<LensDistortion>().intensity.value = x;
+    }
+    void ScaleAmount(float x)
+    {
+        postProfile.GetSetting<LensDistortion>().scale.value = x;
+    }
 
 
     /// <summary>
@@ -179,7 +252,7 @@ public void Warp()
     private void ShowBody(bool state)
     {
         SkinnedMeshRenderer[] skinnedList = GetComponentsInChildren<SkinnedMeshRenderer>();
-        
+
         foreach (SkinnedMeshRenderer smr in skinnedList)
         {
             smr.enabled = state;
@@ -203,22 +276,32 @@ public void Warp()
             GlowAmount(30);
             DOVirtual.Float(30, 0, .5f, GlowAmount);
         }
-        target.DOMove(target.position + transform.forward,1f);
+        Time.timeScale = 1f;
+        Instantiate(hitParticle, sword.position, Quaternion.identity);
 
-        animator.speed = 1f;
-        warpSlash.SetActive(true);
         gameObjectcam.SetActive(true);
 
-        
+
 
         StartCoroutine(StopParticles());
-
+        animator.speed = 1f;
         sword.gameObject.SetActive(false);
-       
-         impulse.GenerateImpulse(Vector3.right);
+
+        if (controller.target != null)
+        {
+            SoundManager.instance.PlaySE(SoundManager.SE.Close);
+            target.DOMove(targetPos + transform.forward, .1f);
+
+            warpSlash.SetActive(true);
+            impulse.GenerateImpulse(Vector3.right);
+        }
+        else
+        {
+            SoundManager.instance.PlaySE(SoundManager.SE.RotOff);
+        }
     }
 
-   public void WrapAnimationEnd()
+    public void WrapAnimationEnd()
     {
         isWarp = false;
         playerController.AttackOff();
@@ -228,7 +311,7 @@ public void Warp()
 
     void GlowAmount(float x)
     {
-        SkinnedMeshRenderer[] skinMeshList = GetComponentsInChildren<SkinnedMeshRenderer>();
+
         foreach (SkinnedMeshRenderer smr in skinMeshList)
         {
             smr.material = endMaterial;
@@ -237,7 +320,7 @@ public void Warp()
     }
 
     /// <summary>
-    /// パーティ黒を止める
+    /// パーティクルを止める
     /// </summary>
     /// <returns></returns>
     IEnumerator StopParticles()
@@ -246,7 +329,6 @@ public void Warp()
         warpSlash.SetActive(false);
         blueTrail.Stop();
         whiteTrail.Stop();
-       
     }
 
 }

@@ -93,20 +93,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd37d03d18ee9584d881763c34816b35, type: 3}
   m_Name: OutlineFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   _outlineResources: {fileID: 11400000, guid: 231d88937a104094b8e4e0fdb8d2e77b, type: 2}
   _outlineLayers: {fileID: 0}
   _outlineSettings:
     _outlineSettings: {fileID: 0}
-    _outlineColor: {r: 1, g: 0.010668468, b: 0, a: 1}
-    _outlineWidth: 3
+    _outlineColor: {r: 0, g: 0, b: 0, a: 0.3882353}
+    _outlineWidth: 2
     _outlineIntensity: 10.6
     _outlineAlphaCutoff: 1
     _outlineMode: -1
     _filterMode: 1
     _layerMask:
       serializedVersion: 2
-      m_Bits: 8
-    _renderingLayerMask: 1
-  _renderPassEvent: 550
+      m_Bits: 512
+    _renderingLayerMask: 6
+  _renderPassEvent: 1000
   _shaderPassNames: []

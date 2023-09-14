@@ -161,8 +161,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6568487474261530984}
   - component: {fileID: 6568487474261530991}
-  - component: {fileID: 6568487474261530990}
   - component: {fileID: 6568487474261530985}
+  - component: {fileID: 6568487474261530990}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -224,6 +224,22 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 6568487473177242427}
+--- !u!114 &6568487474261530985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6568487474261530989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerIndex: -1
+  AutoEnableInputs: 1
+  XYAxis: {fileID: 6686471187922894373, guid: a6af8c2a3a707ec42bc6b7fbc1684716, type: 3}
+  ZAxis: {fileID: 0}
 --- !u!114 &6568487474261530990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,19 +270,3 @@ MonoBehaviour:
   m_Damping: 0
   m_DampingWhenOccluded: 0
   m_OptimalTargetDistance: 0
---- !u!114 &6568487474261530985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6568487474261530989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerIndex: -1
-  AutoEnableInputs: 1
-  XYAxis: {fileID: 6686471187922894373, guid: a6af8c2a3a707ec42bc6b7fbc1684716, type: 3}
-  ZAxis: {fileID: 0}
