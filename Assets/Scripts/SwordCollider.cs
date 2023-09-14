@@ -10,11 +10,16 @@ public class SwordCollider : MonoBehaviour
     public GameObject hitParticle;
     [SerializeField] BattleSceneManager battleSceneManager;
     EnemyController enemy;
+    
 
     [SerializeField] DamageIndicator damageUi;
     //リセット用のタイムカウント
-
+    [SerializeField] LoadBoss boss;
     private void Start()
+    {
+       
+    }
+    private void Update()
     {
        
     }
@@ -35,7 +40,11 @@ public class SwordCollider : MonoBehaviour
                 Instantiate(hitParticle, hit.point, Quaternion.identity);
             }
             // エネミーのダメージor死亡リアクションのトリガー
-            enemy.Hp -= 1;
+            
+            enemy.SetCurrentHp(1);
+            int currentHp = enemy.CurrentHp();
+            int maxHp = enemy.MaxHp();
+            enemy.slider.value = (float)currentHp / (float)maxHp; 
             damageUi.ShowDamageIndicator(other.gameObject.transform.position, 999);
             enemy.EnemyDie();
         }

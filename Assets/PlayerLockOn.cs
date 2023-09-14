@@ -35,7 +35,7 @@ public class PlayerLockOn : MonoBehaviour
         if (target != null)
         {
             // ‚·‚Å‚ÉƒƒbƒNƒIƒ“Ï‚Ý‚È‚ç‰ðœ‚·‚é
-            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange)
+            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange|| target.activeSelf == false)
             {
                 isLockon = false;
                 target = null;

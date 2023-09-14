@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.06327507, g: 0.051570747, b: 0.056222092, a: 1}
+  m_IndirectSpecularColor: {r: 0.06311283, g: 0.051544327, b: 0.05631005, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6126,6 +6126,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 227429263872177119, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
         type: 3}
+      propertyPath: boss
+      value: 
+      objectReference: {fileID: 8482423860725805254}
+    - target: {fileID: 227429263872177119, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
+        type: 3}
+      propertyPath: damageUi
+      value: 
+      objectReference: {fileID: 8482423860725805255}
+    - target: {fileID: 227429263872177119, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
+        type: 3}
       propertyPath: battleSceneManager
       value: 
       objectReference: {fileID: 1520744029}
@@ -9080,6 +9090,30 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 237131378}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8482423860725805254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8482423860649261992, guid: 734dff8a79899024ea3ddbd1e3728d23,
+    type: 3}
+  m_PrefabInstance: {fileID: 237131378}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8482423860725805252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7387e79a0cecc749b2b462a35bd4859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8482423860725805255 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8482423860649261999, guid: 734dff8a79899024ea3ddbd1e3728d23,
+    type: 3}
+  m_PrefabInstance: {fileID: 237131378}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8482423860725805252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e734190b74fd5e346b033e45a95764d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8698821737554297966
 MonoBehaviour:
   m_ObjectHideFlags: 0

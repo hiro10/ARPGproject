@@ -14,8 +14,11 @@ public class EnemySpawner : MonoBehaviour
     // スポーン領域のコライダー
     private Collider spawnArea;
     GameObject enemy;
+
+    int count;
     void Start()
     {
+        count = 0;
         spawnArea = GetComponent<Collider>();
         // エネミーのオブジェクトプールの取得
         objectPool = transform.root.gameObject.GetComponent<EnemyObjectPool>();
@@ -25,6 +28,10 @@ public class EnemySpawner : MonoBehaviour
     {// 判定内にプレイヤーがいれば敵をオブジェクトプールから持ってくる
         if (other.gameObject.tag == ("Player"))
         {
+            if(count>10)
+            {
+                return;
+            }
             // エネミーの生成位置をランダムに(ｙ座標は固定)
             Vector3 randomPosition = Vector3.zero;
             timeSinceLastSpawn += Time.deltaTime;
@@ -49,6 +56,7 @@ public class EnemySpawner : MonoBehaviour
                     enemy.transform.position = randomPosition;
                     enemy.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f); 
                     enemy.SetActive(true);
+                    count++;
                 }
 
                 timeSinceLastSpawn = 0f;

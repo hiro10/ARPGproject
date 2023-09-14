@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 // ƒQ[ƒ€‚Ì§Œä—p@–ğŠ„•Ï‚í‚é‚©‚à()
 
 public class GameManager : MonoBehaviour
