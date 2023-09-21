@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+
+//エネミーの動き
 public class EnemyController : MonoBehaviour
 {
     // プレイヤーの位置
@@ -15,14 +17,15 @@ public class EnemyController : MonoBehaviour
     // プレイヤーとの最大距離
     private float maxDistance = 10f;
 
+    // プレイヤー発見時に赤くなるオブジェクト
     [SerializeField] GameObject findPlayerEffect;
+
     // 現在のエネミーの状態
     public State state;
 
-    
-
     Animator animator;
 
+    // プレイヤーとの距離
     float distanceToPlayer;
 
     private int maxHp;
@@ -31,8 +34,15 @@ public class EnemyController : MonoBehaviour
     //Sliderを入れる
     public Slider slider;
 
+    private Rigidbody rb; // 吹っ飛ばすオブジェクトのRigidbody
+    private float forceMagnitude = 5f; // 吹っ飛ばす力の大きさ
+    
+
     // スクリプタブルオブジェクトでステータス管理
     public EnemyStateSo enemyState;
+
+    BattleSceneManager sceneManager;
+    public Collider enemyCollider;
     public enum State
     {
         // 待機巡回状態
@@ -42,13 +52,16 @@ public class EnemyController : MonoBehaviour
         // 攻撃
         Attack,
         // 死亡
-        Die
+        Die,
+        // ダメージ
+        Damage
     }
 
     void Start()
     {
         animator = GetComponent<Animator>();
         player = GameObject.FindWithTag("Player").transform;
+        sceneManager = GameObject.FindWithTag("BattleSceneManager").GetComponent<BattleSceneManager>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         maxHp = enemyState.maxHealth;
         //Sliderを満タンにする。
@@ -57,12 +70,12 @@ public class EnemyController : MonoBehaviour
         currentHp = maxHp;
         // 待機状態
         Idle();
-       
+        rb = GetComponent<Rigidbody>();
+        enemyCollider = GetComponent<Collider>();
     }
 
     void Update()
     {
-        Debug.Log("currentHp" + currentHp);
         if (player != null)
         {
             if (currentHp <= 0)
@@ -105,6 +118,9 @@ public class EnemyController : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
     private void ResetEnemy()
     {
         //Sliderを満タンにする。
@@ -114,15 +130,16 @@ public class EnemyController : MonoBehaviour
         state = State.Idle;
         navMeshAgent.isStopped = false;
         findPlayerEffect.SetActive(false);
+        enemyCollider.enabled = true;
     }
 
 
     // エネミー死亡
     public void EnemyDie()
     {
-         
         state = State.Die;
-        
+        sceneManager.DeadCount++;
+        sceneManager.AllEnemyDeadCount++;
     }
 
     // 死亡時、アニメーションクリップにて非表示にする
@@ -172,10 +189,14 @@ public class EnemyController : MonoBehaviour
     // 死亡状態
     private void Die()
     {
+        //Vector3 forceDirection = -transform.forward; // 吹っ飛ばす方向（例: オブジェクトの前方）
+        //rb.AddForce(forceDirection, ForceMode.Impulse);
+        enemyCollider.enabled = false;
         state = State.Die;
         animator.SetTrigger("Die");
     }
    
+    
     public int CurrentHp()
     {
         return currentHp;
@@ -189,5 +210,11 @@ public class EnemyController : MonoBehaviour
     public int MaxHp()
     {
         return maxHp;
+    }
+
+    public void Damage()
+    {
+        state = State.Damage;
+        animator.SetTrigger("Hit");
     }
 }

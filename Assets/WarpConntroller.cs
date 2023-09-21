@@ -169,8 +169,11 @@ public class WarpConntroller : MonoBehaviour
             // レイが当たった位置を取得
             Vector3 hitPoint = hit.point;
 
+            // 少し手前の位置を計算
+            Vector3 offsetPosition = hitPoint - (transform.forward.normalized * 0.5f);
+
             // 取得した位置をターゲット位置とする
-            targetPos = hitPoint;
+            targetPos = offsetPosition;
         }
         else
         {

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using Cinemachine;
 using ARPG.Dialogue;
 
+// プレイヤーの挙動全般
 public class PlayerController : MonoBehaviour
 {
     private new Rigidbody rigidbody;
@@ -126,8 +127,6 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetFloat("Speed",0f);
         }
-
-
     }
 
     private void FixedUpdate()
@@ -374,12 +373,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
+        // 戦闘状態
         if (state == PLAYER_STATE.BATTLE)
         {
             if (context.started)
             {
-               
-                
                 if (!attack && !avoid && warpConntroller.isWarp == false)
                 {
                     if (isGrounded)

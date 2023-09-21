@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Wepon
   - Stage
+  - EnemySpownArea
+  - BattleSceneManager
   layers:
   - Default
   - TransparentFX
@@ -20,7 +22,7 @@ TagManager:
   - Npc
   - Ground
   - Player
-  - 
+  - Arrow
   - 
   - 
   - 

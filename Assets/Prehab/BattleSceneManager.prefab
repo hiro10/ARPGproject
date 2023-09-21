@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3215334146823751999}
   - component: {fileID: 3215334146823751992}
+  - component: {fileID: 1284330290}
   m_Layer: 0
   m_Name: BattleSceneManager
-  m_TagString: Untagged
+  m_TagString: BattleSceneManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,6 +43,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b649594abbc7bad4ba9f8b2bbb8c11f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1284330290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3215334146823751993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9d76cb54ac3da4da242be680c9e0e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   comboTextObject: {fileID: 0}

@@ -4,29 +4,27 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
+// 剣の当たり判定処
 public class SwordCollider : MonoBehaviour
 {
     public LayerMask layerMask;
     public GameObject hitParticle;
-    [SerializeField] BattleSceneManager battleSceneManager;
+    [SerializeField] ConboUiManager conboUi;
     EnemyController enemy;
     
 
     [SerializeField] DamageIndicator damageUi;
     //リセット用のタイムカウント
     [SerializeField] LoadBoss boss;
-    private void Start()
-    {
-       
-    }
-    private void Update()
-    {
-       
-    }
+
 
     // プレイヤーの攻撃がエネミーにあたった時の処理
     private void OnTriggerEnter(Collider other)
     {
+        if(other.isTrigger)
+        {
+            return;
+        }
         if(other.gameObject.tag==("Enemy"))
         {
             enemy = other.gameObject.GetComponent<EnemyController>();
@@ -36,17 +34,24 @@ public class SwordCollider : MonoBehaviour
             {
                
                 //Hit Particle
-                battleSceneManager.ComboAnim();
+                conboUi.ComboAnim();
                 Instantiate(hitParticle, hit.point, Quaternion.identity);
             }
             // エネミーのダメージor死亡リアクションのトリガー
-            
-            enemy.SetCurrentHp(1);
+           
+            enemy.SetCurrentHp(5);
             int currentHp = enemy.CurrentHp();
             int maxHp = enemy.MaxHp();
             enemy.slider.value = (float)currentHp / (float)maxHp; 
             damageUi.ShowDamageIndicator(other.gameObject.transform.position, 999);
-            enemy.EnemyDie();
+            if (enemy.CurrentHp() > 0)
+            {
+                enemy.Damage();
+            }
+            else if (enemy.CurrentHp() <= 0&&enemy.state!=EnemyController.State.Die)
+            {
+                enemy.EnemyDie();
+            }
         }
     }
 

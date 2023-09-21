@@ -19,7 +19,7 @@ public class VillageSceneManager : MonoBehaviour
     public void GotoBattleScene()
     {
         distanceCalculator.targetObject = gateObj.transform;
-        mainIcon.target = gateObj.transform;
+        mainIcon.targets[0] = gateObj.transform;
         goBattle = true;
         gate.material.color = Color.green;
     }

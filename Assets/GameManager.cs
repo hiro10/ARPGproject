@@ -8,10 +8,14 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    bool isPause;
-
     public string sceneName;
     public string nowSceneName;
+
+    // ムービー中判定
+    public bool isMovePlaying;
+
+    // ポーズ中か?
+    public bool isPause;
 
     /// <summary>
     ///  シングルトン化
@@ -36,21 +40,4 @@ public class GameManager : MonoBehaviour
         isPause = false;
     }
 
-
-    //public void OnButtonPressed()
-    //{
-    //    //if (context.started)
-    //    {
-    //        if (isPause == false)
-    //        {
-    //            isPause = true;
-    //            Time.timeScale = 0f;
-    //        }
-    //        else
-    //        {
-    //            Time.timeScale = 1f;
-    //            isPause = false;
-    //        }
-    //    }
-    //}
 }
