@@ -103,6 +103,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6070ebe5460c5084ea066d52ab4d4968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &884143706066826829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7473925577342174268}
+  - component: {fileID: 8047444771060430599}
+  - component: {fileID: 8216447683854699514}
+  m_Layer: 3
+  m_Name: SwordCollision
+  m_TagString: EnemysWepon
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7473925577342174268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884143706066826829}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.799}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7521048044634333171}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8047444771060430599
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884143706066826829}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.29, y: 0.28, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8216447683854699514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884143706066826829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3a277e100930e14b82a7dabc20798a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4056277732029972863
 GameObject:
   m_ObjectHideFlags: 0
@@ -1596,6 +1654,7 @@ GameObject:
   - component: {fileID: -4378413135045677326}
   - component: {fileID: 7249365935788100566}
   - component: {fileID: 8552103301914616446}
+  - component: {fileID: 4546931123441811047}
   m_Layer: 3
   m_Name: Enemy3
   m_TagString: Enemy
@@ -1661,6 +1720,8 @@ MonoBehaviour:
   slider: {fileID: 5221424285576682701}
   enemyState: {fileID: 11400000, guid: ce37e40c7683fe8498cf36e8e82618f5, type: 2}
   enemyCollider: {fileID: 7249365935788100566}
+  lockOn: 0
+  damageManager: {fileID: 8216447683854699514}
 --- !u!195 &-4378413135045677326
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1693,10 +1754,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.79
   m_Height: 1.32
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.7, z: -0.02}
 --- !u!54 &8552103301914616446
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1713,6 +1774,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &4546931123441811047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521048044634424207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11af6a01a0c3f6c42a46a8a9c7d1a13a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _waistBone: {fileID: 7521048044634333175}
+  damp: 50
 --- !u!1 &7521048044634424209
 GameObject:
   m_ObjectHideFlags: 0
@@ -2800,7 +2875,8 @@ Transform:
   m_LocalPosition: {x: 0.54662144, y: 0.40800455, z: 0.20641302}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 7473925577342174268}
   m_Father: {fileID: 7521048044634333103}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

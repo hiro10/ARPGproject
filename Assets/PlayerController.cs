@@ -59,10 +59,20 @@ public class PlayerController : MonoBehaviour
     private float avoidSpeed = 5f;
 
     private Vector3 nowPosition;
+
+    [SerializeField] PlayerData playerData;
+    [SerializeField] BattleSceneManager sceneManager;
+    
+    // プレイヤーが死んでいるか
+    bool playerDead;
+
+
     public enum PLAYER_STATE
     {
         TOWN,    // 村にいるとき
         BATTLE,  // 戦闘時
+        //DAMAGE,
+        RESULT
     }
     [SerializeField] PlayerConversant playerConversant;
     /// <summary>
@@ -70,7 +80,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-       
+        playerDead = false;
         isGrounded = true;
         AttackOff();
         // cameraController = Camera.main.GetComponent<CameraController>();
@@ -82,6 +92,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        ChangeState();
     }
 
     /// <summary>
@@ -89,43 +100,49 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        ChangeState();
-        //　ジャンプ力をアニメーションパラメータに設定（要修正）
-        animator.SetFloat("FoolSpeed", rigidbody.velocity.y);
-        animator.SetBool("isGround", isGrounded);
-        //Debug.Log("isGrounded" + isGrounded);
-        SticeAngle();
-
-        //接地判定
-        isGrounded = CheckGrounded();
-        if (isGrounded)
+        if(playerData.PlayerCurrentHp<=0&&!playerDead&& state != PLAYER_STATE.RESULT)
         {
-            animator.SetFloat("FoolSpeed", 0f);
-        }
-        if (attack == true || avoid == true||playerConversant.isTaking)
-        {
-            //animator.SetFloat("Speed",0f);
-            // 攻撃中はy軸の力を発生させない
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
-            RotaionOff();
-            MoveOff();
+            playerDead = true;
+            state = PLAYER_STATE.RESULT;
+            animator.SetTrigger("Dead");
+            StartCoroutine(sceneManager.DeadResultStart());
         }
         else 
         {
-            MoveOn();
-            RotaionOn();
-        }
-        
+           
+            //　ジャンプ力をアニメーションパラメータに設定（要修正）
+            animator.SetFloat("FoolSpeed", rigidbody.velocity.y);
+            animator.SetBool("isGround", isGrounded);
+            SticeAngle();
 
-        //  移動処理
-        if (mov)
-        {
-            Move();
-        }
-        
-        if(playerConversant.isTaking)
-        {
-            animator.SetFloat("Speed",0f);
+            //接地判定
+            isGrounded = CheckGrounded();
+            if (isGrounded)
+            {
+                animator.SetFloat("FoolSpeed", 0f);
+            }
+            if (attack == true || avoid == true || playerConversant.isTaking)
+            {
+                // 攻撃中はy軸の力を発生させない
+                rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
+                RotaionOff();
+                MoveOff();
+            }
+            else
+            {
+                MoveOn();
+                RotaionOn();
+            }
+            //  移動処理
+            if (mov)
+            {
+                Move();
+            }
+
+            if (playerConversant.isTaking)
+            {
+                animator.SetFloat("Speed", 0f);
+            }
         }
     }
 
@@ -253,11 +270,7 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRotation = transform.rotation;
             transform.rotation = targetRotation;
         }
-
-
     }
-
-   
 
     /// <summary>
     /// InputSystem反映用
@@ -503,22 +516,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+ 
+
     /// <summary>
     /// 接地判定
     /// </summary>
     /// <returns>接地 true それ以外falseを返す</returns>
     bool CheckGrounded()
     {
-
         //animator.SetFloat("jumpPower",0);
         //放つ光線の初期位置と姿勢
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
         var distance = 0.5f;
         //Raycastがhitするかどうかで判定レイヤーを指定することも可能
-        return Physics.Raycast(ray, distance,layerMask);
-
-        
+        return Physics.Raycast(ray, distance,layerMask);    
     }
     void OnTriggerExit(Collider other)
     {

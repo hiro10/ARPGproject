@@ -68,6 +68,8 @@ public class WarpConntroller : MonoBehaviour
     [SerializeField] GameObject laderCam;
 
     Rigidbody rigidbody;
+
+    [SerializeField] GameObject swordCollision;
     /// <summary>
     /// 開始処理
     /// </summary>
@@ -82,7 +84,7 @@ public class WarpConntroller : MonoBehaviour
         swordOrigPos = sword.localPosition;
         // ワープの仕様判定を設定
         isWarp = false;
-
+        swordCollision.SetActive(false);
         gameObjectcam.SetActive(true);
         rigidbody = GetComponent<Rigidbody>();
         sword.gameObject.SetActive(false);
@@ -148,6 +150,7 @@ public class WarpConntroller : MonoBehaviour
 
         swordParticle.Play();
         animator.SetTrigger("slash");
+       
     }
 
     /// <summary>
@@ -160,8 +163,14 @@ public class WarpConntroller : MonoBehaviour
         // エネミーをロックしている場合
         if (controller.target != null)
         {
+            Vector3 playerToEnemyVector = transform.position - controller.target.transform.position;
+
+            // ベクトルの長さを調整して手前の位置を求める
+            Vector3 targetPosition = controller.target.transform.position + playerToEnemyVector.normalized * 1;
+
             // ターゲット位置をエネミーに
-            targetPos = controller.target.transform.position;
+            targetPos = targetPosition;
+            controller.target.GetComponent<EnemyController>().lockOn = true;
         }
         // レイキャストで特定のタグのオブジェクトとの当たり判定を行う
         else if (Physics.Raycast(ray, out hit, rayLength) && hit.collider.tag == targetTag)
@@ -203,7 +212,8 @@ public class WarpConntroller : MonoBehaviour
         Destroy(clone.GetComponent<Rigidbody>());
         Destroy(clone.GetComponent<BoxCollider>());
         Destroy(clone.GetComponent<AudioFadeController>());
-        
+        Destroy(clone.GetComponent<PlayerData>());
+        Destroy(clone.GetComponent<DamageReaction>());
 
         SkinnedMeshRenderer[] skinMeshList = clone.GetComponentsInChildren<SkinnedMeshRenderer>();
         foreach (SkinnedMeshRenderer smr in skinMeshList)
@@ -220,7 +230,7 @@ public class WarpConntroller : MonoBehaviour
 
         // シフトする際にレイを飛ばして当たった位置を取得して、その位置の手前にシフトする
         // ワープ処理：イーじんぐ処理後で理解
-        transform.DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
+        gameObject.GetComponent<Rigidbody>().DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());
 
         // 親をnullにする
         SoundManager.instance.PlaySE(SoundManager.SE.ShiftThrow);
@@ -268,6 +278,7 @@ public class WarpConntroller : MonoBehaviour
     void FinshWarp()
     {
         ShowBody(true);
+        
         // 剣の親と位置の再設定
         sword.parent = swordHand;
         sword.localPosition = swordOrigPos;
@@ -286,6 +297,7 @@ public class WarpConntroller : MonoBehaviour
 
 
 
+        
         StartCoroutine(StopParticles());
         animator.speed = 1f;
         sword.gameObject.SetActive(false);
@@ -293,20 +305,25 @@ public class WarpConntroller : MonoBehaviour
         if (controller.target != null)
         {
             SoundManager.instance.PlaySE(SoundManager.SE.Close);
+            swordCollision.SetActive(true);
             target.DOMove(targetPos + transform.forward, .1f);
 
             warpSlash.SetActive(true);
             impulse.GenerateImpulse(Vector3.right);
+           
         }
         else
         {
             SoundManager.instance.PlaySE(SoundManager.SE.RotOff);
+            
         }
+        
     }
 
     public void WrapAnimationEnd()
     {
         isWarp = false;
+        swordCollision.SetActive(false);
         playerController.AttackOff();
         playerController.MoveOn();
         playerController.RotaionOn();

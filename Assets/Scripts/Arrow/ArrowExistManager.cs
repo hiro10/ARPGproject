@@ -17,14 +17,29 @@ public class ArrowExistManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.isMovePlaying|| sceneManager.InBattleArea)
+        if (GameManager.Instance.nowSceneName == "DemoScene")
         {
-            arrow.SetActive(false);
+            if (GameManager.Instance.isMovePlaying || sceneManager.InBattleArea)
+            {// ムービー中でなく、バトルエリア内なら
+                arrow.SetActive(false);
+            }
+            else if (!GameManager.Instance.isMovePlaying || !sceneManager.InBattleArea)
+            {
+                arrow.SetActive(true);
+            }
         }
-        else if (!GameManager.Instance.isMovePlaying|| !sceneManager.InBattleArea)
+        // ボス戦
+        if (GameManager.Instance.nowSceneName == "Test")
         {
-            arrow.SetActive(true);
+            if (GameManager.Instance.isMovePlaying || sceneManager.InBossBattleArea)
+            {// ムービー中でなく、バトルエリア内なら
+                arrow.SetActive(false);
+            }
+            else if (!GameManager.Instance.isMovePlaying || !sceneManager.InBossBattleArea)
+            {
+                arrow.SetActive(true);
+            }
         }
-        
+
     }
 }

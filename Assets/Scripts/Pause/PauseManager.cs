@@ -13,7 +13,11 @@ public class PauseManager : MonoBehaviour
     [SerializeField] OptionUiManager optionUi;
     [SerializeField] GameObject statusImage;
     [SerializeField] GameObject menuMaskImage;
+    [SerializeField] BattleSceneManager sceneManager;
     // Start is called before the first frame update
+
+    // ステータス画面、オプション画面を開いているかどうか
+    public bool OpenMenuPanel;
     void Start()
     {
         // TODO:座標の修正
@@ -23,13 +27,13 @@ public class PauseManager : MonoBehaviour
         pausePanel.SetActive(false);
         menuPanel.SetActive(false);
         menuMaskImage.SetActive(false);
-
+        OpenMenuPanel = false;
 
     }
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started&&!sceneManager.Result)
         {
             if (!gameManager.isPause)
             {
@@ -37,6 +41,7 @@ public class PauseManager : MonoBehaviour
             }
             else if (gameManager.isPause)
             {
+                if(OpenMenuPanel == false)
                 ResumeGame();
             }
         }
@@ -74,11 +79,13 @@ public class PauseManager : MonoBehaviour
 
     public void OnClickStatusButton()
     {
+        OpenMenuPanel = true;
         //menuMaskImage.SetActive(true);
         statusImage.transform.DOLocalMoveX(400, 0.4f).SetUpdate(true).SetLink(gameObject).SetEase(Ease.OutBack);
     }
     public void OnClickStatusCloseButton()
     {
+        OpenMenuPanel = false;
         //menuMaskImage.SetActive(false);
         statusImage.transform.DOLocalMoveX(1200, 0.4f).SetUpdate(true).SetLink(gameObject).SetEase(Ease.InOutBack);
     }

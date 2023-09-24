@@ -8,6 +8,7 @@ public class OptionUiManager : MonoBehaviour
     // オプション画面用(DoTween)
     [SerializeField] private GameObject optionPanel;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] PauseManager pauseManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +29,7 @@ public class OptionUiManager : MonoBehaviour
     /// </summary>
     public void OnClickStartOptionsButton(GameObject panels)
     {
-
+        pauseManager.OpenMenuPanel = true;
        // pauseMenu.SetActive(false);
         //SoundManager.instance.PlaySE(SoundManager.SE.Decision);
         panels.SetActive(true);
@@ -48,7 +49,7 @@ public class OptionUiManager : MonoBehaviour
 
     private void ResetPanel()
     {
-       
+        pauseManager.OpenMenuPanel = false;
         optionPanel.SetActive(false);
        
     }

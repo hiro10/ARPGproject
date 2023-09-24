@@ -42,14 +42,15 @@ public class DirectionMark : MonoBehaviour
     private void TurnAroundDirectionTarget()
     {
         float closestDistance = float.MaxValue; // 最も距離が近いターゲットまでの距離を初期化
-
-        targets.RemoveAll(obj => obj.GetComponent<EnemySpawner>().inPlayer == true);
-
-        if(targets.Count<=0)
+        if (GameManager.Instance.nowSceneName == "DemoScene")
         {
-            Destroy(arrowPearent);
-        }
+            targets.RemoveAll(obj => obj.GetComponent<EnemySpawner>().inPlayer == true);
 
+            if (targets.Count <= 0)
+            {
+                Destroy(arrowPearent);
+            }
+        }
         foreach (Transform target in targets)
         {
             // ターゲットとプレイヤーの位置を取得

@@ -28,6 +28,7 @@ public class PlayerAttackController : MonoBehaviour
             // 攻撃ボタンが押され、エネミーが攻撃範囲内にいる場合
             if ( distance <= attackDistance)
             {
+                playerLock.target.GetComponent<EnemyController>().lockOn=true;
                 // プレイヤーをエネミーの方向に向ける
                 Vector3 targetLookDirection = enemy.position - transform.position;
                 targetLookDirection.y = 0f; // y軸方向の回転を無効化
@@ -38,7 +39,7 @@ public class PlayerAttackController : MonoBehaviour
                     animator.SetFloat("Speed", -1f);
 
                     // プレイヤーから見たエネミーの位置の少し手前まで移動する
-                    Vector3 targetPosition = enemy.position - transform.forward;
+                    Vector3 targetPosition = enemy.position - transform.forward*1.5f;
                     targetPosition.y = transform.position.y; // y軸位置を維持する
                     transform.DOMove(targetPosition, 0.5f);
                 }

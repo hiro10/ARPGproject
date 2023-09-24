@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
-
+using UnityEngine.InputSystem;
 // 戦闘シーン（主にエネミー）の管理
 public class BattleSceneManager : MonoBehaviour
 {
@@ -17,7 +17,28 @@ public class BattleSceneManager : MonoBehaviour
     private int deadCount;
     // エネミーの総撃破数
     private int allEnemyDeadCount;
+    // バトルエリア内か?
+    private bool inBossBattleArea;
 
+    private bool resultOn;
+    public bool Result
+    {
+        get
+        {
+            return resultOn;
+        }
+        set
+        {
+            resultOn = value;
+        }
+    }
+    [SerializeField] GameObject resultPanel;
+    [SerializeField] GameObject slideUi;
+    [SerializeField] GameObject slideUiDead;
+    [SerializeField] GameObject resultScorePanel;
+    [SerializeField] GameObject mainPanel;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject resultButtons;
     //プロパティ
     // バトルエリア
     public bool InBattleArea
@@ -29,6 +50,18 @@ public class BattleSceneManager : MonoBehaviour
         set
         {
             inBattleArea = value;
+        }
+    }
+    // ボスのバトルエリアか？
+    public bool InBossBattleArea
+    {
+        get
+        {
+            return inBossBattleArea;
+        }
+        set
+        {
+            inBossBattleArea = value;
         }
     }
 
@@ -80,5 +113,54 @@ public class BattleSceneManager : MonoBehaviour
         deadCount = 0;
 
         allEnemyDeadCount = 0;
+
+        resultOn = false;
+
+        resultPanel.SetActive(false);
+
+        resultButtons.SetActive(false);
+
+        slideUi.SetActive(false);
+
+        resultScorePanel.SetActive(false);
+
+        slideUiDead.SetActive(false);
     }
+
+    private void Update()
+    {
+        if (allEnemyDeadCount >= 40 && !resultOn)
+        {
+            resultOn = true;
+            StartCoroutine(ResultStart());
+        }
+    }
+
+     IEnumerator ResultStart()
+    {
+        slideUi.SetActive(true);
+        resultScorePanel.SetActive(true);
+        // プレイヤーの入力を受け付けなくする（後で修正）
+        player.GetComponent<PlayerInput>().enabled=false;
+        mainPanel.SetActive(false);
+        resultPanel.SetActive(true);
+        slideUi.GetComponent<SlideUiControl>().UiMove();
+        yield return new WaitForSeconds(2);
+        resultScorePanel.GetComponent<SlideUiControl>().UiMove();
+        yield return new WaitForSeconds(2);
+        resultButtons.SetActive(true);
+    }
+
+    public IEnumerator DeadResultStart()
+    {
+        slideUiDead.SetActive(true);
+        // プレイヤーの入力を受け付けなくする（後で修正）
+        player.GetComponent<PlayerInput>().enabled = false;
+        mainPanel.SetActive(false);
+        resultPanel.SetActive(true);
+        slideUiDead.GetComponent<SlideUiControl>().UiMove();
+        yield return new WaitForSeconds(4);
+        resultButtons.SetActive(true);
+    }
+
 }

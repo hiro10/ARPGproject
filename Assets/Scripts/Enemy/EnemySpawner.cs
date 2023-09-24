@@ -34,7 +34,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        if(sceneManager.DeadCount>=10&&inPlayer)
+        if(sceneManager.DeadCount>= ENEMY_SPOWE_MAX && inPlayer)
         {
             sceneManager.InBattleArea = false;
             sceneManager.DeadCount = 0;
