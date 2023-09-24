@@ -3,59 +3,164 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
-
+using UnityEngine.InputSystem;
+// 戦闘シーン（主にエネミー）の管理
 public class BattleSceneManager : MonoBehaviour
 {
-    // 今のところコンボの加算とdotweenアニメーションのみ
-    private float step_time;
-    private int combo;
-    [SerializeField] private GameObject comboTextObject;
-    [SerializeField] private TextMeshProUGUI comboText;
-    [SerializeField] private TextMeshProUGUI comboText2;
+    // 専用シーンの各状況判断用変数
+
+    // バトルエリア内か?
+    private bool inBattleArea;
+    // 各バトルエリアのエネミーの生成数
+    private int spownCount;
+    // 各バトルエリアのエネミーの生成数
+    private int deadCount;
+    // エネミーの総撃破数
+    private int allEnemyDeadCount;
+    // バトルエリア内か?
+    private bool inBossBattleArea;
+
+    private bool resultOn;
+    public bool Result
+    {
+        get
+        {
+            return resultOn;
+        }
+        set
+        {
+            resultOn = value;
+        }
+    }
+    [SerializeField] GameObject resultPanel;
+    [SerializeField] GameObject slideUi;
+    [SerializeField] GameObject slideUiDead;
+    [SerializeField] GameObject resultScorePanel;
+    [SerializeField] GameObject mainPanel;
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject resultButtons;
+    //プロパティ
+    // バトルエリア
+    public bool InBattleArea
+    {
+        get
+        {
+            return inBattleArea;
+        }
+        set
+        {
+            inBattleArea = value;
+        }
+    }
+    // ボスのバトルエリアか？
+    public bool InBossBattleArea
+    {
+        get
+        {
+            return inBossBattleArea;
+        }
+        set
+        {
+            inBossBattleArea = value;
+        }
+    }
+
+    // 各バトルエリアのエネミーの生成数
+    public int SpownCount
+    {
+        get
+        {
+            return spownCount;
+        }
+        set
+        {
+            spownCount = value;
+        }
+    }
+
+    // 各バトルエリアのエネミーの生成数
+    public int DeadCount
+    {
+        get
+        {
+            return deadCount;
+        }
+        set
+        {
+            deadCount = value;
+        }
+    }
+
+    // 各バトルエリアのエネミーの生成数
+    public int AllEnemyDeadCount
+    {
+        get
+        {
+            return allEnemyDeadCount;
+        }
+        set
+        {
+            allEnemyDeadCount = value;
+        }
+    }
+
     private void Start()
     {
-        comboTextObject.SetActive(false);
-        combo = 0;
-        step_time = 0f;
+        inBattleArea=false;
+
+        spownCount = 0;
+
+        deadCount = 0;
+
+        allEnemyDeadCount = 0;
+
+        resultOn = false;
+
+        resultPanel.SetActive(false);
+
+        resultButtons.SetActive(false);
+
+        slideUi.SetActive(false);
+
+        resultScorePanel.SetActive(false);
+
+        slideUiDead.SetActive(false);
     }
+
     private void Update()
     {
-        step_time += Time.deltaTime;
-        if (step_time > 5f)
+        if (allEnemyDeadCount >= 40 && !resultOn)
         {
-            combo = 0;
-            DOTween.ToAlpha(() => comboText.color, color => comboText.color = color, 0f, 0.1f).OnComplete(() => NonActiveComboText()); 
-            DOTween.ToAlpha(() => comboText2.color, color => comboText2.color = color, 0f, 0.1f).OnComplete(() => NonActiveComboText());     
-        }
-        else
-        {
-            return;
+            resultOn = true;
+            StartCoroutine(ResultStart());
         }
     }
 
-    public void ComboAnim()
+     IEnumerator ResultStart()
     {
-        comboText2.color = new Color32(255, 255, 255, 255);
-        comboText.color = new Color32(255, 255, 255, 255);
-        step_time = 0f;
-        if (!comboTextObject.activeSelf)
-        {
-            comboTextObject.SetActive(true);
-        }
-        combo++;
-        comboText.text = combo.ToString();
-        comboText.transform.DOPunchScale(new Vector3(1.05f, 1.05f, 1.05f), 0.1f).OnComplete(() => BaseScale());
+        slideUi.SetActive(true);
+        resultScorePanel.SetActive(true);
+        // プレイヤーの入力を受け付けなくする（後で修正）
+        player.GetComponent<PlayerInput>().enabled=false;
+        mainPanel.SetActive(false);
+        resultPanel.SetActive(true);
+        slideUi.GetComponent<SlideUiControl>().UiMove();
+        yield return new WaitForSeconds(2);
+        resultScorePanel.GetComponent<SlideUiControl>().UiMove();
+        yield return new WaitForSeconds(2);
+        resultButtons.SetActive(true);
     }
 
-    private void BaseScale()
+    public IEnumerator DeadResultStart()
     {
-        comboText.transform.localScale = Vector3.one;
+        slideUiDead.SetActive(true);
+        // プレイヤーの入力を受け付けなくする（後で修正）
+        player.GetComponent<PlayerInput>().enabled = false;
+        mainPanel.SetActive(false);
+        resultPanel.SetActive(true);
+        slideUiDead.GetComponent<SlideUiControl>().UiMove();
+        yield return new WaitForSeconds(4);
+        resultButtons.SetActive(true);
     }
 
-    private void NonActiveComboText()
-    {
-        comboTextObject.SetActive(false);
-        comboText2.color = new Color32(255, 255, 255, 255);
-        comboText.color = new Color32(255, 255, 255, 255);
-    }
 }

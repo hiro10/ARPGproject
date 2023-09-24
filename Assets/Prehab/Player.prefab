@@ -13121,6 +13121,8 @@ GameObject:
   - component: {fileID: 400426740}
   - component: {fileID: 400426741}
   - component: {fileID: 2109991226}
+  - component: {fileID: 400426765}
+  - component: {fileID: 400426776}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -13240,6 +13242,8 @@ MonoBehaviour:
   playerLockOn: {fileID: 0}
   playerAttack: {fileID: 400426741}
   state: 0
+  playerData: {fileID: 400426765}
+  sceneManager: {fileID: 0}
   playerConversant: {fileID: 2109991226}
 --- !u!114 &227429262646676363
 MonoBehaviour:
@@ -13716,6 +13720,7 @@ MonoBehaviour:
   defaultPosition: {x: 0, y: 0, z: 0}
   laderIcon: {fileID: 813113093}
   laderCam: {fileID: 0}
+  swordCollision: {fileID: 227429263872177105}
 --- !u!114 &227429262646676584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13787,6 +13792,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isTaking: 0
   playerName: "Unity\u3061\u3083\u3093"
+--- !u!114 &400426765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227429263477832704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21efe895636138448bcba680bbba40fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStatuaData: {fileID: 11400000, guid: ac846b289b8309941a0eb933afbef663, type: 2}
+  slider: {fileID: 0}
+  playerNameText: {fileID: 0}
+  playerHpText: {fileID: 0}
+  playerAtkText: {fileID: 0}
+  playerDefText: {fileID: 0}
+  playerLevelText: {fileID: 0}
+--- !u!114 &400426776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227429263477832704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11af6a01a0c3f6c42a46a8a9c7d1a13a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _waistBone: {fileID: 227429263477441968}
+  damp: 20
 --- !u!1 &227429263537421693
 GameObject:
   m_ObjectHideFlags: 0
@@ -18811,6 +18849,7 @@ GameObject:
   - component: {fileID: 227429263872177118}
   - component: {fileID: 227429263872177116}
   - component: {fileID: 227429263872177119}
+  - component: {fileID: 188673747}
   m_Layer: 9
   m_Name: SwordColison
   m_TagString: Wepon
@@ -18844,8 +18883,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.28, y: 0.29, z: 2.09}
-  m_Center: {x: 0, y: 0, z: 1.36}
+  m_Size: {x: 0.2, y: 0.16, z: 1.37}
+  m_Center: {x: 0, y: 0.07, z: 1.42}
 --- !u!114 &227429263872177119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18863,7 +18902,25 @@ MonoBehaviour:
     m_Bits: 8
   hitParticle: {fileID: 1320159948884684472, guid: f5c23c442f57bc04487a386dc9738820,
     type: 3}
-  battleSceneManager: {fileID: 0}
+  conboUi: {fileID: 0}
+  damageUi: {fileID: 0}
+  boss: {fileID: 0}
+--- !u!54 &188673747
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 227429263872177105}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &227429263942392828
 GameObject:
   m_ObjectHideFlags: 0

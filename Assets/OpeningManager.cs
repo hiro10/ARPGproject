@@ -12,10 +12,10 @@ public class OpeningManager : MonoBehaviour
     [SerializeField] GameObject tentativePlayer;
     [SerializeField] TextMeshProUGUI fieldOpText;
     [SerializeField] SlideUiControl slideUi;
-    // Start is called before the first frame update
+   
     void Start()
     {
-       
+        GameManager.Instance.isMovePlaying = true;
         playerCam.SetActive(false);
     }
 
@@ -56,6 +56,8 @@ public class OpeningManager : MonoBehaviour
     }
     private void OnDestroy()
     {
+        GameManager.Instance.isMovePlaying = false;
         slideUi.UiMove();
+        
     }
 }

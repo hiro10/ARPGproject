@@ -12,4 +12,12 @@ public class MenuManager : MonoBehaviour
             SceneManager.LoadSceneAsync("LoadScene");
         }
     }
+
+    public void OnClickRetryButton()
+    {
+        if (GameManager.Instance.sceneName != GameManager.Instance.nowSceneName)
+        {
+            SceneManager.LoadSceneAsync("DemoScene");
+        }
+    }
 }

@@ -19,6 +19,7 @@ public class ScreenBreak : MonoBehaviour
         playerCam.SetActive(false);
         rigidBodies = GetComponentsInChildren<Rigidbody>();                     // 子(破片)のRigidbodyを取得しておく
         StartCoroutine(BreakStart());                                           // 動作にディレイを掛けるためコルーチンを使用
+        GameManager.Instance.isMovePlaying = true;
     }
 
     IEnumerator BreakStart()
@@ -52,5 +53,8 @@ public class ScreenBreak : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Destroy(gameObject);
     }
-   
+    private void OnDestroy()
+    {
+        GameManager.Instance.isMovePlaying = false;
+    }
 }

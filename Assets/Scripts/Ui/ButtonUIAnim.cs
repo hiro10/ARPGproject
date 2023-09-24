@@ -18,14 +18,14 @@ public class ButtonUIAnim : UIBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerDown
         (PointerEventData eventData)
     {
-        transform.DOScale(BaseScale * 0.8f, 0.25f)
+        transform.DOScale(BaseScale * 0.8f, 0.25f).SetUpdate(true)
        .Play();
     }
 
     public void OnPointerUp
         (PointerEventData eventData)
     {
-        transform.DOScale(BaseScale, 0.25f)
+        transform.DOScale(BaseScale, 0.25f).SetUpdate(true)
        .Play();
     }
 

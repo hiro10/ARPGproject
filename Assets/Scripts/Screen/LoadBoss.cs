@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+//TODO Unitask化
 public class LoadBoss : MonoBehaviour
 {
     [SerializeField] private RenderTexture renderTexture;
     private Camera renderCamera;
     [SerializeField] GameObject playerLader;
+    [SerializeField] BattleSceneManager sceneManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,14 +17,14 @@ public class LoadBoss : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-                                              // 画面割れを始めたいタイミングに置く
+    {// 画面割れを始めたいタイミングに置く
+        
     }
     public void OnClickButton()
     {
         StartCoroutine("TraceOn");
     }
-    IEnumerator TraceOn()
+    public IEnumerator TraceOn()
     {
         playerLader.SetActive(false);
         renderCamera.enabled = true;

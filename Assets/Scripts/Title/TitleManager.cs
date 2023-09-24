@@ -29,7 +29,7 @@ public class TitleManager : MonoBehaviour
     [SerializeField] private GameObject optionPanel;
 
     // オプション画面用(DoTween)
-    [SerializeField] private GameObject creditPanel;
+    //[SerializeField] private GameObject creditPanel;
 
     // 終了画面用(DoTween)
     [SerializeField] private GameObject exitPanel;
@@ -66,15 +66,7 @@ public class TitleManager : MonoBehaviour
             return;
         }
         // クレジットパネルのnullチェックと初期スケール設定
-        if (creditPanel != null)
-        {
-            creditPanel.SetActive(false);
-            creditPanel.transform.localScale = Vector3.zero;
-        }
-        else
-        {
-            return;
-        }
+       
 
         // 終了パネルのnullチェックと初期スケール設定
         if (exitPanel != null)
@@ -167,7 +159,7 @@ public class TitleManager : MonoBehaviour
     private void ResetPanel()
     {
         backPanel.SetActive(false);
-        creditPanel.SetActive(false);
+       // creditPanel.SetActive(false);
         optionPanel.SetActive(false);
         exitPanel.SetActive(false); 
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//TODO:要修正
 public class PlayerLockOn : MonoBehaviour
 {
     [SerializeField] PlayerCamera playerCamera;
@@ -10,16 +11,16 @@ public class PlayerLockOn : MonoBehaviour
     [SerializeField] float lockonRange = 20;
     [SerializeField] string targetLayerName;
     [SerializeField] GameObject lockonCursor;
+    [SerializeField] GameObject player;
     public GameObject target;
 
-    float lockonFactor = 0.3f;
-    float lockonThreshold = 0.5f;
+
     bool lockonInput = false;
     bool isLockon = false;
 
     Camera mainCamera;
     Transform cameraTrn;
-    GameObject targetObj;
+    
 
 
     void Start()
@@ -35,7 +36,7 @@ public class PlayerLockOn : MonoBehaviour
         if (target != null)
         {
             // すでにロックオン済みなら解除する
-            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange)
+            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange|| target.activeSelf == false)
             {
                 isLockon = false;
                 target = null;
@@ -60,11 +61,11 @@ public class PlayerLockOn : MonoBehaviour
             }
 
             // ロックオン対象の検索、いるならロックオン、いないならカメラ角度をリセット
-            targetObj = GetLockonTarget();
-            if (targetObj)
+            target = GetLockonTarget();
+            if (target/*&&target.gameObject.GetComponent<EnemyController>().CurrentHp()>=0*/)
             {
                 isLockon = true;
-                playerCamera.ActiveLockonCamera(targetObj);
+                playerCamera.ActiveLockonCamera(target);
                 lockonCursor.SetActive(true);
             }
             else
@@ -77,7 +78,7 @@ public class PlayerLockOn : MonoBehaviour
         // ロックオンカーソル
         if (isLockon)
         {
-            lockonCursor.transform.position = mainCamera.WorldToScreenPoint(targetObj.transform.position);
+            lockonCursor.transform.position = mainCamera.WorldToScreenPoint(new Vector3(target.transform.position.x, target.transform.position.y + 1f, target.transform.position.z));
         }
     }
     // ロックオン入力を受け取る関数
@@ -102,77 +103,30 @@ public class PlayerLockOn : MonoBehaviour
     /// <returns></returns>
     GameObject GetLockonTarget()
     {
-        // 1. SphereCastAllを使ってPlayer周辺のEnemyを取得しListに格納
-        RaycastHit[] hits = Physics.SphereCastAll(originTrn.position, lockonRange, Vector3.up, 0, LayerMask.GetMask(targetLayerName));
-        if (hits?.Length == 0)
-        {
-            // 範囲内にターゲットなし
-            return null;
-        }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy"); // "enemy"タグの全てのオブジェクトを取得
 
+        GameObject closestEnemy = null;
+        float closestDistance = Mathf.Infinity;
 
-        // 2. 1のリスト全てにrayを飛ばし射線が通るものだけをList化
-        List<GameObject> hitObjects = new List<GameObject>();
-        RaycastHit hit;
-        for (var i = 0; i < hits.Length; i++)
+        foreach (GameObject enemy in enemies)
         {
-            var direction = hits[i].collider.gameObject.transform.position - originTrn.position;
-            if (Physics.Raycast(originTrn.position, direction, out hit, lockonRange))
+            Vector3 direction = enemy.transform.position - transform.position; // カメラから敵への方向ベクトル
+            float angle = Vector3.Angle(transform.forward, direction); // カメラから敵への方向とカメラの正面との角度
+
+            if (angle <= 45.0f)
             {
-                if (hit.collider.gameObject == hits[i].collider.gameObject)
+                float distanceToPlayer = Vector3.Distance(enemy.transform.position, player.transform.position); // 敵とプレイヤーの距離
+
+                if (distanceToPlayer < closestDistance)
                 {
-                    hitObjects.Add(hit.collider.gameObject);
+                    closestEnemy = enemy;
+                    closestDistance = distanceToPlayer;
                 }
             }
         }
-        if (hitObjects?.Count == 0)
-        {
-            // 射線が通ったターゲットなし
-            return null;
-        }
 
+        
+        return closestEnemy;
 
-        // 3. 2のリスト全てのベクトルとカメラのベクトルを比較し、画面中央に一番近いものを探す
-        // 正直何やってるかよくわかんない...
-        float degreep = Mathf.Atan2(cameraTrn.forward.x, cameraTrn.forward.z);
-        float degreemum = Mathf.PI * 2;
-
-        foreach (var enemy in hitObjects)
-        {
-            Vector3 pos = cameraTrn.position - enemy.transform.position;
-            Vector3 pos2 = enemy.transform.position - cameraTrn.position;
-            pos2.y = 0.0f;
-            pos2.Normalize();
-
-            float degree = Mathf.Atan2(pos2.x, pos2.z);
-            if (Mathf.PI <= (degreep - degree))
-            {
-                degree = degreep - degree - Mathf.PI * 2;
-            }
-            else if (-Mathf.PI >= (degreep - degree))
-            {
-                degree = degreep - degree + Mathf.PI * 2;
-            }
-            else
-            {
-                degree = degreep - degree;
-            }
-
-            degree = degree + degree * (pos.magnitude / 500) * lockonFactor;
-            if (Mathf.Abs(degreemum) >= Mathf.Abs(degree))
-            {
-                degreemum = degree;
-                target = enemy;
-            }
-        }
-
-        //// 求めた一番小さい値が一定値より小さい場合、ターゲッティングをオンにします
-        if (Mathf.Abs(degreemum) <= lockonThreshold)
-        {
-            return target;
-        }
-
-        return null;
     }
-
 }

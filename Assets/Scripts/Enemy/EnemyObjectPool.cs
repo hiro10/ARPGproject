@@ -5,11 +5,13 @@ using UnityEngine;
 // エネミー用オブジェクトプール管理クラス
 public class EnemyObjectPool : MonoBehaviour
 {
-    public GameObject[] enemyPrefabs;  // スポーンする敵のプレハブ
-    public int poolSize = 10;       // プールのサイズ
+    // スポーンする敵のプレハブ
+    public GameObject[] enemyPrefabs;
+    // プールのサイズ
+    private int poolSize = 10;       
 
    [SerializeField] private List<GameObject> pooledEnemies = new List<GameObject>();
-
+    [SerializeField] BattleSceneManager sceneManager;
     void Start()
     {
         int enemyType;
@@ -27,16 +29,21 @@ public class EnemyObjectPool : MonoBehaviour
     // 引数は出現位置
     public GameObject GetPooledEnemy(Vector3 pos)
     {
-        foreach (GameObject enemy in pooledEnemies)
+        // 生成数が１０以内
+        if (sceneManager.SpownCount < 10)
         {
-            if (!enemy.activeInHierarchy)
+            foreach (GameObject enemy in pooledEnemies)
             {
-                enemy.transform.position = pos;
-                enemy.SetActive(true);
-                return enemy;
+                if (!enemy.activeInHierarchy)
+                {
+                    enemy.transform.position = pos;
+                    enemy.SetActive(true);
+                    return enemy;
+                }
             }
         }
-        return null;
+            return null;
+        
     }
 
 
