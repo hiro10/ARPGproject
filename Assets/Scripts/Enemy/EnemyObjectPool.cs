@@ -42,9 +42,6 @@ public class EnemyObjectPool : MonoBehaviour
                 }
             }
         }
-            return null;
-        
+            return null;       
     }
-
-
 }

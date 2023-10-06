@@ -34,7 +34,7 @@ public class CreditWindowManager : MonoBehaviour
         //SoundManager.instance.PlaySE(SoundManager.SE.Decision);
         panels.SetActive(true);
         // オプションウィンドウをだんだん拡大
-        panels.gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f).SetLink(gameObject);
+        panels.gameObject.transform.DOScale(new Vector3(1f, 1f, 1f), 0.2f).SetLink(gameObject).SetUpdate(true);
     }
 
     public void OnClickCloseButton(GameObject panels)
@@ -42,7 +42,7 @@ public class CreditWindowManager : MonoBehaviour
         //SoundManager.instance.PlaySE(SoundManager.SE.Close);
         //backPanel.SetActive(false);
         // オプションウィンドウをだんだん拡大
-        panels.gameObject.transform.DOScale(new Vector3(0f, 0f, 0f), 0.2f).SetLink(gameObject).OnComplete(ResetPanel);
+        panels.gameObject.transform.DOScale(new Vector3(0f, 0f, 0f), 0.2f).SetUpdate(true).SetLink(gameObject).OnComplete(ResetPanel);
 
     }
 

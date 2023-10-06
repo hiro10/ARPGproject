@@ -21,8 +21,13 @@ public class EnemySpawner : MonoBehaviour
     // プレイヤーがエリア内にいるかの判定
     public bool inPlayer;
 
+    // シーンマネージャー
     [SerializeField] BattleSceneManager sceneManager;
     
+    /// <summary>
+    /// 開始処理
+    /// 各状態判定用変数の初期化、取得
+    /// </summary>
     void Start()
     {
         inPlayer = false;
@@ -32,6 +37,9 @@ public class EnemySpawner : MonoBehaviour
         objectPool = transform.root.gameObject.GetComponent<EnemyObjectPool>();
     }
 
+    /// <summary>
+    /// 更新処理
+    /// </summary>
     private void Update()
     {
         if(sceneManager.DeadCount>= ENEMY_SPOWE_MAX && inPlayer)
@@ -54,6 +62,7 @@ public class EnemySpawner : MonoBehaviour
             Vector3 randomPosition = Vector3.zero;
             timeSinceLastSpawn += Time.deltaTime;
 
+            // 生成時間を超えたら
             if (timeSinceLastSpawn >= spawnInterval)
             {
                 // エネミーの生成位置
@@ -69,15 +78,7 @@ public class EnemySpawner : MonoBehaviour
                     enemy.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
                     sceneManager.SpownCount++;
                 }
-                //if (enemy != null)
-                //{
-                //    // スポーン位置を設定
-                //    enemy.transform.position = randomPosition;
-                //    enemy.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f); 
-                //    enemy.SetActive(true);
-                //    sceneManager.SpownCount++;
-                //}
-
+                
                 timeSinceLastSpawn = 0f;
             }
         }

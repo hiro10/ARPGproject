@@ -26,7 +26,8 @@ public class SoundManager : MonoBehaviour
         Village,   // ゲーム画面用の曲
         Field,
         Boss1,
-        Boss2
+        Boss2,
+        Town
     }
 
     /// <summary>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
-using UnityEngine.SceneManagement;
 using Cinemachine;
 using ARPG.Dialogue;
 
@@ -24,7 +23,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool mov = true;
     // 回転処理フラグ
     [SerializeField] private bool rot = true;
-
+    //アニメーター
     Animator animator;
 
     [SerializeField] private PlayableDirector[] timeline;
@@ -36,54 +35,63 @@ public class PlayerController : MonoBehaviour
     private int comboFlgl;
 
     // コンボ回数
-    private int coumboCount=0;
+    private int coumboCount = 0;
 
     [SerializeField] private PlayableDirector[] attackTimeline;
-
     [SerializeField] GameObject wepon;
-
-    // スティック角度
-    private float degree;
-
-    public bool isGrounded;
-
     [SerializeField] WarpConntroller warpConntroller;
     [SerializeField] PlayerLockOn playerLockOn;
-
     [SerializeField] PlayerAttackController playerAttack;
+
+    // 地面に接しているか
+    public bool isGrounded;
+    // 現在のステート
     public PLAYER_STATE state;
 
     private float lockOnSpeed = 10f;
-    Vector3 beforeGroundVec3;
+    
     // 回避時のスピード
     private float avoidSpeed = 5f;
-
+    // 現在地
     private Vector3 nowPosition;
 
     [SerializeField] PlayerData playerData;
     [SerializeField] BattleSceneManager sceneManager;
-    
+    [SerializeField] PlayerConversant playerConversant;
+    [SerializeField] RotationObjects rotationObjects;
     // プレイヤーが死んでいるか
     bool playerDead;
 
+    // 覚醒中かどうか
+    private bool isAwakening;
+    public bool IsAwakening
+    {
+        get
+        {
+            return isAwakening;
+        }
+        set
+        {
+            isAwakening = value;
+        }
+    }
 
     public enum PLAYER_STATE
     {
         TOWN,    // 村にいるとき
         BATTLE,  // 戦闘時
-        //DAMAGE,
-        RESULT
+        RESULT,
+        ENDING
     }
-    [SerializeField] PlayerConversant playerConversant;
     /// <summary>
     /// 開始処理
     /// </summary>
     private void Awake()
     {
+        isAwakening = false;
         playerDead = false;
         isGrounded = true;
         AttackOff();
-        // cameraController = Camera.main.GetComponent<CameraController>();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
@@ -100,57 +108,53 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if(playerData.PlayerCurrentHp<=0&&!playerDead&& state != PLAYER_STATE.RESULT)
-        {
-            playerDead = true;
-            state = PLAYER_STATE.RESULT;
-            animator.SetTrigger("Dead");
-            StartCoroutine(sceneManager.DeadResultStart());
+        if (playerData.PlayerCurrentHp <= 0 && !playerDead && state != PLAYER_STATE.RESULT)
+        {// Hpが0
+            PlayerDead();
         }
-        else 
+        //　ジャンプ力をアニメーションパラメータに設定（要修正）
+        animator.SetFloat("FoolSpeed", rigidbody.velocity.y);
+        animator.SetBool("isGround", isGrounded);
+
+        //接地判定
+        isGrounded = CheckGrounded();
+        if (isGrounded)
         {
-           
-            //　ジャンプ力をアニメーションパラメータに設定（要修正）
-            animator.SetFloat("FoolSpeed", rigidbody.velocity.y);
-            animator.SetBool("isGround", isGrounded);
-            SticeAngle();
+            animator.SetFloat("FoolSpeed", 0f);
+        }
+        if (attack == true || avoid == true || playerConversant.isTaking)
+        {
+            // 攻撃中はy軸の力を発生させない
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
+            RotaionOff();
+            MoveOff();
+        }
+        else
+        {
+            MoveOn();
+            RotaionOn();
+        }
+        //  移動処理
+        if (mov)
+        {
+            Move();
+        }
 
-            //接地判定
-            isGrounded = CheckGrounded();
-            if (isGrounded)
-            {
-                animator.SetFloat("FoolSpeed", 0f);
-            }
-            if (attack == true || avoid == true || playerConversant.isTaking)
-            {
-                // 攻撃中はy軸の力を発生させない
-                rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
-                RotaionOff();
-                MoveOff();
-            }
-            else
-            {
-                MoveOn();
-                RotaionOn();
-            }
-            //  移動処理
-            if (mov)
-            {
-                Move();
-            }
-
-            if (playerConversant.isTaking)
-            {
-                animator.SetFloat("Speed", 0f);
-            }
+        if (playerConversant.isTaking)
+        {
+            animator.SetFloat("Speed", 0f);
+        }
+        if(isAwakening&&playerData.PlayerCurrentAwake<=0)
+        {
+            rotationObjects.OffRotationObj();
         }
     }
-
+   
     private void FixedUpdate()
     {
+        // 町の時はロックオンできなくする
         if (state != PLAYER_STATE.TOWN)
         {
-
             if (playerLockOn.target != null)
             {
                 animator.SetBool("LockOn", true);
@@ -191,15 +195,23 @@ public class PlayerController : MonoBehaviour
                 Vector3 eulerRotation = transform.rotation.eulerAngles;
                 eulerRotation.x = savedRotation.eulerAngles.x;
                 transform.rotation = Quaternion.Euler(eulerRotation);
-
-
             }
-
             // 回避処理
             Avoid();
+            DecAwakeGage();
         }
     }
 
+    void DecAwakeGage()
+    {
+        if (isAwakening)
+        {
+            playerData.PlayerCurrentAwake -= 0.2f;
+        }
+    }
+    /// <summary>
+    /// シーンの状態判定
+    /// </summary>
     void ChangeState()
     {
         if (GameManager.Instance.nowSceneName == "DemoScene" || GameManager.Instance.nowSceneName == "Test")
@@ -211,12 +223,13 @@ public class PlayerController : MonoBehaviour
             state = PLAYER_STATE.TOWN;
         }
     }
-
+    /// <summary>
+    /// ベースの重力
+    /// </summary>
     private void SetLocalGravity()
     {
         rigidbody.AddForce(new Vector3(0f,-30f,0f), ForceMode.Acceleration);
     }
-
     /// <summary>
     /// 移動処理
     /// </summary>
@@ -238,22 +251,14 @@ public class PlayerController : MonoBehaviour
         // 何も入力していない
         else
         {
-
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
-            //if (playerLockOn.target != null)
-            //{
-            //    transform.LookAt(playerLockOn.target.transform);
-            //}
-        }
-      
-        
+        }    
     }
     /// <summary>
     /// 回転処理
     /// </summary>
     private void Rotation()
     {
-      
         // メインカメラの前方方向のベクトル
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1f, 0f, 1f)).normalized;
         // 方向キーの入力値とカメラの向きから移動方向を決定
@@ -271,7 +276,6 @@ public class PlayerController : MonoBehaviour
             transform.rotation = targetRotation;
         }
     }
-
     /// <summary>
     /// InputSystem反映用
     /// </summary>
@@ -279,7 +283,10 @@ public class PlayerController : MonoBehaviour
     {
         move = new Vector3(context.ReadValue<Vector2>().x, 0f, context.ReadValue<Vector2>().y);
     }
-
+    /// <summary>
+    /// 回避の入力処理
+    /// </summary>
+    /// <param name="context"></param>
     public void OnAvoid(InputAction.CallbackContext context)
     {
         Debug.Log("押された");
@@ -345,7 +352,6 @@ public class PlayerController : MonoBehaviour
                  distanceToGround = hit.distance;
             }
            
-   
             // レイキャストの実行
             if (Physics.Raycast(rayFront, out hitFront, rayFrontDistance))
             {
@@ -369,21 +375,9 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 向きを角度で出せる関数（今のところ未使用）
+    /// 攻撃の入力処理
     /// </summary>
-    void SticeAngle()
-    {
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
-
-        degree = Mathf.Atan2(v, h) * Mathf.Rad2Deg;
-
-        if (degree < 0)
-        {
-            degree += 360;
-        }
-    }
-
+    /// <param name="context"></param>
     public void OnAttack(InputAction.CallbackContext context)
     {
         // 戦闘状態
@@ -398,12 +392,6 @@ public class PlayerController : MonoBehaviour
                         attack = true;
                         playerAttack.StartAttack();
                         StartCoroutine(ComboStart());
-                    }
-                    else
-                    {
-                        //attack = true;
-                        //attackTimeline[4].Play();
-                        //wepon.SetActive(true);
                     }
                 }
             }
@@ -501,6 +489,19 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// プレイヤーの死亡時の処理
+    /// </summary>
+    public void PlayerDead()
+    {
+
+        playerDead = true;
+        state = PLAYER_STATE.RESULT;
+        animator.SetTrigger("Dead");
+        StartCoroutine(sceneManager.DeadResultStart());
+
+    }
+
+    /// <summary>
     /// InputSystem用　ジャンプボタン処理
     /// </summary>
     /// <param name="context"></param>
@@ -516,15 +517,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
- 
-
     /// <summary>
     /// 接地判定
     /// </summary>
     /// <returns>接地 true それ以外falseを返す</returns>
     bool CheckGrounded()
     {
-        //animator.SetFloat("jumpPower",0);
         //放つ光線の初期位置と姿勢
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         //光線の距離(今回カプセルオブジェクトに設定するのでHeight/2 + 0.1以上を設定)
@@ -532,6 +530,7 @@ public class PlayerController : MonoBehaviour
         //Raycastがhitするかどうかで判定レイヤーを指定することも可能
         return Physics.Raycast(ray, distance,layerMask);    
     }
+
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Stage")

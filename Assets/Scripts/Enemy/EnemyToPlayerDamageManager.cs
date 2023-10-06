@@ -1,42 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // エネミーからプレイヤーにダメージを与えた時の処理
 public class EnemyToPlayerDamageManager : MonoBehaviour
 {
-  
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// エネミーからプレイヤーに攻撃
+    /// </summary>
+    /// <param name="col"></param>
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "Player"&&!col.GetComponent<PlayerController>().avoid)
+        // タグがプレイヤーで回避状態でないとき、、または覚醒状態でないとき
+        if (col.tag == "Player" && !col.GetComponent<PlayerController>().avoid)
         {
-            Debug.Log("当たり");
-            
-            col.GetComponent<PlayerData>().PlayerCurrentHp -=10;
-            col.GetComponent<PlayerData>().CurrentHpSlider();
+            if (col.GetComponent<PlayerController>().IsAwakening == false)
+            {
+                // Hpを減らし
+                col.GetComponent<PlayerData>().PlayerCurrentHp -= 10;
+                // スライダーを変更
+                col.GetComponent<PlayerData>().CurrentHpSlider();
+            }
         }
     }
-    void OnTriggerExit(Collider col)
-    {
-        if (col.tag == "Player")
-        {
-            Debug.Log("当たり");
-            //col.GetComponent<PlayerController>().state=PlayerController.PLAYER_STATE.BATTLE;
-        }
-    }
-
+   
+    /// <summary>
+    /// エネミーの武器の当たり判定の表示、非表示
+    /// </summary>
+    /// <param name="on"></param>
     public void SwordCollision(bool on)
     {
         if(on)

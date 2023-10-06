@@ -2893,6 +2893,7 @@ MonoBehaviour:
   optionUi: {fileID: 990451747488495718}
   statusImage: {fileID: 279964408}
   menuMaskImage: {fileID: 1900526153}
+  sceneManager: {fileID: 0}
   OpenMenuPanel: 0
 --- !u!114 &990451747488495718
 MonoBehaviour:

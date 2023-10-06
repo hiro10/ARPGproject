@@ -69,6 +69,8 @@ public class WarpConntroller : MonoBehaviour
 
     Rigidbody rigidbody;
 
+    [SerializeField] PlayerData playerData;
+
     [SerializeField] GameObject swordCollision;
     /// <summary>
     /// 開始処理
@@ -109,15 +111,22 @@ public class WarpConntroller : MonoBehaviour
         }
 
     }
-
+    /// <summary>
+    /// ワープボタンを押したとき
+    /// </summary>
+    /// <param name="context"></param>
     public void OnWarp(InputAction.CallbackContext context)
     {
         WarpPointChack();
-        if (playerController.attack == false&&playerController.avoid==false)
+        if (playerController.state != PlayerController.PLAYER_STATE.TOWN)
         {
-            if (context.started && !isWarp)
+            if (playerController.attack == false && playerController.avoid == false)
             {
-                WarpStart();
+                // ワープ状態でなく、mpも足りてる場合
+                if (context.started && !isWarp && playerData.PlayerCurrentMp>=10)
+                {
+                    WarpStart();
+                }
             }
         }
     }
@@ -128,7 +137,12 @@ public class WarpConntroller : MonoBehaviour
     private void WarpStart()
     {
         isWarp = true;
-      
+
+        if (playerController.IsAwakening == false)
+        {
+            // Mpの減少
+            playerData.PlayerCurrentMp -= 10;
+        }
         // ワープ中はかかる力を０に
         rigidbody.velocity = Vector3.zero;
 

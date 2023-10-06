@@ -372,7 +372,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -1786,7 +1786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11af6a01a0c3f6c42a46a8a9c7d1a13a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waistBone: {fileID: 7521048044634333175}
+  waistBone: {fileID: 7521048044634333175}
   damp: 50
 --- !u!1 &7521048044634424209
 GameObject:

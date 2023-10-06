@@ -45,7 +45,7 @@ public class DirectionMark : MonoBehaviour
         if (GameManager.Instance.nowSceneName == "DemoScene")
         {
             targets.RemoveAll(obj => obj.GetComponent<EnemySpawner>().inPlayer == true);
-
+            
             if (targets.Count <= 0)
             {
                 Destroy(arrowPearent);

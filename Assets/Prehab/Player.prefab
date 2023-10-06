@@ -166,13 +166,14 @@ GameObject:
   - component: {fileID: 813113094}
   - component: {fileID: 813113097}
   - component: {fileID: 813113096}
+  - component: {fileID: 1228379390}
   m_Layer: 6
   m_Name: MinimapIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &813113094
 Transform:
   m_ObjectHideFlags: 0
@@ -238,6 +239,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1228379390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813113093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ffd13afc28e52444b4f63af4194534d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 227429263477507560}
 --- !u!1 &1215887547
 GameObject:
   m_ObjectHideFlags: 0
@@ -13118,7 +13132,6 @@ GameObject:
   - component: {fileID: 227429262646676590}
   - component: {fileID: 227429262646676607}
   - component: {fileID: 227429262646676584}
-  - component: {fileID: 400426740}
   - component: {fileID: 400426741}
   - component: {fileID: 2109991226}
   - component: {fileID: 400426765}
@@ -13237,10 +13250,10 @@ MonoBehaviour:
   - {fileID: 227429263581520654}
   - {fileID: 227429262293615162}
   wepon: {fileID: 1145766313476329073}
-  isGrounded: 0
   warpConntroller: {fileID: 227429262646676607}
   playerLockOn: {fileID: 0}
   playerAttack: {fileID: 400426741}
+  isGrounded: 0
   state: 0
   playerData: {fileID: 400426765}
   sceneManager: {fileID: 0}
@@ -13743,23 +13756,6 @@ MonoBehaviour:
   minFootstepInterval: 0.3
   maxFootstepInterval: 0.8
   player: {fileID: 227429262646676364}
---- !u!114 &400426740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 227429263477832704}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8c1b75ca447c3546b2dd2eb00e198c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 0}
-  neckBone: {fileID: 227429263477500716}
-  detectionRadius: 10
-  maxAngle: 360
-  playerLock: {fileID: 0}
 --- !u!114 &400426741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13823,7 +13819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11af6a01a0c3f6c42a46a8a9c7d1a13a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _waistBone: {fileID: 227429263477441968}
+  waistBone: {fileID: 227429263477479666}
   damp: 20
 --- !u!1 &227429263537421693
 GameObject:
