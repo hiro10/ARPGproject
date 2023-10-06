@@ -290,7 +290,7 @@ public class PlayerController : MonoBehaviour
     public void OnAvoid(InputAction.CallbackContext context)
     {
         Debug.Log("‰Ÿ‚³‚ê‚½");
-        if(context.started)
+        if(context.started&&state == PLAYER_STATE.BATTLE)
         {
             if(!avoid&&isGrounded&&!warpConntroller.isWarp )
             {

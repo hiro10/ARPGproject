@@ -11179,6 +11179,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2109991236}
+    - target: {fileID: 1829793064, guid: 3cb84f406cc8dc946ba93d8ecca34642, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1829793066, guid: 3cb84f406cc8dc946ba93d8ecca34642, type: 3}
       propertyPath: onTrigger.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -11187,6 +11191,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2109991238}
+    - target: {fileID: 1829793069, guid: 3cb84f406cc8dc946ba93d8ecca34642, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1829793069, guid: 3cb84f406cc8dc946ba93d8ecca34642, type: 3}
       propertyPath: m_IsTrigger
       value: 0
