@@ -7,7 +7,9 @@ using DG.Tweening;
 // 剣の当たり判定処
 public class SwordCollider : MonoBehaviour
 {
+    // 判定用のレイヤー
     public LayerMask layerMask;
+    // ヒット時のパーティクル
     public GameObject hitParticle;
     [SerializeField] ConboUiManager conboUi;
     EnemyController enemy;
@@ -17,6 +19,7 @@ public class SwordCollider : MonoBehaviour
     //リセット用のタイムカウント
     [SerializeField] LoadBoss boss;
 
+    [SerializeField] PlayerData player;
 
     // プレイヤーの攻撃がエネミーにあたった時の処理
     private void OnTriggerEnter(Collider other)
@@ -28,6 +31,15 @@ public class SwordCollider : MonoBehaviour
         if(other.gameObject.tag==("Enemy"))
         {
             enemy = other.gameObject.GetComponent<EnemyController>();
+            // 覚醒ゲージを増やす
+            if (player.PlayerCurrentAwake < 100)
+            {
+                player.PlayerCurrentAwake += 10f;
+                if(player.PlayerCurrentAwake > 100)
+                {
+                    player.PlayerCurrentAwake = 100;
+                }
+            }
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
             if(Physics.Raycast(ray,out hit,layerMask))
@@ -39,7 +51,7 @@ public class SwordCollider : MonoBehaviour
             }
             // エネミーのダメージor死亡リアクションのトリガー
            
-            enemy.SetCurrentHp(1);
+            enemy.SetCurrentHp(5);
             int currentHp = enemy.CurrentHp();
             int maxHp = enemy.MaxHp();
             enemy.slider.value = (float)currentHp / (float)maxHp; 

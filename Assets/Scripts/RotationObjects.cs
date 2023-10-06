@@ -12,8 +12,9 @@ public class RotationObjects : MonoBehaviour
 {
     [SerializeField] List<GameObject> rotObjects;
     [SerializeField]bool rotationObj;
-    [SerializeField] GameObject player;
+    [SerializeField] Transform EffectGeneratePos;
     [SerializeField] GameObject playerBoost;
+    [SerializeField] GameObject player;
     [Header("Prefabs")]
     public GameObject particle;
 
@@ -27,7 +28,7 @@ public class RotationObjects : MonoBehaviour
     public Color targetColor;
     public Color defaultColor;
 
-    // Start is called before the first frame update
+   
     void Start()
     {
         // Volumeを取得
@@ -37,29 +38,20 @@ public class RotationObjects : MonoBehaviour
 
         rotationObj = false;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //if(volume==null)
-        //{
-        //    // Volumeを取得
-        //    volume = Camera.main.GetComponent<Volume>();
-        //    // VolumeからVignetteの設定を取得
-        //    volume.profile.TryGet(out vignette);
-        //}
-    }
-
+   
     public void OnROtationObj(InputAction.CallbackContext context)
     {
         Debug.Log("押された");
-        if (context.started)
+        if (context.started&& player.GetComponent<PlayerData>().PlayerCurrentAwake>=100)
         {
-            Instantiate(particle, player.transform.position, Quaternion.identity);
+           
             if (rotationObj == false)
             {
+                // 発生エフェクトの再生
+                Instantiate(particle, EffectGeneratePos.transform.position, Quaternion.identity);
                 // Vignetteの色を変更
-                
+                // プレイヤーの判定を覚醒状態に
+                player.GetComponent<PlayerController>().IsAwakening = true;
                 playerBoost.SetActive(true);
                 SoundManager.instance.PlaySE(SoundManager.SE.RotOn);
                 rotationObj = true;
@@ -74,18 +66,25 @@ public class RotationObjects : MonoBehaviour
             }
             else if (rotationObj == true)
             {
-               
-                playerBoost.SetActive(false);
-                SoundManager.instance.PlaySE(SoundManager.SE.RotOff);
-                rotationObj = false;
-                vignette.color.Override(defaultColor);
-                vignette.smoothness.Override(0.35f);
-                for (int i = 0; i < rotObjects.Count; i++)
-                {
-                    rotObjects[i].GetComponent<RotateUnit>().OffRoitationWepons();
-                }
-
+                OffRotationObj();
             }
+        }
+    }
+
+    public void OffRotationObj()
+    {
+        // 発生エフェクトの再生
+        Instantiate(particle, EffectGeneratePos.transform.position, Quaternion.identity);
+        // プレイヤーの判定を覚醒状態に
+        player.GetComponent<PlayerController>().IsAwakening = false;
+        playerBoost.SetActive(false);
+        SoundManager.instance.PlaySE(SoundManager.SE.RotOff);
+        rotationObj = false;
+        vignette.color.Override(defaultColor);
+        vignette.smoothness.Override(0.35f);
+        for (int i = 0; i < rotObjects.Count; i++)
+        {
+            rotObjects[i].GetComponent<RotateUnit>().OffRoitationWepons();
         }
     }
 }

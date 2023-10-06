@@ -11,8 +11,10 @@ public class VillageSceneManager : MonoBehaviour
     [SerializeField] GameObject gateObj;
     [SerializeField] DistanceCalculator distanceCalculator;
     [SerializeField] SlideUiControl slideUi;
+    
     void Start()
     {
+        SoundManager.instance.PlayBGM(SoundManager.BGM.Town);
         slideUi.UiMove();
         goBattle = false;
     }

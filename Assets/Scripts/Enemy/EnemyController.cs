@@ -9,48 +9,40 @@ public class EnemyController : MonoBehaviour
 {
     // プレイヤーの位置
     private Transform player;
+    // ナビメッシュ
     private NavMeshAgent navMeshAgent;
-
     // プレイヤーを追跡する角度
     private float trackingAngle = 180f; 
-
     // プレイヤーとの最大距離
     private float maxDistance = 10f;
-
     // プレイヤー発見時に赤くなるオブジェクト
     [SerializeField] GameObject findPlayerEffect;
-
     // 現在のエネミーの状態
     public State state;
-
+    // アニメーター
     Animator animator;
-
     // プレイヤーとの距離
     float distanceToPlayer;
-
+    // 最大Hp　　
     private int maxHp;
     // 現在のHp
     private int currentHp;
-    //Sliderを入れる
+    // Hp用Sliderを入れる
     public Slider slider;
-
-    private Rigidbody rb; // 吹っ飛ばすオブジェクトのRigidbody
-    private float forceMagnitude = 5f; // 吹っ飛ばす力の大きさ
-    
-
+    // 吹っ飛ばすオブジェクトのRigidbody
+    private Rigidbody rb;
     // スクリプタブルオブジェクトでステータス管理
     public EnemyStateSo enemyState;
-
+    // シーンマネージャー
     BattleSceneManager sceneManager;
+    //
     public Collider enemyCollider;
 
     // プレイヤーからロックオンされているか？
     public bool lockOn;
 
+    //エネミーからプレイヤーへの攻撃
     [SerializeField] EnemyToPlayerDamageManager damageManager;
-
-    private float actionTimer = 0f;
-    private bool isAttacking = false;
 
     public enum State
     {
@@ -64,6 +56,10 @@ public class EnemyController : MonoBehaviour
         Die,
     }
 
+    /// <summary>
+    /// 開始処理
+    /// 各状態判定用変数の初期化、取得
+    /// </summary>
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -82,10 +78,14 @@ public class EnemyController : MonoBehaviour
         lockOn = false;
     }
 
+    /// <summary>
+    /// 更新処理
+    /// </summary>
     void Update()
     {
         if (player != null)
         {
+            // Hpが0以下なら死亡
             if (currentHp <= 0)
             {
                 Die();
@@ -95,7 +95,6 @@ public class EnemyController : MonoBehaviour
             {
                 // プレイヤーとの距離を計算
                 distanceToPlayer = Vector3.Distance(transform.position, player.position);
-                // Debug.Log("エネミーとプレイヤーの距離" + distanceToPlayer);
 
                 // プレイヤーとの距離が一定以下なら攻撃モードに移行
                 if (distanceToPlayer <= 2f)
@@ -136,7 +135,7 @@ public class EnemyController : MonoBehaviour
     }
 
     /// <summary>
-    /// 初期化処理
+    /// 再初期化処理
     /// </summary>
     private void ResetEnemy()
     {
@@ -146,8 +145,9 @@ public class EnemyController : MonoBehaviour
         slider.value = 1;
         //現在のHPを最大HPと同じに。
         currentHp = maxHp;
+        // 状態を待機に
         state = State.Idle;
-        //navMeshAgent.isStopped = false;
+        // エフェクトを非表示に
         findPlayerEffect.SetActive(false);
         enemyCollider.enabled = true;
         lockOn = false;
@@ -248,15 +248,13 @@ public class EnemyController : MonoBehaviour
         float randomValue = Random.Range(0f, 1f);
         if (randomValue <= 0.2f) // 0.2（20%）以下なら攻撃
         {
-            // 攻撃を選択
-            isAttacking = true;
+           
             animator.SetTrigger("Attack"); // 攻撃アニメーションを再生
-            actionTimer = 2f; // 攻撃アニメーションの長さに合わせるなど、適切な時間を設定
         }
         else
         {
             // 待機を選択
-            animator.SetTrigger("Idle"); // 待機アニメーションを再生
+            Idle(true);
             // 待機時間を設定し、待機アニメーションが終了したら再度ランダムなアクションを開始
             float waitTime = Random.Range(1f, 3f);
             Invoke("StartRandomAction", waitTime);
@@ -278,7 +276,4 @@ public class EnemyController : MonoBehaviour
     {
         return maxHp;
     }
-
-
-
 }

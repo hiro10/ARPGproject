@@ -17,8 +17,11 @@ public class BattleSceneManager : MonoBehaviour
     private int deadCount;
     // エネミーの総撃破数
     private int allEnemyDeadCount;
+    // 制圧エリア数
+    private int clearAreaCount;
     // バトルエリア内か?
     private bool inBossBattleArea;
+    
 
     private bool resultOn;
     public bool Result
@@ -103,6 +106,17 @@ public class BattleSceneManager : MonoBehaviour
             allEnemyDeadCount = value;
         }
     }
+    public int ClearAreaCount
+    {
+        get
+        {
+            return clearAreaCount;
+        }
+        set
+        {
+            clearAreaCount = value;
+        }
+    }
 
     private void Start()
     {
@@ -113,6 +127,8 @@ public class BattleSceneManager : MonoBehaviour
         deadCount = 0;
 
         allEnemyDeadCount = 0;
+
+        clearAreaCount = 0;
 
         resultOn = false;
 
@@ -134,6 +150,11 @@ public class BattleSceneManager : MonoBehaviour
             resultOn = true;
             StartCoroutine(ResultStart());
         }
+        if(deadCount==10&& !inBossBattleArea)
+        {
+            clearAreaCount++;
+        }
+        
     }
 
      IEnumerator ResultStart()
