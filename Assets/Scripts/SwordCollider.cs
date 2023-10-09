@@ -51,11 +51,11 @@ public class SwordCollider : MonoBehaviour
             }
             // エネミーのダメージor死亡リアクションのトリガー
            
-            enemy.SetCurrentHp(5);
+            enemy.SetCurrentHp(4);
             int currentHp = enemy.CurrentHp();
             int maxHp = enemy.MaxHp();
             enemy.slider.value = (float)currentHp / (float)maxHp; 
-            damageUi.ShowDamageIndicator(other.gameObject.transform.position, 999);
+           // damageUi.ShowDamageIndicator(other.gameObject.transform.position, 999);
             if (enemy.CurrentHp() <= 0&&enemy.state!=EnemyController.State.Die)
             {
                 enemy.EnemyDie();

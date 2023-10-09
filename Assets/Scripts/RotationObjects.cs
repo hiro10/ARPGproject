@@ -28,7 +28,7 @@ public class RotationObjects : MonoBehaviour
     public Color targetColor;
     public Color defaultColor;
 
-   
+    [SerializeField] CutInManager cutInManager;
     void Start()
     {
         // Volumeを取得
@@ -47,6 +47,7 @@ public class RotationObjects : MonoBehaviour
            
             if (rotationObj == false)
             {
+                cutInManager.StoryEventTriggered();
                 // 発生エフェクトの再生
                 Instantiate(particle, EffectGeneratePos.transform.position, Quaternion.identity);
                 // Vignetteの色を変更

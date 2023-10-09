@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using DG.Tweening;
 using UnityEngine.InputSystem;
-// 戦闘シーン（主にエネミー）の管理
+// 戦闘シーンの管理
 public class BattleSceneManager : MonoBehaviour
 {
     // 専用シーンの各状況判断用変数
@@ -21,9 +19,13 @@ public class BattleSceneManager : MonoBehaviour
     private int clearAreaCount;
     // バトルエリア内か?
     private bool inBossBattleArea;
-    
-
+    // スタートしたときの時間
+    private float startTime;
+    // 経過時間を格納
+    private int elapsedTimeInSeconds;
+    // リザルト中かの判定
     private bool resultOn;
+
     public bool Result
     {
         get
@@ -42,6 +44,10 @@ public class BattleSceneManager : MonoBehaviour
     [SerializeField] GameObject mainPanel;
     [SerializeField] GameObject player;
     [SerializeField] GameObject resultButtons;
+    // リザルト画面でのスコアテキスト
+    [SerializeField] TextMeshProUGUI resultScoreText;
+    // リザルト画面での時間テキスト
+    [SerializeField] TextMeshProUGUI resultTimeText;
     //プロパティ
     // バトルエリア
     public bool InBattleArea
@@ -120,7 +126,10 @@ public class BattleSceneManager : MonoBehaviour
 
     private void Start()
     {
-        inBattleArea=false;
+        // ゲームが開始した時点の時間を記録
+        startTime = Time.time;
+
+        inBattleArea =false;
 
         spownCount = 0;
 
@@ -145,6 +154,9 @@ public class BattleSceneManager : MonoBehaviour
 
     private void Update()
     {
+        // 現在の時間と開始時間の差分を計算し、秒単位に変換して整数に変換
+        elapsedTimeInSeconds = Mathf.FloorToInt(Time.time - startTime);
+
         if (allEnemyDeadCount >= 40 && !resultOn)
         {
             resultOn = true;
@@ -157,10 +169,17 @@ public class BattleSceneManager : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// クリア時のリザルト
+    /// </summary>
+    /// <returns></returns>
      IEnumerator ResultStart()
     {
         slideUi.SetActive(true);
         resultScorePanel.SetActive(true);
+        // スコア表記
+        resultScoreText.text = Score().ToString();
+        resultTimeText.text = elapsedTimeInSeconds.ToString()+"秒";
         // プレイヤーの入力を受け付けなくする（後で修正）
         player.GetComponent<PlayerInput>().enabled=false;
         mainPanel.SetActive(false);
@@ -172,6 +191,10 @@ public class BattleSceneManager : MonoBehaviour
         resultButtons.SetActive(true);
     }
 
+    /// <summary>
+    /// 死亡時のリザルト
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator DeadResultStart()
     {
         slideUiDead.SetActive(true);
@@ -183,5 +206,19 @@ public class BattleSceneManager : MonoBehaviour
         yield return new WaitForSeconds(4);
         resultButtons.SetActive(true);
     }
-
+    /// <summary>
+    /// スコアを整数で返す関数
+    /// </summary>
+    /// <returns></returns>
+    private int Score()
+    {
+        // TODO:撃破数で判定できるように
+        int score = 4000 - elapsedTimeInSeconds;
+        if (score < 0)
+        {
+            score = 0;
+        }
+        return score;
+        
+    }
 }
