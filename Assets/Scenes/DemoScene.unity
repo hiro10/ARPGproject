@@ -1728,6 +1728,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fd8a5f545f585940bae2a0a9959455a, type: 3}
+--- !u!224 &384993530 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6514566849961689678, guid: 734dff8a79899024ea3ddbd1e3728d23,
+    type: 3}
+  m_PrefabInstance: {fileID: 8482423860649261989}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &393991902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8839,7 +8845,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 39
   m_TargetDisplay: 0
 --- !u!224 &2076866536
 RectTransform:
@@ -10886,7 +10892,7 @@ PrefabInstance:
     - target: {fileID: 1784273038, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
       propertyPath: parent
       value: 
-      objectReference: {fileID: 231943193}
+      objectReference: {fileID: 384993530}
     - target: {fileID: 1784273038, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
       propertyPath: target
       value: 
@@ -10956,6 +10962,42 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 646344183}
+    - target: {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: targetUIPrefab
+      value: 
+      objectReference: {fileID: 4156458985486281085, guid: fda7b3984bcba8946a8dc4f17790b59a,
+        type: 3}
+    - target: {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: targets.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: targets.Array.data[0]
+      value: 
+      objectReference: {fileID: 398911567}
+    - target: {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: targets.Array.data[1]
+      value: 
+      objectReference: {fileID: 1647942132}
+    - target: {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: targets.Array.data[2]
+      value: 
+      objectReference: {fileID: 523200233}
+    - target: {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: targets.Array.data[3]
+      value: 
+      objectReference: {fileID: 906588026}
     - target: {fileID: 2845769214042561834, guid: 734dff8a79899024ea3ddbd1e3728d23,
         type: 3}
       propertyPath: m_IsActive
@@ -11264,6 +11306,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8482423860649261992, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
     - {fileID: 8482423860649261999, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
+    - {fileID: 2004721696410725884, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
 --- !u!114 &8482423860649262005
 MonoBehaviour:
