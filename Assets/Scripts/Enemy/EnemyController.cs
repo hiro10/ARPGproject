@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
     private float attackCooldown = 2.0f; 
     // 毎秒更新の攻撃時間のスパン
     public float attackTimer = 0.0f;
-
+   
     public enum State
     {
         // 待機巡回状態
