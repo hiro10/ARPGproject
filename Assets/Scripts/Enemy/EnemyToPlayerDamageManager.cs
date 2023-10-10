@@ -14,7 +14,11 @@ public class EnemyToPlayerDamageManager : MonoBehaviour
         // タグがプレイヤーで回避状態でないとき、、または覚醒状態でないとき
         if (col.tag == "Player" && !col.GetComponent<PlayerController>().avoid)
         {
-            Instantiate(hitParticle, col.transform.position, Quaternion.identity);
+            // 当たった位置を取得
+            Vector3 collisionPoint = col.ClosestPointOnBounds(transform.position);
+            // 当たった位置にhitエフェクトを表示
+            Instantiate(hitParticle, collisionPoint, Quaternion.identity);
+           
             if (col.GetComponent<PlayerController>().IsAwakening == false)
             {
                 // Hpを減らし
