@@ -204,7 +204,7 @@ public class PlayerController : MonoBehaviour
 
     void DecAwakeGage()
     {
-        if (isAwakening)
+        if (isAwakening&&!GameManager.Instance.isPause)
         {
             playerData.PlayerCurrentAwake -= 0.2f;
         }

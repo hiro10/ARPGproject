@@ -81,6 +81,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         enemyCollider = GetComponent<Collider>();
         lockOn = false;
+       
     }
 
     /// <summary>
@@ -210,7 +211,7 @@ public class EnemyController : MonoBehaviour
     }
 
     // プレイヤーを追いかける処理
-    private void Run()
+    public void Run()
     {
         animator.SetBool("BattleIdle", false);
         state = State.Run;
@@ -268,27 +269,6 @@ public class EnemyController : MonoBehaviour
            
         }
     }
-
-    // ランダムなアクションの開始
-    private void StartRandomAction()
-    {
-        // ランダムに0から1の間の値を取得し、攻撃か待機を選択
-        float randomValue = Random.Range(0f, 1f);
-        if (randomValue <= 0.2f) // 0.2（20%）以下なら攻撃
-        {
-           
-            animator.SetTrigger("Attack"); // 攻撃アニメーションを再生
-        }
-        else
-        {
-            // 待機を選択
-            Idle(true);
-            // 待機時間を設定し、待機アニメーションが終了したら再度ランダムなアクションを開始
-            float waitTime = Random.Range(1f, 3f);
-            Invoke("StartRandomAction", waitTime);
-        }
-    }
-
 
     public int CurrentHp()
     {

@@ -23,6 +23,12 @@ public class DamageReaction : MonoBehaviour
         {
             // 攻撃までの時間をリセット
             enemy.attackTimer = 0f;
+
+            if(enemy.state==EnemyController.State.Idle)
+            {
+                
+            }
+
             // ヒットした攻撃判定の進行方向に向けて体を倒すため、角度を取得
             var bulletAngles = other.transform.eulerAngles;
             // X角度は無視

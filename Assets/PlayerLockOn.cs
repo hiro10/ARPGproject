@@ -32,6 +32,7 @@ public class PlayerLockOn : MonoBehaviour
 
     void Update()
     {
+       
         // 一定距離外に出たらロックオンを外す
         if (target != null)
         {

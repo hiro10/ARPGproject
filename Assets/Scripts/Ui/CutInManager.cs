@@ -27,6 +27,7 @@ public class CutInManager : MonoBehaviour
     /// <returns></returns>
     private async UniTask PlayCutInAsync()
     {
+
         // カットインを右上から中央に移動するアニメーション
         cutInBack.SetActive(true);
         cutInObject.SetActive(true);

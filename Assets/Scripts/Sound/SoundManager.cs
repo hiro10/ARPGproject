@@ -41,7 +41,7 @@ public class SoundManager : MonoBehaviour
         ScreenExpoltion, // ボタンの決定音
         Close, // ボタンの閉じる音
         ShiftThrow,// カウントダウンの音
-        CountZero,// カウント0の音
+        AttackHitSe,// カウント0の音
     }
 
     // シングルトンにする

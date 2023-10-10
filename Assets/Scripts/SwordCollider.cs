@@ -31,6 +31,8 @@ public class SwordCollider : MonoBehaviour
         if(other.gameObject.tag==("Enemy"))
         {
             enemy = other.gameObject.GetComponent<EnemyController>();
+            //ヒット音の再生
+            SoundManager.instance.PlaySE(SoundManager.SE.AttackHitSe);
             // 覚醒ゲージを増やす
             if (player.PlayerCurrentAwake < 100)
             {
