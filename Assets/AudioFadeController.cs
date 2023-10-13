@@ -10,11 +10,13 @@ public class AudioFadeController : MonoBehaviour
     public AudioSource bgmSource2;              // BGMオーディオソース2
     public AudioClip normalBgm;                 // 通常のBGMオーディオクリップ
     public AudioClip battleBgm;                 // バトル用のBGMオーディオクリップ
+    public AudioClip resultBgm;                 // バトル用のBGMオーディオクリップ
     public Collider playerDetectionCollider;    // プレイヤーの索敵用コライダー
     public float baseVolume;
+    [SerializeField]BattleSceneManager sceneManager;
     [SerializeField] string tagName;
     bool hasEnemyInCollider;
-
+    private bool isREsultBgmPlaying = false;
     private bool isBattleBgmPlaying = false;     // バトル用BGMが再生中かどうかのフラグ
     private void Start()
     {
@@ -29,6 +31,11 @@ public class AudioFadeController : MonoBehaviour
     {
         if (playerDetectionCollider != null)
         {
+            if (sceneManager.Result==true)
+            {
+                StartCoroutine(ChageBgm());
+                return;
+            }
             hasEnemyInCollider = false;
             // コライダー内に"Enemy"タグのゲームオブジェクトがあるかチェック
             Collider[] colliders = Physics.OverlapBox(playerDetectionCollider.bounds.center, playerDetectionCollider.bounds.extents, Quaternion.identity);
@@ -41,11 +48,12 @@ public class AudioFadeController : MonoBehaviour
                 }
             }
 
-            StartCoroutine(ChageBgm());
+            StartCoroutine(ChageBattleBgm());
             
         }
+     
     }
-    IEnumerator ChageBgm()
+    IEnumerator ChageBattleBgm()
     {
         if (hasEnemyInCollider && !isBattleBgmPlaying)
         {
@@ -63,6 +71,18 @@ public class AudioFadeController : MonoBehaviour
         }
     }
 
+    IEnumerator ChageBgm()
+    {
+        if (hasEnemyInCollider && !isREsultBgmPlaying)
+        {
+            // バトル用BGMが再生されていない場合、曲をクロスフェードしてバトル用のBGMに変更
+            CrossFadeBgm(resultBgm);
+            yield return new WaitForSeconds(1f);
+            isREsultBgmPlaying = true;
+
+        }
+        
+    }
 
     private void CrossFadeBgm(AudioClip nextBgm)
     {

@@ -19,7 +19,7 @@ public class SwordCollider : MonoBehaviour
     //リセット用のタイムカウント
     [SerializeField] LoadBoss boss;
 
-    [SerializeField] PlayerData player;
+    [SerializeField] GameObject player;
 
     // プレイヤーの攻撃がエネミーにあたった時の処理
     private void OnTriggerEnter(Collider other)
@@ -31,14 +31,22 @@ public class SwordCollider : MonoBehaviour
         if(other.gameObject.tag==("Enemy"))
         {
             enemy = other.gameObject.GetComponent<EnemyController>();
+            //ヒット音の再生
+            SoundManager.instance.PlaySE(SoundManager.SE.AttackHitSe);
             // 覚醒ゲージを増やす
-            if (player.PlayerCurrentAwake < 100)
+            if (player.GetComponent<PlayerData>().PlayerCurrentAwake < 100)
             {
-                player.PlayerCurrentAwake += 10f;
-                if(player.PlayerCurrentAwake > 100)
+                player.GetComponent<PlayerData>().PlayerCurrentAwake += 10f;
+                if (player.GetComponent<PlayerData>().PlayerCurrentAwake >= 100
+                    &&player.GetComponent<PlayerController>().IsAwakening==false)
                 {
-                    player.PlayerCurrentAwake = 100;
+                    SoundManager.instance.PlaySE(SoundManager.SE.GaugeMaxSe);
                 }
+                else if (player.GetComponent<PlayerData>().PlayerCurrentAwake > 100)
+                {
+                    player.GetComponent<PlayerData>().PlayerCurrentAwake = 100;
+                }
+               
             }
             Ray ray = new Ray(transform.position, transform.forward);
             RaycastHit hit;
@@ -51,11 +59,10 @@ public class SwordCollider : MonoBehaviour
             }
             // エネミーのダメージor死亡リアクションのトリガー
            
-            enemy.SetCurrentHp(5);
+            enemy.SetCurrentHp(4);
             int currentHp = enemy.CurrentHp();
             int maxHp = enemy.MaxHp();
             enemy.slider.value = (float)currentHp / (float)maxHp; 
-            damageUi.ShowDamageIndicator(other.gameObject.transform.position, 999);
             if (enemy.CurrentHp() <= 0&&enemy.state!=EnemyController.State.Die)
             {
                 enemy.EnemyDie();

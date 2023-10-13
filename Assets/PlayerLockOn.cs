@@ -32,11 +32,12 @@ public class PlayerLockOn : MonoBehaviour
 
     void Update()
     {
+       
         // 一定距離外に出たらロックオンを外す
         if (target != null)
         {
             // すでにロックオン済みなら解除する
-            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange|| target.activeSelf == false)
+            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange|| target.gameObject.GetComponent<EnemyController>().CurrentHp()<=0)
             {
                 isLockon = false;
                 target = null;

@@ -272,6 +272,62 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &8350988795756162088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6514566849961689678}
+  - component: {fileID: 2004721696410725884}
+  m_Layer: 5
+  m_Name: Icons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6514566849961689678
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8350988795756162088}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8482423860090118778}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2004721696410725884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8350988795756162088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b0b0b9497225824ba751251f361ca89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  targets: []
+  targetUIPrefab: {fileID: 0}
+  worldOffset: {x: 0, y: 0, z: 0}
+  parent: {fileID: 0}
+  distanceText: []
+  playerTransform: {fileID: 0}
 --- !u!1 &8482423859706359064
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +639,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8482423860090118778}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -794,6 +850,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8482423861555525605}
+  - {fileID: 6514566849961689678}
   - {fileID: 8482423860603967420}
   - {fileID: 8482423860077903982}
   - {fileID: 3971841304127021055}
@@ -1139,6 +1196,8 @@ MonoBehaviour:
   optionUi: {fileID: 0}
   statusImage: {fileID: 0}
   menuMaskImage: {fileID: 0}
+  sceneManager: {fileID: 0}
+  OpenMenuPanel: 0
 --- !u!114 &8482423860649261999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1151,9 +1210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e734190b74fd5e346b033e45a95764d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageTextPrefab: {fileID: 3349251534541296850, guid: 4831fd8783120be4c99100c424f5fa9f,
-    type: 3}
-  canvasTransform: {fileID: 8482423860559980210}
+  textMeshProUGUI: {fileID: 0}
+  textAppearDuration: 0.15
+  textDisappearDuration: 0.3
+  textJumpHeight: 30
 --- !u!114 &1784273038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1167,9 +1227,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  target: {fileID: 0}
-  targetUI: {fileID: 1261302192}
+  targets: []
+  targetUIPrefab: {fileID: 0}
   worldOffset: {x: 0, y: 2.5, z: 0}
+  parent: {fileID: 0}
+  distanceText: []
+  playerTransform: {fileID: 0}
 --- !u!1 &8482423860572987583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,7 +1360,7 @@ RectTransform:
   - {fileID: 8482423860572987582}
   - {fileID: 8482423860239796876}
   m_Father: {fileID: 8482423860090118778}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -3814,7 +3877,7 @@ PrefabInstance:
     - target: {fileID: 4803457409583530996, guid: 0fd8a5f545f585940bae2a0a9959455a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4803457409583530996, guid: 0fd8a5f545f585940bae2a0a9959455a,
         type: 3}

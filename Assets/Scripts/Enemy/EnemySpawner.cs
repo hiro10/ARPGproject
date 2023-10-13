@@ -23,7 +23,10 @@ public class EnemySpawner : MonoBehaviour
 
     // シーンマネージャー
     [SerializeField] BattleSceneManager sceneManager;
-    
+
+    // 出現時のパーティクル
+    public GameObject exsistParticle;
+
     /// <summary>
     /// 開始処理
     /// 各状態判定用変数の初期化、取得
@@ -74,6 +77,7 @@ public class EnemySpawner : MonoBehaviour
                         );
                 if (sceneManager.SpownCount < 10)
                 {
+                    Instantiate(exsistParticle, randomPosition, Quaternion.identity);
                     enemy = objectPool.GetPooledEnemy(randomPosition);
                     enemy.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
                     sceneManager.SpownCount++;

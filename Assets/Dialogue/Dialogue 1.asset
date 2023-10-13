@@ -21,6 +21,8 @@ MonoBehaviour:
     y: 191
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &-3239277230533230690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43,6 +45,8 @@ MonoBehaviour:
     y: 194
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: NameAction
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0

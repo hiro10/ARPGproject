@@ -204,9 +204,9 @@ public class PlayerController : MonoBehaviour
 
     void DecAwakeGage()
     {
-        if (isAwakening)
+        if (isAwakening&&!GameManager.Instance.isPause)
         {
-            playerData.PlayerCurrentAwake -= 0.2f;
+            playerData.PlayerCurrentAwake -= 10f*Time.deltaTime;
         }
     }
     /// <summary>
@@ -290,7 +290,7 @@ public class PlayerController : MonoBehaviour
     public void OnAvoid(InputAction.CallbackContext context)
     {
         Debug.Log("‰Ÿ‚³‚ê‚½");
-        if(context.started)
+        if(context.started&&state == PLAYER_STATE.BATTLE)
         {
             if(!avoid&&isGrounded&&!warpConntroller.isWarp )
             {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-// 攻撃ヒット時のリアクション）
+// 攻撃ヒット時のリアクション
 public class DamageReaction : MonoBehaviour
 {
     //のけぞりによるダメージ演出で回転するボーン
@@ -15,24 +15,34 @@ public class DamageReaction : MonoBehaviour
 
     [SerializeField] float damp;
 
+    [SerializeField] EnemyController enemy;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Wepon"&&this.gameObject.tag=="Enemy")
         {
+            // 攻撃までの時間をリセット
+            enemy.attackTimer = 0f;
+
+            if(enemy.state==EnemyController.State.Idle)
+            {
+                
+            }
+
             // ヒットした攻撃判定の進行方向に向けて体を倒すため、角度を取得
             var bulletAngles = other.transform.eulerAngles;
             // X角度は無視
             bulletAngles.x = 0f;
             HitTiltWaist(Quaternion.Euler(bulletAngles) * Vector3.forward);
         }
-        else if((other.gameObject.tag == "EnemysWepon" && this.gameObject.tag == "Player"))
-        {
-            // ヒットした攻撃判定の進行方向に向けて体を倒すため、角度を取得
-            var bulletAngles = other.transform.eulerAngles;
-            // X角度は無視
-            bulletAngles.x = 0f;
-            HitTiltWaist(Quaternion.Euler(bulletAngles) * Vector3.forward);
-        }
+        //else if((other.gameObject.tag == "EnemysWepon" && this.gameObject.tag == "Player"))
+        //{
+        //    // ヒットした攻撃判定の進行方向に向けて体を倒すため、角度を取得
+        //    var bulletAngles = other.transform.eulerAngles;
+        //    // X角度は無視
+        //    bulletAngles.x = 0f;
+        //    HitTiltWaist(Quaternion.Euler(bulletAngles) * Vector3.forward);
+        //}
     }
 
     /// <summary> のけぞり（ボーン回転）によるダメージ演出を再生 </summary>

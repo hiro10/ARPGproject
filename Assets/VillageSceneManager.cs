@@ -11,12 +11,14 @@ public class VillageSceneManager : MonoBehaviour
     [SerializeField] GameObject gateObj;
     [SerializeField] DistanceCalculator distanceCalculator;
     [SerializeField] SlideUiControl slideUi;
+    [SerializeField] GameObject villageNameText;
     
     void Start()
     {
         SoundManager.instance.PlayBGM(SoundManager.BGM.Town);
         slideUi.UiMove();
         goBattle = false;
+        villageNameText.SetActive(false);
     }
     public void GotoBattleScene()
     {
@@ -29,5 +31,10 @@ public class VillageSceneManager : MonoBehaviour
     public bool GetgoBattle()
     {
         return goBattle;
+    }
+
+    public void OpenName()
+    {
+        villageNameText.SetActive(true);
     }
 }

@@ -3,6 +3,8 @@ using UnityEngine;
 // エネミーからプレイヤーにダメージを与えた時の処理
 public class EnemyToPlayerDamageManager : MonoBehaviour
 {
+    // ヒット時のパーティクル
+    public GameObject hitParticle;
     /// <summary>
     /// エネミーからプレイヤーに攻撃
     /// </summary>
@@ -12,6 +14,12 @@ public class EnemyToPlayerDamageManager : MonoBehaviour
         // タグがプレイヤーで回避状態でないとき、、または覚醒状態でないとき
         if (col.tag == "Player" && !col.GetComponent<PlayerController>().avoid)
         {
+           // col.gameObject.GetComponent<Animator>().SetTrigger("Damage");
+            // 当たった位置を取得
+            Vector3 collisionPoint = col.ClosestPointOnBounds(transform.position);
+            // 当たった位置にhitエフェクトを表示
+            Instantiate(hitParticle, collisionPoint, Quaternion.identity);
+           
             if (col.GetComponent<PlayerController>().IsAwakening == false)
             {
                 // Hpを減らし

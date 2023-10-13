@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void  OnClickReturnButton()
     {
-        if(GameManager.Instance.sceneName!= GameManager.Instance.nowSceneName)
+      //  if(GameManager.Instance.sceneName!= GameManager.Instance.nowSceneName)
         {
             SceneManager.LoadSceneAsync("LoadScene");
         }
@@ -20,7 +20,7 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void OnClickRetryButton()
     {
-        if (GameManager.Instance.sceneName != GameManager.Instance.nowSceneName)
+        //if (GameManager.Instance.sceneName != GameManager.Instance.nowSceneName)
         {
             SceneManager.LoadSceneAsync("DemoScene");
         }

@@ -44,6 +44,11 @@ public class EnemyController : MonoBehaviour
     //エネミーからプレイヤーへの攻撃
     [SerializeField] EnemyToPlayerDamageManager damageManager;
 
+    // 攻撃のクールダウン時間（秒）
+    private float attackCooldown = 2.0f; 
+    // 毎秒更新の攻撃時間のスパン
+    public float attackTimer = 0.0f;
+   
     public enum State
     {
         // 待機巡回状態
@@ -76,6 +81,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         enemyCollider = GetComponent<Collider>();
         lockOn = false;
+       
     }
 
     /// <summary>
@@ -88,7 +94,9 @@ public class EnemyController : MonoBehaviour
             // Hpが0以下なら死亡
             if (currentHp <= 0)
             {
+              
                 Die();
+                //nemyDie();
             }
 
             else
@@ -99,7 +107,19 @@ public class EnemyController : MonoBehaviour
                 // プレイヤーとの距離が一定以下なら攻撃モードに移行
                 if (distanceToPlayer <= 2f)
                 {
-                    Attack();
+                    attackTimer += Time.deltaTime;
+                    // 攻撃モーション用の待機モーションに切り替え
+                    animator.SetBool("BattleIdle", true);
+                    // 滑り防止でナビメッシュを止める
+                    navMeshAgent.isStopped = true;
+                    // 攻撃待機時間（隙）
+                    if (attackTimer >= attackCooldown)
+                    {
+                        animator.SetBool("BattleIdle", false);
+                        Attack();
+                        attackTimer = 0.0f; // タイマーをリセット
+                    }
+                   
                 }
                 else
                 {
@@ -109,7 +129,7 @@ public class EnemyController : MonoBehaviour
                     // プレイヤーが攻撃範囲内にいるか確認
 
                     // プレイヤーが正面90度以内にいるか確認
-                    if (angle <= trackingAngle / 2f && distanceToPlayer <= maxDistance)
+                    if (angle <= trackingAngle && distanceToPlayer <= maxDistance)
                     {
                         if (!lockOn)
                         {
@@ -147,6 +167,7 @@ public class EnemyController : MonoBehaviour
         currentHp = maxHp;
         // 状態を待機に
         state = State.Idle;
+        AttackCollisionOff();
         // エフェクトを非表示に
         findPlayerEffect.SetActive(false);
         enemyCollider.enabled = true;
@@ -182,17 +203,24 @@ public class EnemyController : MonoBehaviour
             animator.SetTrigger("Idle");
             if (!isBattle)
             {
+                // ナビメッシュを止める
+                navMeshAgent.isStopped = true;
                 // オーラを消す
                 findPlayerEffect.SetActive(false);
             }
-            // ナビメッシュを止める
-            navMeshAgent.isStopped = true;
+            else
+            {
+                // ナビメッシュを止める
+                navMeshAgent.isStopped = true;
+            }
+            
         }
     }
 
     // プレイヤーを追いかける処理
-    private void Run()
+    public void Run()
     {
+        animator.SetBool("BattleIdle", false);
         state = State.Run;
         if (state == State.Run)
         {
@@ -205,24 +233,35 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // 攻撃状態
+    // 攻撃状態の処理
+    // 
     private void Attack()
     {
+        // 攻撃状態に変更
         state = State.Attack;
         if (state == State.Attack)
-        {
+        {   
             animator.SetTrigger("Attack");
-            damageManager.SwordCollision(true);
+            
+            // エネミーからプレイやーへの単位ベクトルを求める
             Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            
             findPlayerEffect.SetActive(true);
             transform.forward = directionToPlayer;
-            navMeshAgent.isStopped = true;
         }
     }
 
-    public void AttackEnd()
+    public void AttackCollisionOn()
+    {
+
+        // 剣の当たり判定を有効に
+        damageManager.SwordCollision(true);
+    }
+    public void AttackCollisionOff()
+
     {
         damageManager.SwordCollision(false);
+        
     }
     // 死亡状態
     private void Die()
@@ -233,34 +272,17 @@ public class EnemyController : MonoBehaviour
             navMeshAgent.enabled = false;
             findPlayerEffect.SetActive(false);
             rb.isKinematic = false;
-            Vector3 forceDirection = -transform.forward; // 吹っ飛ばす方向（例: オブジェクトの前方）
+            // 吹っ飛ばす方向
+            Vector3 forceDirection = -transform.forward;
+            // 吹っ飛ばす処理
             rb.AddForce(Vector3.up * 0.5f, ForceMode.Impulse);
             rb.AddForce(forceDirection, ForceMode.Impulse);
+
             enemyCollider.enabled = false;
             animator.SetTrigger("Die");
-        }
-    }
-
-    // ランダムなアクションの開始
-    private void StartRandomAction()
-    {
-        // ランダムに0から1の間の値を取得し、攻撃か待機を選択
-        float randomValue = Random.Range(0f, 1f);
-        if (randomValue <= 0.2f) // 0.2（20%）以下なら攻撃
-        {
            
-            animator.SetTrigger("Attack"); // 攻撃アニメーションを再生
-        }
-        else
-        {
-            // 待機を選択
-            Idle(true);
-            // 待機時間を設定し、待機アニメーションが終了したら再度ランダムなアクションを開始
-            float waitTime = Random.Range(1f, 3f);
-            Invoke("StartRandomAction", waitTime);
         }
     }
-
 
     public int CurrentHp()
     {
