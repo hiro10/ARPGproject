@@ -31,16 +31,16 @@ public class CutInManager : MonoBehaviour
         // カットインを右上から中央に移動するアニメーション
         cutInBack.SetActive(true);
         cutInObject.SetActive(true);
-        cutInObject.transform.position = new Vector3(Screen.width, Screen.height, 0);
+        cutInObject.transform.position = new Vector3(Screen.width, Screen.height - 100f, 0);
 
         // 右上から中央に移動
-        await cutInObject.transform.DOLocalMove(new Vector3(0f,0f,0f), 0.5f).SetUpdate(true).AsyncWaitForCompletion();
+        await cutInObject.transform.DOLocalMove(new Vector3(0f,-100f,0f), 0.5f).SetUpdate(true).AsyncWaitForCompletion();
 
         // 0.5秒待機
         await UniTask.Delay(500);
 
         // 中央から左下に移動して非表示に
-        await cutInObject.transform.DOLocalMove(new Vector3(-Screen.width, -Screen.height, 0), 0.5f).SetUpdate(true).AsyncWaitForCompletion();
+        //await cutInObject.transform.DOLocalMove(new Vector3(-Screen.width, -Screen.height + 100f, 0), 0.5f).SetUpdate(true).AsyncWaitForCompletion();
         cutInObject.SetActive(false);
         cutInBack.SetActive(false);
     }

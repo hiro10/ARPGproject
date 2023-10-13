@@ -82,7 +82,7 @@ public class PlayerData : MonoBehaviour
         if (playerCurrentMp < playerStatuaData.MAXMP)
         {
             CurrentMpSlider();
-            playerCurrentMp+=0.02f;
+            playerCurrentMp+=2f*Time.deltaTime;
         }
         if (playerCurrentAwake <= 100)
         {

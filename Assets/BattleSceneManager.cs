@@ -175,6 +175,7 @@ public class BattleSceneManager : MonoBehaviour
     /// <returns></returns>
      IEnumerator ResultStart()
     {
+       // SoundManager.instance.PlayBGM(SoundManager.BGM.ResultMusic);
         slideUi.SetActive(true);
         resultScorePanel.SetActive(true);
         // スコア表記
@@ -186,7 +187,7 @@ public class BattleSceneManager : MonoBehaviour
         resultPanel.SetActive(true);
         slideUi.GetComponent<SlideUiControl>().UiMove();
         yield return new WaitForSeconds(2);
-        resultScorePanel.GetComponent<SlideUiControl>().UiMove();
+        resultScorePanel.GetComponent<ResultUiMove>().ResultScoreUYiMove();
         yield return new WaitForSeconds(2);
         resultButtons.SetActive(true);
     }

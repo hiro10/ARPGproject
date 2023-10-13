@@ -129,7 +129,7 @@ public class EnemyController : MonoBehaviour
                     // プレイヤーが攻撃範囲内にいるか確認
 
                     // プレイヤーが正面90度以内にいるか確認
-                    if (angle <= trackingAngle / 2f && distanceToPlayer <= maxDistance)
+                    if (angle <= trackingAngle && distanceToPlayer <= maxDistance)
                     {
                         if (!lockOn)
                         {
@@ -167,6 +167,7 @@ public class EnemyController : MonoBehaviour
         currentHp = maxHp;
         // 状態を待機に
         state = State.Idle;
+        AttackCollisionOff();
         // エフェクトを非表示に
         findPlayerEffect.SetActive(false);
         enemyCollider.enabled = true;
@@ -202,11 +203,17 @@ public class EnemyController : MonoBehaviour
             animator.SetTrigger("Idle");
             if (!isBattle)
             {
+                // ナビメッシュを止める
+                navMeshAgent.isStopped = true;
                 // オーラを消す
                 findPlayerEffect.SetActive(false);
             }
-            // ナビメッシュを止める
-            navMeshAgent.isStopped = true;
+            else
+            {
+                // ナビメッシュを止める
+                navMeshAgent.isStopped = true;
+            }
+            
         }
     }
 
@@ -235,8 +242,7 @@ public class EnemyController : MonoBehaviour
         if (state == State.Attack)
         {   
             animator.SetTrigger("Attack");
-            // 剣の当たり判定を有効に
-            damageManager.SwordCollision(true);
+            
             // エネミーからプレイやーへの単位ベクトルを求める
             Vector3 directionToPlayer = (player.position - transform.position).normalized;
             
@@ -245,9 +251,17 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    public void AttackEnd()
+    public void AttackCollisionOn()
+    {
+
+        // 剣の当たり判定を有効に
+        damageManager.SwordCollision(true);
+    }
+    public void AttackCollisionOff()
+
     {
         damageManager.SwordCollision(false);
+        
     }
     // 死亡状態
     private void Die()

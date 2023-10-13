@@ -37,7 +37,7 @@ public class PlayerLockOn : MonoBehaviour
         if (target != null)
         {
             // ‚·‚Å‚ÉƒƒbƒNƒIƒ“Ï‚Ý‚È‚ç‰ðœ‚·‚é
-            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange|| target.activeSelf == false)
+            if (Vector3.Distance(target.transform.position, originTrn.position) >= lockonRange|| target.gameObject.GetComponent<EnemyController>().CurrentHp()<=0)
             {
                 isLockon = false;
                 target = null;

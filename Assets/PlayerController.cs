@@ -206,7 +206,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isAwakening&&!GameManager.Instance.isPause)
         {
-            playerData.PlayerCurrentAwake -= 0.2f;
+            playerData.PlayerCurrentAwake -= 10f*Time.deltaTime;
         }
     }
     /// <summary>

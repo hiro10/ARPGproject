@@ -27,7 +27,8 @@ public class SoundManager : MonoBehaviour
         Field,
         Boss1,
         Boss2,
-        Town
+        Town,
+        ResultMusic
     }
 
     /// <summary>
@@ -41,7 +42,8 @@ public class SoundManager : MonoBehaviour
         ScreenExpoltion, // ボタンの決定音
         Close, // ボタンの閉じる音
         ShiftThrow,// カウントダウンの音
-        AttackHitSe,// カウント0の音
+        AttackHitSe,// プレイヤーからエネミーへの攻撃の音
+        GaugeMaxSe,
     }
 
     // シングルトンにする

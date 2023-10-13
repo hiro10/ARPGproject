@@ -6,11 +6,19 @@ using TMPro;
 
 public class NpcVoiceImage : MonoBehaviour
 {
+    // プレイヤーの位置
+    [SerializeField] Transform player;
     [SerializeField] private TextMeshProUGUI textMeshProUGUI;
 
     [SerializeField] private float textAppearDuration = 0.15f;
     [SerializeField] private float textDisappearDuration = 0.3f;
     [SerializeField] private float textJumpHeight = 30f;
+
+
+    // 表示する最大距離
+    private float maxDistance = 20f;
+    // 実際の距離
+    private float distance;
 
     private void Start()
     {
@@ -20,7 +28,18 @@ public class NpcVoiceImage : MonoBehaviour
 
     private void Update()
     {
+        //プレイヤーとオブジェクトの距離の計算
+        distance = Vector3.Distance(transform.position, player.transform.position);
 
+        if (maxDistance < distance)
+        {
+            // SetActiveより軽い
+            textMeshProUGUI.enabled = false;
+        }
+        else
+        {
+            textMeshProUGUI.enabled = true;
+        }
     }
 
 
