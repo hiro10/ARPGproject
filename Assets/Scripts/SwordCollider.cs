@@ -41,6 +41,7 @@ public class SwordCollider : MonoBehaviour
                     &&player.GetComponent<PlayerController>().IsAwakening==false)
                 {
                     SoundManager.instance.PlaySE(SoundManager.SE.GaugeMaxSe);
+                    player.GetComponent<PlayerData>().PlayerCurrentAwake = 100;
                 }
                 else if (player.GetComponent<PlayerData>().PlayerCurrentAwake > 100)
                 {

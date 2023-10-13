@@ -241,7 +241,15 @@ public class WarpConntroller : MonoBehaviour
       
         // アニメーションを止める
         animator.speed = 0f;
-
+        // 覚醒中か否かでシフトの移動時間を変える
+        if(player.GetComponent<PlayerController>().IsAwakening)
+        {
+            warpDuration = 0.25f;
+        }
+        else
+        {
+            warpDuration = 0.5f;
+        }
         // シフトする際にレイを飛ばして当たった位置を取得して、その位置の手前にシフトする
         // ワープ処理：イーじんぐ処理後で理解
         gameObject.GetComponent<Rigidbody>().DOMove(targetPos, warpDuration).SetEase(Ease.InExpo).OnComplete(() => FinshWarp());

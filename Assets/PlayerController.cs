@@ -241,16 +241,25 @@ public class PlayerController : MonoBehaviour
         moveForward = cameraForward * move.z + Camera.main.transform.right * move.x;
         moveForward = moveForward.normalized;
         var speedw = Mathf.Abs(rigidbody.velocity.z);
-        // 移動速度をアニメーターに反映
-        animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
-
-        if (move.magnitude>0)
+        
+        if (move.magnitude>0&&isAwakening==false)
         {
+            // 移動速度をアニメーターに反映
+            animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
+
             rigidbody.velocity = moveForward * moveSpeed * move.magnitude + new Vector3(0, rigidbody.velocity.y, 0);
+        }
+        else if (move.magnitude > 0 && isAwakening == true)
+        {
+            // 移動速度をアニメーターに反映
+            animator.SetFloat("Speed", 1.5f, 0.1f, Time.deltaTime);
+
+            rigidbody.velocity = moveForward * moveSpeed*2 * move.magnitude + new Vector3(0, rigidbody.velocity.y, 0);
         }
         // 何も入力していない
         else
         {
+            animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
         }    
     }
@@ -334,6 +343,14 @@ public class PlayerController : MonoBehaviour
     {
         if (avoid == true)
         {
+            if(IsAwakening)
+            {
+                avoidSpeed = 10f;
+            }
+            else
+            {
+                avoidSpeed = 5f;
+            }
             
             Vector3 playerForwardUp= (transform.forward + transform.up).normalized;
             Vector3 playerForwardDown = Vector3.zero;//= (transform.forward - transform.up).normalized;
