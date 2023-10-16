@@ -11045,7 +11045,7 @@ PrefabInstance:
     - target: {fileID: 1784273038, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
       propertyPath: parent
       value: 
-      objectReference: {fileID: 1784273039}
+      objectReference: {fileID: 1784273037}
     - target: {fileID: 1784273038, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
       propertyPath: target
       value: 
@@ -11085,6 +11085,21 @@ PrefabInstance:
       objectReference: {fileID: 1485583313}
     - target: {fileID: 1785382992, guid: 734dff8a79899024ea3ddbd1e3728d23, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482423859873545725, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482423859873545725, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482423860090118779, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8482423860559980210, guid: 734dff8a79899024ea3ddbd1e3728d23,
@@ -11205,6 +11220,16 @@ PrefabInstance:
     - target: {fileID: 8482423860649261994, guid: 734dff8a79899024ea3ddbd1e3728d23,
         type: 3}
       propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482423861676193348, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482423861676193348, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8661714792496968263, guid: 734dff8a79899024ea3ddbd1e3728d23,
@@ -17567,6 +17592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitParticle: {fileID: 1320159948884684472, guid: 066433724cef4a94783920ec25f36ac6,
     type: 3}
+  hitParticleAwake: {fileID: 0}
 --- !u!114 &4404197322799851486
 MonoBehaviour:
   m_ObjectHideFlags: 0

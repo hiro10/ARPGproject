@@ -44,6 +44,9 @@ public class SoundManager : MonoBehaviour
         ShiftThrow,// カウントダウンの音
         AttackHitSe,// プレイヤーからエネミーへの攻撃の音
         GaugeMaxSe,
+        EnemyAttack1,//エネミーのナイフ攻撃
+        PlaterAwakeGardSe,// 覚醒時にダメージSE
+        EnemyAttack2,//プレイヤーのダメージモーション時のSe
     }
 
     // シングルトンにする

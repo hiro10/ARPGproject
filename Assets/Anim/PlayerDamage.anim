@@ -35709,8 +35709,8 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.75
-    functionName: DamageEnd
+  - time: 0.96666664
+    functionName: DamageAnimEnd
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

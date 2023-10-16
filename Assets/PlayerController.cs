@@ -55,12 +55,18 @@ public class PlayerController : MonoBehaviour
     // 現在地
     private Vector3 nowPosition;
 
+    // ダメージを受ける最大回数
+    public int currentHitDamageCount = 0;
+
     [SerializeField] PlayerData playerData;
     [SerializeField] BattleSceneManager sceneManager;
     [SerializeField] PlayerConversant playerConversant;
     [SerializeField] RotationObjects rotationObjects;
     // プレイヤーが死んでいるか
     bool playerDead;
+
+    // ダメージモーション中か
+    bool damage; 
 
     // 覚醒中かどうか
     private bool isAwakening;
@@ -91,11 +97,14 @@ public class PlayerController : MonoBehaviour
         isAwakening = false;
         playerDead = false;
         isGrounded = true;
+        damage = false;
         AttackOff();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
         wepon.SetActive(false);
+        currentHitDamageCount = 0;
+
     }
 
     private void Start()
@@ -129,7 +138,7 @@ public class PlayerController : MonoBehaviour
             RotaionOff();
             MoveOff();
         }
-        else
+        else if (damage == false)
         {
             MoveOn();
             RotaionOn();
@@ -201,6 +210,8 @@ public class PlayerController : MonoBehaviour
             DecAwakeGage();
         }
     }
+
+
 
     void DecAwakeGage()
     {
@@ -496,6 +507,22 @@ public class PlayerController : MonoBehaviour
         coumboCount = 0;
     }
 
+    public void Damage()
+    {
+        if(!damage&&currentHitDamageCount==5)
+        {
+            SoundManager.instance.PlaySE(SoundManager.SE.EnemyAttack2);
+            damage = true;
+            animator.SetTrigger("Damage");
+            MoveOff();
+        }
+    }
+
+    public void DamageAnimEnd()
+    {
+        currentHitDamageCount = 0;
+        damage = false;
+    }
     /// <summary>
     ///  jumpの処理（アニメーションクリップにて実行）
     /// </summary>

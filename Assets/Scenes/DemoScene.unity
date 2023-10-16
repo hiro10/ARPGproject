@@ -9527,6 +9527,11 @@ PrefabInstance:
       objectReference: {fileID: 549335813}
     - target: {fileID: 227429262646676364, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
         type: 3}
+      propertyPath: hitCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 227429262646676364, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
+        type: 3}
       propertyPath: renderer
       value: 
       objectReference: {fileID: 2074428917}
@@ -9555,6 +9560,11 @@ PrefabInstance:
       propertyPath: rotationObjects
       value: 
       objectReference: {fileID: 2002986534}
+    - target: {fileID: 227429262646676366, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 227429262646676367, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
         type: 3}
       propertyPath: m_Interpolate
