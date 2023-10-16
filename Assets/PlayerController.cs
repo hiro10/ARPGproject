@@ -55,12 +55,18 @@ public class PlayerController : MonoBehaviour
     // 現在地
     private Vector3 nowPosition;
 
+    // ダメージを受ける最大回数
+    public int currentHitDamageCount = 0;
+
     [SerializeField] PlayerData playerData;
     [SerializeField] BattleSceneManager sceneManager;
     [SerializeField] PlayerConversant playerConversant;
     [SerializeField] RotationObjects rotationObjects;
     // プレイヤーが死んでいるか
     bool playerDead;
+
+    // ダメージモーション中か
+    bool damage; 
 
     // 覚醒中かどうか
     private bool isAwakening;
@@ -91,11 +97,14 @@ public class PlayerController : MonoBehaviour
         isAwakening = false;
         playerDead = false;
         isGrounded = true;
+        damage = false;
         AttackOff();
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
         wepon.SetActive(false);
+        currentHitDamageCount = 0;
+
     }
 
     private void Start()
@@ -129,7 +138,7 @@ public class PlayerController : MonoBehaviour
             RotaionOff();
             MoveOff();
         }
-        else
+        else if (damage == false)
         {
             MoveOn();
             RotaionOn();
@@ -202,6 +211,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+
     void DecAwakeGage()
     {
         if (isAwakening&&!GameManager.Instance.isPause)
@@ -241,16 +252,25 @@ public class PlayerController : MonoBehaviour
         moveForward = cameraForward * move.z + Camera.main.transform.right * move.x;
         moveForward = moveForward.normalized;
         var speedw = Mathf.Abs(rigidbody.velocity.z);
-        // 移動速度をアニメーターに反映
-        animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
-
-        if (move.magnitude>0)
+        
+        if (move.magnitude>0&&isAwakening==false)
         {
+            // 移動速度をアニメーターに反映
+            animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
+
             rigidbody.velocity = moveForward * moveSpeed * move.magnitude + new Vector3(0, rigidbody.velocity.y, 0);
+        }
+        else if (move.magnitude > 0 && isAwakening == true)
+        {
+            // 移動速度をアニメーターに反映
+            animator.SetFloat("Speed", 1.5f, 0.1f, Time.deltaTime);
+
+            rigidbody.velocity = moveForward * moveSpeed*2 * move.magnitude + new Vector3(0, rigidbody.velocity.y, 0);
         }
         // 何も入力していない
         else
         {
+            animator.SetFloat("Speed", move.magnitude, 0.1f, Time.deltaTime);
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
         }    
     }
@@ -334,6 +354,14 @@ public class PlayerController : MonoBehaviour
     {
         if (avoid == true)
         {
+            if(IsAwakening)
+            {
+                avoidSpeed = 10f;
+            }
+            else
+            {
+                avoidSpeed = 5f;
+            }
             
             Vector3 playerForwardUp= (transform.forward + transform.up).normalized;
             Vector3 playerForwardDown = Vector3.zero;//= (transform.forward - transform.up).normalized;
@@ -479,6 +507,22 @@ public class PlayerController : MonoBehaviour
         coumboCount = 0;
     }
 
+    public void Damage()
+    {
+        if(!damage&&currentHitDamageCount==5)
+        {
+            SoundManager.instance.PlaySE(SoundManager.SE.EnemyAttack2);
+            damage = true;
+            animator.SetTrigger("Damage");
+            MoveOff();
+        }
+    }
+
+    public void DamageAnimEnd()
+    {
+        currentHitDamageCount = 0;
+        damage = false;
+    }
     /// <summary>
     ///  jumpの処理（アニメーションクリップにて実行）
     /// </summary>
