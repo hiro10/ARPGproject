@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using Cysharp.Threading.Tasks;
 // 戦闘シーンの管理
 public class BattleSceneManager : MonoBehaviour
 {
@@ -152,15 +153,14 @@ public class BattleSceneManager : MonoBehaviour
         slideUiDead.SetActive(false);
     }
 
-    private void Update()
+     private async void Update()
     {
         // 現在の時間と開始時間の差分を計算し、秒単位に変換して整数に変換
         elapsedTimeInSeconds = Mathf.FloorToInt(Time.time - startTime);
 
         if (allEnemyDeadCount >= 40 && !resultOn)
         {
-            resultOn = true;
-            StartCoroutine(ResultStart());
+            StartResult();
         }
         if(deadCount==10&& !inBossBattleArea)
         {
@@ -168,27 +168,41 @@ public class BattleSceneManager : MonoBehaviour
         }
         
     }
+    private async void StartResult()
+    {
+        resultOn = true;
+
+        // ここでResultStartメソッドを呼び出し、非同期待機する
+        await ResultStart();
+
+        // ResultStartメソッドが完了した後の処理をここに追加できます
+    }
+
+   　public async void StartDeadResult()
+    {
+        // ここでResultStartメソッドを呼び出し、非同期待機する
+        await DeadResultStart();
+    }
 
     /// <summary>
     /// クリア時のリザルト
     /// </summary>
     /// <returns></returns>
-     IEnumerator ResultStart()
+    private async UniTask ResultStart()
     {
-       // SoundManager.instance.PlayBGM(SoundManager.BGM.ResultMusic);
-        slideUi.SetActive(true);
+      slideUi.SetActive(true);
         resultScorePanel.SetActive(true);
         // スコア表記
         resultScoreText.text = Score().ToString();
-        resultTimeText.text = elapsedTimeInSeconds.ToString()+"秒";
+        resultTimeText.text = elapsedTimeInSeconds.ToString() + "秒";
         // プレイヤーの入力を受け付けなくする（後で修正）
-        player.GetComponent<PlayerInput>().enabled=false;
+        player.GetComponent<PlayerInput>().enabled = false;
         mainPanel.SetActive(false);
         resultPanel.SetActive(true);
         slideUi.GetComponent<SlideUiControl>().UiMove();
-        yield return new WaitForSeconds(2);
+        await UniTask.Delay(2000); // 2秒待機
         resultScorePanel.GetComponent<ResultUiMove>().ResultScoreUYiMove();
-        yield return new WaitForSeconds(2);
+        await UniTask.Delay(2000); // 2秒待機
         resultButtons.SetActive(true);
     }
 
@@ -196,7 +210,7 @@ public class BattleSceneManager : MonoBehaviour
     /// 死亡時のリザルト
     /// </summary>
     /// <returns></returns>
-    public IEnumerator DeadResultStart()
+    private async UniTask DeadResultStart()
     {
         slideUiDead.SetActive(true);
         // プレイヤーの入力を受け付けなくする（後で修正）
@@ -204,7 +218,7 @@ public class BattleSceneManager : MonoBehaviour
         mainPanel.SetActive(false);
         resultPanel.SetActive(true);
         slideUiDead.GetComponent<SlideUiControl>().UiMove();
-        yield return new WaitForSeconds(4);
+        await UniTask.Delay(4000); // 4秒待機
         resultButtons.SetActive(true);
     }
     /// <summary>
