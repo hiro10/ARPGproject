@@ -47,6 +47,7 @@ public class SoundManager : MonoBehaviour
         EnemyAttack1,//エネミーのナイフ攻撃
         PlaterAwakeGardSe,// 覚醒時にダメージSE
         EnemyAttack2,//プレイヤーのダメージモーション時のSe
+        HealingSe,// 回復SE
     }
 
     // シングルトンにする

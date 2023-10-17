@@ -1878,6 +1878,8 @@ MonoBehaviour:
   lockOn: 0
   damageManager: {fileID: 8216447683854699514}
   attackTimer: 0
+  gameOverPrefab: {fileID: 6025666682211987613, guid: d6f023fef7fd31244a120e79ce1b99f0,
+    type: 3}
 --- !u!195 &-4378413135045677326
 NavMeshAgent:
   m_ObjectHideFlags: 0

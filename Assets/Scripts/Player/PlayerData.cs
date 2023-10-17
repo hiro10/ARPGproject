@@ -9,6 +9,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] StatuaData playerStatuaData;
     [SerializeField] PlayerController player;
     private int playerCurrentHp;
+    private int playerMaxHp;
     private float playerCurrentMp;
     public int PlayerCurrentHp
     {
@@ -19,6 +20,13 @@ public class PlayerData : MonoBehaviour
         set
         {
             playerCurrentHp = value;
+        }
+    }
+    public int PlayerMaxHp
+    {
+        get
+        {
+            return playerMaxHp;
         }
     }
 
@@ -73,6 +81,7 @@ public class PlayerData : MonoBehaviour
         playerDead = false;
         playerNameText.text = playerStatuaData.NAME;
         playerCurrentHp = playerStatuaData.MAXHP;
+        playerMaxHp = playerStatuaData.MAXHP;
         playerCurrentMp = playerStatuaData.MAXMP;
         playerHpText.text = playerCurrentHp.ToString();
         playerCurrentAwake = 0;

@@ -48,7 +48,10 @@ public class EnemyController : MonoBehaviour
     private float attackCooldown = 2.0f; 
     // 毎秒更新の攻撃時間のスパン
     public float attackTimer = 0.0f;
-   
+    // 死亡時の位置
+    private Vector3 deadPosition;
+    // エネミー死亡時に生成する回復アイテム
+    public GameObject gameOverPrefab; 
     public enum State
     {
         // 待機巡回状態
@@ -94,7 +97,6 @@ public class EnemyController : MonoBehaviour
             // Hpが0以下なら死亡
             if (currentHp <= 0)
             {
-              
                 Die();
                 //nemyDie();
             }
@@ -178,8 +180,16 @@ public class EnemyController : MonoBehaviour
     // エネミー死亡
     public void EnemyDie()
     {
-        navMeshAgent.enabled = false;
-        state = State.Die;
+        // 10パーセントの確率で回復薬を生成
+        if (Random.value <= 0.25f)
+        {
+            deadPosition = transform.position;
+            deadPosition.y += 1f;
+            if (gameOverPrefab != null)
+            {
+                Instantiate(gameOverPrefab, deadPosition, Quaternion.identity);
+            }
+        }
         sceneManager.DeadCount++;
         sceneManager.AllEnemyDeadCount++;
     }
@@ -269,6 +279,7 @@ public class EnemyController : MonoBehaviour
         state = State.Die;
         if (state == State.Die)
         {
+           
             navMeshAgent.enabled = false;
             findPlayerEffect.SetActive(false);
             rb.isKinematic = false;
