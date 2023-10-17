@@ -1599,6 +1599,27 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 227429263706553066}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &362687676 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8482423860529146335, guid: 734dff8a79899024ea3ddbd1e3728d23,
+    type: 3}
+  m_PrefabInstance: {fileID: 8482423860649261989}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &362687678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362687676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92477774122b2d74a837369edf969edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpSlider: {fileID: 588937763}
+  normalImage: {fileID: 21300000, guid: 1e80290e3ebe8134393519fa240daabc, type: 3}
+  crisisImage: {fileID: 21300000, guid: a6dfbb9022c54d340b3fd5aced213c91, type: 3}
 --- !u!1 &368402845 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4803457409583530997, guid: 0fd8a5f545f585940bae2a0a9959455a,
@@ -5405,12 +5426,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 231943193}
-  m_RootOrder: 7
+  m_Father: {fileID: 1383772009}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 169.3, y: 299.1}
+  m_AnchoredPosition: {x: 111.96001, y: -14.596741}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1096923610
@@ -6538,6 +6559,7 @@ RectTransform:
   m_Children:
   - {fileID: 1109421346}
   - {fileID: 1724019927}
+  - {fileID: 1051183778}
   m_Father: {fileID: 231943193}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11646,6 +11668,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8482423860365902264, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerHpGauge
+      objectReference: {fileID: 0}
     - target: {fileID: 8482423860365902266, guid: 734dff8a79899024ea3ddbd1e3728d23,
         type: 3}
       propertyPath: m_Type
@@ -11675,6 +11702,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 340
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482423860529146335, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerHpImage
       objectReference: {fileID: 0}
     - target: {fileID: 8482423860559980210, guid: 734dff8a79899024ea3ddbd1e3728d23,
         type: 3}
@@ -11811,6 +11843,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'MpSlider '
       objectReference: {fileID: 0}
+    - target: {fileID: 8482423860603967421, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerPlayGamePanel
+      objectReference: {fileID: 0}
     - target: {fileID: 8482423860603967423, guid: 734dff8a79899024ea3ddbd1e3728d23,
         type: 3}
       propertyPath: m_Enabled
@@ -11865,6 +11902,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 339.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482423861643854381, guid: 734dff8a79899024ea3ddbd1e3728d23,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8482423861676193348, guid: 734dff8a79899024ea3ddbd1e3728d23,
         type: 3}
