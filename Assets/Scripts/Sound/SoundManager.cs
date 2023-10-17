@@ -40,7 +40,7 @@ public class SoundManager : MonoBehaviour
         RotOff,   // ボールに触れた時
         ScreenCrash, // 爆弾が爆発するとき
         ScreenExpoltion, // ボタンの決定音
-        Close, // ボタンの閉じる音
+        WarpAttack, // ワープ攻撃の音
         ShiftThrow,// カウントダウンの音
         AttackHitSe,// プレイヤーからエネミーへの攻撃の音
         GaugeMaxSe,

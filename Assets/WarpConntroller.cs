@@ -5,6 +5,7 @@ using DG.Tweening;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using UnityEngine.Rendering.PostProcessing;
+using Cysharp.Threading.Tasks;
 
 // ワープ攻撃処理
 
@@ -317,16 +318,16 @@ public class WarpConntroller : MonoBehaviour
 
         gameObjectcam.SetActive(true);
 
-
-
-        
-        StartCoroutine(StopParticles());
+        // パーティクルを止める
+        StopParticles();
+        // アニメーションスピードを戻す
         animator.speed = 1f;
         sword.gameObject.SetActive(false);
 
+        // ターゲットがいる場合
         if (controller.target != null)
         {
-            SoundManager.instance.PlaySE(SoundManager.SE.Close);
+            SoundManager.instance.PlaySE(SoundManager.SE.WarpAttack);
             swordCollision.SetActive(true);
             target.DOMove(targetPos + transform.forward, .1f);
 
@@ -360,14 +361,19 @@ public class WarpConntroller : MonoBehaviour
             smr.material.SetVector("_FresnelAmount", new Vector4(x, x, x, x));
         }
     }
+    private async void StopParticles()
+    {
+        await StopParticlesUniTask();
+    }
 
     /// <summary>
     /// パーティクルを止める
     /// </summary>
     /// <returns></returns>
-    IEnumerator StopParticles()
+    private async UniTask StopParticlesUniTask()
     {
-        yield return new WaitForSeconds(.2f);
+        // 0.2秒待機
+        await UniTask.Delay(200); 
         warpSlash.SetActive(false);
         blueTrail.Stop();
         whiteTrail.Stop();

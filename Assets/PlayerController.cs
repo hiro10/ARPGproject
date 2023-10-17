@@ -537,12 +537,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void PlayerDead()
     {
-
         playerDead = true;
         state = PLAYER_STATE.RESULT;
         animator.SetTrigger("Dead");
-        StartCoroutine(sceneManager.DeadResultStart());
-
+        sceneManager.StartDeadResult();
     }
 
     /// <summary>
