@@ -5078,6 +5078,11 @@ PrefabInstance:
       objectReference: {fileID: 2109991250}
     - target: {fileID: 227429262646676364, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
         type: 3}
+      propertyPath: healEffect
+      value: 
+      objectReference: {fileID: 100008, guid: c315731710b634ac1907e6aceca06447, type: 3}
+    - target: {fileID: 227429262646676364, guid: 2b2e3607f3459d54fbea9e3156e4f66e,
+        type: 3}
       propertyPath: playerLockOn
       value: 
       objectReference: {fileID: 0}
@@ -17613,6 +17618,7 @@ MonoBehaviour:
   lockOn: 0
   damageManager: {fileID: 4380678214652931226}
   attackTimer: 0
+  gameOverPrefab: {fileID: 0}
 --- !u!1 &4794354511052345645
 GameObject:
   m_ObjectHideFlags: 0
