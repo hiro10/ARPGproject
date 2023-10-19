@@ -114,8 +114,6 @@ MonoBehaviour:
   homingSpeed: 20
   rotationSpeed: 180
   waitTime: 3
-  vfxPrefab: {fileID: 1648332890146770549, guid: 397bca523241d0a4e8105c93d67a2ce8,
-    type: 3}
 --- !u!1001 &3745944147083761359
 PrefabInstance:
   m_ObjectHideFlags: 0

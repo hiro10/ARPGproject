@@ -30,8 +30,13 @@ public class LoadingScene : MonoBehaviour
         {
             async = SceneManager.LoadSceneAsync("Village");
         }
-        else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName == "Test" || GameManager.Instance.sceneName=="")
+        else if(GameManager.Instance.sceneName == "DemoScene"
+            || GameManager.Instance.sceneName == "Test" 
+            || GameManager.Instance.sceneName==""
+            ||(GameManager.Instance.sceneName == "Village"
+            && GameManager.Instance.isGameOver == true))
         {
+            GameManager.Instance.isGameOver = false;
             async = SceneManager.LoadSceneAsync("Title");
         }
         else if(GameManager.Instance.sceneName == "Village")

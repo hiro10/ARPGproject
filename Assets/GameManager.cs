@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
     // ポーズ中か?
     public bool isPause;
 
+    // ゲームオーバーしたか?
+    public bool isGameOver=false;
+
     /// <summary>
     ///  シングルトン化
     /// </summary>

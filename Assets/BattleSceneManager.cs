@@ -153,7 +153,7 @@ public class BattleSceneManager : MonoBehaviour
         slideUiDead.SetActive(false);
     }
 
-     private async void Update()
+     private void Update()
     {
         // 現在の時間と開始時間の差分を計算し、秒単位に変換して整数に変換
         elapsedTimeInSeconds = Mathf.FloorToInt(Time.time - startTime);
