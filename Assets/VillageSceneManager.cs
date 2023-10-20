@@ -5,6 +5,7 @@ using DG.Tweening;
 using TMPro;
 using Cysharp.Threading.Tasks;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 public class VillageSceneManager : MonoBehaviour
 {
     private bool goBattle;
@@ -19,13 +20,15 @@ public class VillageSceneManager : MonoBehaviour
     // プレイヤー
     [SerializeField] GameObject player;
     // ゲームオーバー時の背景
-    [SerializeField] GameObject mainPanel;
+    [SerializeField] GameObject gameOverPanel;
     // リザルトボタン
     [SerializeField] GameObject resultButtons;
     // ゲームオーバーテキスト
     [SerializeField] TextMeshProUGUI gameOverText;
     // リザルト中かの判定
     private bool resultOn;
+    Image image;
+    Color color;
     void Start()
     {
         SoundManager.instance.PlayBGM(SoundManager.BGM.Town);
@@ -33,7 +36,11 @@ public class VillageSceneManager : MonoBehaviour
         goBattle = false;
         villageNameText.SetActive(false);
         slideUiGameOver.SetActive(false);
-        mainPanel.SetActive(false);
+       
+        image = gameOverPanel.GetComponent<Image>();
+        color = image.color;
+        color.a = 0f;
+        gameOverPanel.SetActive(false);
         resultButtons.SetActive(false);
         gameOverText.alpha = 0f;
     }
@@ -71,12 +78,13 @@ public class VillageSceneManager : MonoBehaviour
         player.GetComponent<PlayerInput>().enabled = false;
 
         GameManager.Instance.isGameOver = true;
-        mainPanel.SetActive(true);
+        gameOverPanel.SetActive(true);
+        image.DOFade(1.0f, 2f);
         await UniTask.Delay(1000); // 1秒待機
         gameOverText.DOFade(1.0f, 2f);
         await UniTask.Delay(4000); // 4秒待機
         gameOverText.DOFade(0.0f, 2f);
-        await UniTask.Delay(2000); // 4秒待機
+        await UniTask.Delay(1000); // 4秒待機
         slideUiGameOver.SetActive(true);
        
         slideUiGameOver.GetComponent<SlideUiControl>().UiMove();

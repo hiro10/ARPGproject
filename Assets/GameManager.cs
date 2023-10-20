@@ -18,7 +18,10 @@ public class GameManager : MonoBehaviour
     public bool isPause;
 
     // ゲームオーバーしたか?
-    public bool isGameOver=false;
+    public bool isGameOver = false;
+
+    // ゲームクリアしたか?
+    public bool isGameClear = false;
 
     /// <summary>
     ///  シングルトン化
