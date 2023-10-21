@@ -13,7 +13,9 @@ public class NpcVoiceImage : MonoBehaviour
     [SerializeField] private float textAppearDuration = 0.15f;
     [SerializeField] private float textDisappearDuration = 0.3f;
     [SerializeField] private float textJumpHeight = 30f;
-
+    [SerializeField] GameObject sword;
+    // アニメ
+    [SerializeField] Animator animator;
 
     // 表示する最大距離
     private float maxDistance = 20f;
@@ -24,6 +26,13 @@ public class NpcVoiceImage : MonoBehaviour
     {
         //textMeshProUGUI.text = string.Empty;
         textMeshProUGUI.DOFade(0, 0);
+
+        if(GameManager.Instance.isGameClear)
+        {
+            animator.SetBool("GameClear",true);
+            textMeshProUGUI.text = "♪～";
+            sword.SetActive(false);
+        }
     }
 
     private void Update()
@@ -46,7 +55,7 @@ public class NpcVoiceImage : MonoBehaviour
     public void TakeDamage()
     {
         textMeshProUGUI.DOFade(0, 0);
-        //textMeshProUGUI.text = "ハァー！";
+        
 
         var tmpAnimator = new DOTweenTMPAnimator(textMeshProUGUI);
 

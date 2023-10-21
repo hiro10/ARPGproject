@@ -10,6 +10,17 @@ public class ChengDialog : MonoBehaviour
     // 会話用ダイアログ（交換用）
     [SerializeField] Dialogue dialogue = null;
 
+    // クリア会話用ダイアログ（交換用）
+    [SerializeField] Dialogue dialogueClear = null;
+
+    private void Start()
+    {
+        if(GameManager.Instance.isGameClear)
+        {
+            aIConversant.dialogue = dialogueClear;
+        }
+    }
+
     public void  Changelog()
     {
         aIConversant.dialogue = dialogue;
