@@ -26,12 +26,19 @@ public class LoadingScene : MonoBehaviour
     IEnumerator LoadScene()
     {
         yield return null;
-        if (GameManager.Instance.sceneName == "Title")
+        if (GameManager.Instance.sceneName == "Title"
+            || (GameManager.Instance.sceneName == "DemoScene"&&GameManager.Instance.isGameClear))
         {
             async = SceneManager.LoadSceneAsync("Village");
         }
-        else if(GameManager.Instance.sceneName == "DemoScene"|| GameManager.Instance.sceneName == "Test" || GameManager.Instance.sceneName=="")
+        else if(GameManager.Instance.sceneName == "DemoScene"
+            || GameManager.Instance.sceneName == "Test" 
+            || GameManager.Instance.sceneName==""
+            ||(GameManager.Instance.sceneName == "Village"
+            && (GameManager.Instance.isGameOver == true)|| (GameManager.Instance.isGameClear == true)))
         {
+            GameManager.Instance.isGameOver = false;
+            GameManager.Instance.isGameClear = false;
             async = SceneManager.LoadSceneAsync("Title");
         }
         else if(GameManager.Instance.sceneName == "Village")

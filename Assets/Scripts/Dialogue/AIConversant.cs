@@ -8,7 +8,7 @@ namespace ARPG.Dialogue
     public class AIConversant : MonoBehaviour
     {
         // 会話用ダイアログ（話す会話）
-        [SerializeField] Dialogue dialogue = null;
+        public Dialogue dialogue = null;
         // キャラネーム
         [SerializeField] string conversantName;
         // プレイヤーの取得

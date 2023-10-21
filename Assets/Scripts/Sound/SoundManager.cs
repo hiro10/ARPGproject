@@ -28,7 +28,8 @@ public class SoundManager : MonoBehaviour
         Boss1,
         Boss2,
         Town,
-        ResultMusic
+        ResultMusic,
+        TownClear // クリア後の村のBGM
     }
 
     /// <summary>

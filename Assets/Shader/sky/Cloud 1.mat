@@ -99,7 +99,7 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _CloudAlpha: 4.45
-    - _CloudPawer: -0.26
+    - _CloudPawer: 0
     - _CloudScale: 120
     - _Cull: 2
     - _Cutoff: 0.5

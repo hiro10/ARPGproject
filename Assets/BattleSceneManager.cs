@@ -44,11 +44,13 @@ public class BattleSceneManager : MonoBehaviour
     [SerializeField] GameObject resultScorePanel;
     [SerializeField] GameObject mainPanel;
     [SerializeField] GameObject player;
-    [SerializeField] GameObject resultButtons;
+    [SerializeField] GameObject resultGameOverButtons;
+    [SerializeField] GameObject resultGameClearButtons;
     // リザルト画面でのスコアテキスト
     [SerializeField] TextMeshProUGUI resultScoreText;
     // リザルト画面での時間テキスト
     [SerializeField] TextMeshProUGUI resultTimeText;
+    [SerializeField] GameObject endMove;
     //プロパティ
     // バトルエリア
     public bool InBattleArea
@@ -144,16 +146,20 @@ public class BattleSceneManager : MonoBehaviour
 
         resultPanel.SetActive(false);
 
-        resultButtons.SetActive(false);
+        resultGameOverButtons.SetActive(false);
+
+        resultGameClearButtons.SetActive(false);
 
         slideUi.SetActive(false);
 
         resultScorePanel.SetActive(false);
 
         slideUiDead.SetActive(false);
+
+        endMove.SetActive(false);
     }
 
-     private async void Update()
+     private void Update()
     {
         // 現在の時間と開始時間の差分を計算し、秒単位に変換して整数に変換
         elapsedTimeInSeconds = Mathf.FloorToInt(Time.time - startTime);
@@ -190,20 +196,28 @@ public class BattleSceneManager : MonoBehaviour
     /// <returns></returns>
     private async UniTask ResultStart()
     {
-      slideUi.SetActive(true);
+        // 晴れるムーボー開始
+        endMove.SetActive(true);
+        // プレイヤーの入力を受け付けなくする（後で修正）
+        player.GetComponent<PlayerInput>().enabled = false;
+        // 6秒待機
+        await UniTask.Delay(6000);
+        // スクロール開始
+        slideUi.SetActive(true);
+        // スコアパネル表示
         resultScorePanel.SetActive(true);
         // スコア表記
         resultScoreText.text = Score().ToString();
         resultTimeText.text = elapsedTimeInSeconds.ToString() + "秒";
-        // プレイヤーの入力を受け付けなくする（後で修正）
-        player.GetComponent<PlayerInput>().enabled = false;
+        
         mainPanel.SetActive(false);
         resultPanel.SetActive(true);
         slideUi.GetComponent<SlideUiControl>().UiMove();
         await UniTask.Delay(2000); // 2秒待機
         resultScorePanel.GetComponent<ResultUiMove>().ResultScoreUYiMove();
         await UniTask.Delay(2000); // 2秒待機
-        resultButtons.SetActive(true);
+        GameManager.Instance.isGameClear = true;
+        resultGameClearButtons.SetActive(true);
     }
 
     /// <summary>
@@ -219,7 +233,7 @@ public class BattleSceneManager : MonoBehaviour
         resultPanel.SetActive(true);
         slideUiDead.GetComponent<SlideUiControl>().UiMove();
         await UniTask.Delay(4000); // 4秒待機
-        resultButtons.SetActive(true);
+        resultGameOverButtons.SetActive(true);
     }
     /// <summary>
     /// スコアを整数で返す関数

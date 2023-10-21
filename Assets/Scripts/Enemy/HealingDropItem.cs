@@ -2,20 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 // エネミー死亡後にドロップする回復薬の処理
 public class HealingDropItem : MonoBehaviour
 {
-    public float homingSpeed = 5f;  // 回復アイテムの移動速度
-    public float rotationSpeed = 180f;  // 回転速度
-    public float healAmount = 20f;  // 回復量
-    public float waitTime = 3f;  // 待機時間
-
-    private Transform player;  // プレイヤーの位置
+    // 回復アイテムの移動速度
+    public float homingSpeed = 5f;
+    // 回転速度
+    public float rotationSpeed = 180f;
+    // 待機時間
+    public float waitTime = 3f;
+    // プレイヤーの位置
+    private Transform player;
+    // ホーミングしているか
     private bool isHoming = false;
+    // 待ち時間
     private float waitTimer = 0;
+
 
     private void Start()
     {
+        // プレイヤーの取得
         player = GameObject.FindGameObjectWithTag("Player").transform;
         if (player == null)
         {
@@ -26,6 +33,7 @@ public class HealingDropItem : MonoBehaviour
 
     private void Update()
     {
+        // 停止している処理
         if (waitTimer < waitTime)
         {
             waitTimer += Time.deltaTime;
@@ -50,17 +58,22 @@ public class HealingDropItem : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            other.GetComponent<PlayerController>().StartEffect();
+            // SE再生
             SoundManager.instance.PlaySE(SoundManager.SE.HealingSe);
             // プレイヤーに当たったら回復し、アイテムを破壊
-            PlayerData playerHealth = other.GetComponent<PlayerData>();
-            if (playerHealth != null)
+            PlayerData player = other.GetComponent<PlayerData>();
+            if (player != null)
             {
-                playerHealth.PlayerCurrentHp+=100;
-                if(playerHealth.PlayerCurrentHp> playerHealth.PlayerMaxHp)
+                // プレイヤーを回復
+                player.PlayerCurrentHp+=100;
+                // Hpが最大値より大きくなれば
+                if(player.PlayerCurrentHp> player.PlayerMaxHp)
                 {
-                    playerHealth.PlayerCurrentHp = playerHealth.PlayerMaxHp;
+                    player.PlayerCurrentHp = player.PlayerMaxHp;
                 }
-                playerHealth.CurrentHpSlider();
+                // スライダーへの反映
+                player.CurrentHpSlider();
                 Destroy(gameObject);
             }
         }

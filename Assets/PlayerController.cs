@@ -70,6 +70,9 @@ public class PlayerController : MonoBehaviour
 
     // 覚醒中かどうか
     private bool isAwakening;
+
+    // 回復パーティクルエフェクト
+    [SerializeField] GameObject healEffect;
     public bool IsAwakening
     {
         get
@@ -103,6 +106,7 @@ public class PlayerController : MonoBehaviour
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         animator = GetComponent<Animator>();
         wepon.SetActive(false);
+        healEffect.SetActive(false);
         currentHitDamageCount = 0;
 
     }
@@ -586,6 +590,13 @@ public class PlayerController : MonoBehaviour
         {
             nowPosition= transform.position;
         }
+    }
+
+    public void StartEffect()
+    {
+
+        healEffect.SetActive(true);
+
     }
 
     // タイムライン呼び出し用

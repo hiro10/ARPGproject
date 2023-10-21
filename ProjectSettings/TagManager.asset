@@ -12,6 +12,7 @@ TagManager:
   - EnemySpownArea
   - BattleSceneManager
   - EnemysWepon
+  - HealItem
   layers:
   - Default
   - TransparentFX

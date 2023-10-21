@@ -22,7 +22,7 @@ public class MenuManager : MonoBehaviour
     {
         //if (GameManager.Instance.sceneName != GameManager.Instance.nowSceneName)
         {
-            SceneManager.LoadSceneAsync("DemoScene");
+            SceneManager.LoadSceneAsync(GameManager.Instance.nowSceneName);
         }
     }
 }
