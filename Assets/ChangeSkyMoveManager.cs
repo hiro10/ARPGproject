@@ -14,7 +14,7 @@ public class ChangeSkyMoveManager : MonoBehaviour
     void Start()
     {
         // DOTween.To(() => _smoothness, x => startValue = x, 2f, 5f);
-        GameManager.Instance.isMovePlaying = true;
+        
     }
 
     // Update is called once per frame
@@ -28,5 +28,10 @@ public class ChangeSkyMoveManager : MonoBehaviour
     {
         GameManager.Instance.isMovePlaying = false;
         _mat.SetFloat("_CloudPawer", 0);
+    }
+
+    public void StartEndMove()
+    {
+        GameManager.Instance.isMovePlaying = true;
     }
 }

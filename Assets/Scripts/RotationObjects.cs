@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
+
 
 /// <summary>
 /// 回転オブジェクトの処理（将来的には覚醒機能の処理）
@@ -18,24 +17,8 @@ public class RotationObjects : MonoBehaviour
     [Header("Prefabs")]
     public GameObject particle;
 
-    // カメラにアタッチされているPost Processing Volume
-    [SerializeField]private Volume volume;
-
-    // Vignetteの設定
-    private Vignette vignette;
-
-    // 変更するVignetteの色
-    public Color targetColor;
-    public Color defaultColor;
-
-    [SerializeField] CutInManager cutInManager;
     void Start()
     {
-        // Volumeを取得
-        volume = Camera.main.GetComponent<Volume>();
-        // VolumeからVignetteの設定を取得
-        volume.profile.TryGet(out vignette);
-
         rotationObj = false;
     }
    
@@ -47,7 +30,6 @@ public class RotationObjects : MonoBehaviour
            
             if (rotationObj == false)
             {
-                cutInManager.StoryEventTriggered();
                 // 発生エフェクトの再生
                 Instantiate(particle, EffectGeneratePos.transform.position, Quaternion.identity);
                 // Vignetteの色を変更
@@ -56,8 +38,10 @@ public class RotationObjects : MonoBehaviour
                 playerBoost.SetActive(true);
                 SoundManager.instance.PlaySE(SoundManager.SE.RotOn);
                 rotationObj = true;
-                vignette.color.Override(targetColor);
-                vignette.smoothness.Override(1f);
+              
+                
+
+
                 for (int i = 0; i < rotObjects.Count; i++)
                 {
                     rotObjects[i].GetComponent<RotateUnit>().OnRoitationWepons();
@@ -81,11 +65,12 @@ public class RotationObjects : MonoBehaviour
         playerBoost.SetActive(false);
         SoundManager.instance.PlaySE(SoundManager.SE.RotOff);
         rotationObj = false;
-        vignette.color.Override(defaultColor);
-        vignette.smoothness.Override(0.35f);
+        
         for (int i = 0; i < rotObjects.Count; i++)
         {
             rotObjects[i].GetComponent<RotateUnit>().OffRoitationWepons();
         }
     }
+
+  
 }

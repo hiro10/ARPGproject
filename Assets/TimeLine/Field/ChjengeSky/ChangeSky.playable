@@ -115,7 +115,8 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: Active
   m_Markers:
-    m_Objects: []
+    m_Objects:
+    - {fileID: 5427079048759101832}
   m_PostPlaybackState: 3
 --- !u!114 &-1393851547241523700
 MonoBehaviour:
@@ -606,6 +607,22 @@ MonoBehaviour:
     m_DisplayName: CM FreeLook1 (1)
   m_Markers:
     m_Objects: []
+--- !u!114 &5427079048759101832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
+  m_Name: Signal Emitter
+  m_EditorClassIdentifier: 
+  m_Time: 0
+  m_Retroactive: 0
+  m_EmitOnce: 0
+  m_Asset: {fileID: 11400000, guid: c39526c8eadb2cc49a7c67edd4a4d740, type: 2}
 --- !u!114 &6212235209178780998
 MonoBehaviour:
   m_ObjectHideFlags: 1
