@@ -2,85 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// プレイヤーの足音を鳴らすクラス
+/// </summary>
 public class FootSePlayer : MonoBehaviour
 {
-    [SerializeField]
-    AudioSource audioSource;
-    [SerializeField]
-    AudioClip footstepSound;
-    [SerializeField]
-    Transform footTransform;
-    [SerializeField]
-    float raycastDistance = 0.1f;
-    [SerializeField]
-    LayerMask groundLayers = 0;
-    [SerializeField]
-    float minFootstepInterval = 0.5f;
-     [SerializeField]
-    float maxFootstepInterval = 0.8f;
-
-    bool timerIsActive = false;
-    WaitForSeconds footstepWait;
+    [SerializeField] AudioClip[] clips;
+    [SerializeField] float pitchRange = 0.1f;
+    protected AudioSource source;
     [SerializeField] PlayerController player;
-    void Start()
+    private void Awake()
     {
-        footstepWait = new WaitForSeconds(minFootstepInterval);
+        source = GetComponents<AudioSource>()[0];
     }
 
-    private void LateUpdate()
+    /// <summary>
+    /// プレイヤーの足音を鳴らす
+    /// アニメーションクリップとして使用
+    /// TODO:プレイヤー処理変更時に更新
+    /// </summary>
+    public void PlayWalkFootstepSE()
+    {
+        if ((player.move.magnitude > 0.1f&& player.move.magnitude <= 0.5f) && player.isGrounded)
+        {
+            source.pitch = 1.0f + Random.Range(-pitchRange, pitchRange);
+            source.PlayOneShot(clips[Random.Range(0, clips.Length)]);
+        }
+      
+    }
+
+    public void PlayRunFootstepSE()
+    {
+        if (player.move.magnitude > 0.5f && player.isGrounded)
+        {
+            source.pitch = 1.0f + Random.Range(-pitchRange, pitchRange);
+            source.PlayOneShot(clips[Random.Range(0, clips.Length)]);
+        }
+    }
+    public void PlayJumpFootstepSE()
     {
         if (player.isGrounded)
         {
-            if (player.move.magnitude > 0)
-            {
-                
-                CheckGroundStatus();
-            }
+            source.pitch = 1.0f + Random.Range(-pitchRange, pitchRange);
+            source.PlayOneShot(clips[Random.Range(0, clips.Length)]);
         }
-        else
-        {
-            timerIsActive = true;
-        }
-    }
-
-    void CheckGroundStatus()
-    {
-        if (player.move.magnitude > 0.7f)
-        {
-            footstepWait = new WaitForSeconds(minFootstepInterval);
-        }
-        else if (player.move.magnitude <= 0.7f)
-        {
-            footstepWait = new WaitForSeconds(maxFootstepInterval);
-        }
-        if (timerIsActive)
-        {
-            return;
-        }
-
-        bool isGrounded = Physics.Raycast(footTransform.position, new Vector3(0,-0.1f,0), raycastDistance, groundLayers, QueryTriggerInteraction.Ignore);
-
-        if (player.isGrounded)
-        {
-            PlayFootstepSound();
-        }
-
-        StartCoroutine(nameof(FootstepTimer));
-        
-    }
-
-    void PlayFootstepSound()
-    {
-        audioSource.PlayOneShot(footstepSound);
-    }
-
-    IEnumerator FootstepTimer()
-    {
-        timerIsActive = true;
-
-        yield return footstepWait;
-
-        timerIsActive = false;
-        yield return null;
     }
 }
