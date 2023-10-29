@@ -27,6 +27,9 @@ public class EnemySpawner : MonoBehaviour
     // 出現時のパーティクル
     public GameObject exsistParticle;
 
+    // オフセットの大きさ
+    private float offset = 0.5f;      
+
     /// <summary>
     /// 開始処理
     /// 各状態判定用変数の初期化、取得
@@ -71,21 +74,21 @@ public class EnemySpawner : MonoBehaviour
                 // エネミーの生成位置
                 randomPosition = new Vector3
                         (
-                            Random.Range(spawnArea.bounds.min.x, spawnArea.bounds.max.x),
+                            Random.Range(spawnArea.bounds.min.x+ offset, spawnArea.bounds.max.x- offset),
                             1f,
-                            Random.Range(spawnArea.bounds.min.z, spawnArea.bounds.max.z)
+                            Random.Range(spawnArea.bounds.min.z+ offset, spawnArea.bounds.max.z- offset)
                         );
-                if (sceneManager.SpownCount < 10)
+                // 生成値内なら生成
+                if (sceneManager.SpownCount < ENEMY_SPOWE_MAX)
                 {
                     Instantiate(exsistParticle, randomPosition, Quaternion.identity);
                     enemy = objectPool.GetPooledEnemy(randomPosition);
                     enemy.transform.rotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
                     sceneManager.SpownCount++;
                 }
-                
+                // スポーン時間をリセット
                 timeSinceLastSpawn = 0f;
             }
         }
     }
-   
 }

@@ -31,6 +31,8 @@ public class VillageSceneManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI gameClearText;
     // 空模様
     [SerializeField] List<GameObject> sky = new List<GameObject>();
+    // 紙吹雪エフェクト
+    [SerializeField] GameObject kamifubukiEffect;
 
     // リザルト中かの判定
     private bool resultOn;
@@ -43,6 +45,8 @@ public class VillageSceneManager : MonoBehaviour
             sky[0].SetActive(true);
 
             sky[1].SetActive(false);
+
+            kamifubukiEffect.SetActive(false);
             SoundManager.instance.PlayBGM(SoundManager.BGM.Town);
         }
         else
@@ -51,11 +55,22 @@ public class VillageSceneManager : MonoBehaviour
 
             sky[1].SetActive(true);
 
+            kamifubukiEffect.SetActive(true);
+
             SoundManager.instance.PlayBGM(SoundManager.BGM.TownClear);
+        }
+        // 村の名前を教えてくれるNPCに話しかけたかで表示の有無を変える
+        if (GameManager.Instance.onTownName)
+        {
+            villageNameText.SetActive(true);
+        }
+        else
+        {
+            villageNameText.SetActive(false);
         }
         slideUi.UiMove();
         goBattle = false;
-        villageNameText.SetActive(false);
+        
         slideUiGameOver.SetActive(false);
         slideUiGameClear.SetActive(false);
 
@@ -82,6 +97,7 @@ public class VillageSceneManager : MonoBehaviour
 
     public void OpenName()
     {
+        GameManager.Instance.onTownName = true;
         villageNameText.SetActive(true);
     }
 

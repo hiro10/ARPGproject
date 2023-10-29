@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+
 public class LoadingScene : MonoBehaviour
 {
     [SerializeField] private GameObject _loadingUI;
@@ -11,7 +14,7 @@ public class LoadingScene : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _text;
     private AsyncOperation async;
     
-    private void Start()
+    private async void Start()
     {
         if(Time.timeScale!=1)
         {
@@ -20,32 +23,29 @@ public class LoadingScene : MonoBehaviour
 
         GameManager.Instance.nowSceneName = SceneManager.GetActiveScene().name;
         _loadingUI.SetActive(true);
-        StartCoroutine(LoadScene());
+        await LoadScene();
         _text.text = "読み込み中";
     }
-    IEnumerator LoadScene()
+    async UniTask LoadScene()
     {
-        yield return null;
-        if (GameManager.Instance.sceneName == "Title"
-            || (GameManager.Instance.sceneName == "DemoScene"&&GameManager.Instance.isGameClear))
+        await UniTask.Yield(); // コルーチンの最初のyield return nullをUnitaskに変換
+
+        if (GameManager.Instance.sceneName == "Title" || (GameManager.Instance.sceneName == "DemoScene" && GameManager.Instance.isGameClear))
         {
             async = SceneManager.LoadSceneAsync("Village");
         }
-        else if(GameManager.Instance.sceneName == "DemoScene"
-            || GameManager.Instance.sceneName == "Test" 
-            || GameManager.Instance.sceneName==""
-            ||(GameManager.Instance.sceneName == "Village"
-            && (GameManager.Instance.isGameOver == true)|| (GameManager.Instance.isGameClear == true)))
+        else if (GameManager.Instance.sceneName == "DemoScene" || GameManager.Instance.sceneName == "Test" || GameManager.Instance.sceneName == "" || (GameManager.Instance.sceneName == "Village" && (GameManager.Instance.isGameOver == true) || (GameManager.Instance.isGameClear == true)))
         {
             GameManager.Instance.isGameOver = false;
             GameManager.Instance.isGameClear = false;
+            GameManager.Instance.onTownName = false;
             async = SceneManager.LoadSceneAsync("Title");
         }
-        else if(GameManager.Instance.sceneName == "Village")
+        else if (GameManager.Instance.sceneName == "Village")
         {
             async = SceneManager.LoadSceneAsync("DemoScene");
         }
-        
+
         async.allowSceneActivation = false;
         while (!async.isDone)
         {
@@ -53,10 +53,10 @@ public class LoadingScene : MonoBehaviour
             if (async.progress >= 0.9f)
             {
                 _text.text = "読み込み完了";
-                yield return new WaitForSeconds(0.3f);
-                    async.allowSceneActivation = true;
+                await UniTask.Delay(300); // コルーチンのyield return new WaitForSecondsをUnitaskに変換
+                async.allowSceneActivation = true;
             }
-            yield return null;
+            await UniTask.Yield();
         }
     }
 

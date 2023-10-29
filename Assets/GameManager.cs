@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     // ゲームクリアしたか?
     public bool isGameClear = false;
 
+    // 村の名前を教えてくれるNpcと会話したかの判定
+    public bool onTownName = false; 
+
     /// <summary>
     ///  シングルトン化
     /// </summary>

@@ -20,8 +20,6 @@ public class PlayerLockOn : MonoBehaviour
 
     Camera mainCamera;
     Transform cameraTrn;
-    
-
 
     void Start()
     {

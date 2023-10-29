@@ -85,4 +85,9 @@ public class FullScreenEfectManager : MonoBehaviour
     {
         fillScreenMat.SetFloat("_FullScreenIntensity", volume);
     }
+
+    private void OnDestroy()
+    {
+        ChengeFullScreenEffect(0f);
+    }
 }

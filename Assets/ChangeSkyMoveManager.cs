@@ -4,34 +4,32 @@ using UnityEngine;
 using DG.Tweening;
 public class ChangeSkyMoveManager : MonoBehaviour
 {
-    [SerializeField] private Material _mat;
+    // 変化させる雲シェーダーのマテリアル
+    [SerializeField] private Material cloudMat;
 
-   // [SerializeField] private Color _Maincol;
-
-    private float _smoothness=0f;
-    float startValue = 0f; // 開始値
-    // Start is called before the first frame update
-    void Start()
-    {
-        // DOTween.To(() => _smoothness, x => startValue = x, 2f, 5f);
-        
-    }
-
+    // 濃さの値
+    private float smoothness=0f;
+  
     // Update is called once per frame
     void Update()
     {
-        _smoothness += 0.25f*Time.deltaTime;
-        _mat.SetFloat("_CloudPawer", _smoothness);
+        // 雲の多さを減らす
+        smoothness += 0.4f*Time.deltaTime;
+        cloudMat.SetFloat("_CloudPawer", smoothness);
     }
 
     private void OnDestroy()
     {
         GameManager.Instance.isMovePlaying = false;
-        _mat.SetFloat("_CloudPawer", 0);
+        cloudMat.SetFloat("_CloudPawer", 0);
     }
 
+    /// <summary>
+    /// タイムラインにイベント登録する関数
+    /// </summary>
     public void StartEndMove()
     {
+        // ムーボーが始まったタイミングでゲームマネージャーの値を更新
         GameManager.Instance.isMovePlaying = true;
     }
 }

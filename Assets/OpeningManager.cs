@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.Playables;
 using DG.Tweening;
 using TMPro;
+/// <summary>
+/// 戦闘シーンのopmoveの管理クラス
+/// </summary>
 public class OpeningManager : MonoBehaviour
 {
-    [SerializeField] PlayableDirector _playableDirector;
+    [SerializeField] PlayableDirector playableDirector;
     [SerializeField] GameObject playerCam;
     [SerializeField] GameObject skipButton;
     [SerializeField] GameObject tentativePlayer;
@@ -31,26 +34,29 @@ public class OpeningManager : MonoBehaviour
 
     public bool IsDone()
     {
-        return _playableDirector.time >= _playableDirector.duration;
+        return playableDirector.time >= playableDirector.duration;
     }
-   public void OnClickOpeningMoveSkip()
+
+    //ムービーのスキップボタンの処理
+    public void OnClickOpeningMoveSkip()
     {
         Destroy(skipButton, 0.1f);
         Destroy(fieldOpText);
         Destroy(tentativePlayer);
         gameObject.SetActive(false);
         Destroy(gameObject, 0.1f);
-        
+
     }
-   public void FieldInOpName()
-   {
-        //テキストコンポーネントを取得
+    public void FieldInOpName()
+    {
+        //テキストコンポーネントを取得(場所の名前を表示)
         fieldOpText.DOFade(1f, 1f);
 
     }
+
     public void FieldOutOpName()
     {
-        //テキストコンポーネントを取得
+        // テキストをフェードアウトさせる
         fieldOpText.DOFade(0f, 1f);
 
     }
@@ -58,6 +64,6 @@ public class OpeningManager : MonoBehaviour
     {
         GameManager.Instance.isMovePlaying = false;
         slideUi.UiMove();
-        
+
     }
 }

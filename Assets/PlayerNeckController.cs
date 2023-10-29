@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class PlayerNeckController : MonoBehaviour
 {
-    public Transform enemy; // エネミーのTransformコンポーネント
-    public Transform neckBone; // 首のTransformコンポーネント
-    public float detectionRadius = 10f; // 検知範囲半径
-    public float maxAngle = 45f; // プレイヤーから見た最大角度
+    // エネミーのTransformコンポーネント
+    public Transform enemy;
+    // 首のTransformコンポーネント
+    public Transform neckBone;
+    // 検知範囲半径
+    public float detectionRadius = 10f;
+    // プレイヤーから見た最大角度
+    public float maxAngle = 45f; 
     [SerializeField] PlayerLockOn playerLock;
-    private Quaternion originalRotation; // 初期回転の保存
+    // 初期回転の保存
+    private Quaternion originalRotation; 
 
     private void Start()
     {

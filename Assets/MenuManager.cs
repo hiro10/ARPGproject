@@ -22,6 +22,10 @@ public class MenuManager : MonoBehaviour
     {
         //if (GameManager.Instance.sceneName != GameManager.Instance.nowSceneName)
         {
+            if(GameManager.Instance.isGameClear)
+            {
+                GameManager.Instance.isGameClear = false;
+            }
             SceneManager.LoadSceneAsync(GameManager.Instance.nowSceneName);
         }
     }
